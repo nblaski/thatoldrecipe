@@ -1,0 +1,151 @@
+<script>
+    function setOptionAllergens() {
+        var allergenString = document.getElementById('allergenString');
+        var array = allergenString.textContent.split(",");
+        if (array.indexOf('dairy') >= 0) { 
+            var opt = document.getElementById('a1');
+                opt.selected = true;
+            }
+        if (array.indexOf('fish') >= 0) { 
+        var opt = document.getElementById('a2');
+            opt.selected = true;
+        }    
+        if (array.indexOf('gluten') >= 0) { 
+        var opt = document.getElementById('a3');
+            opt.selected = true;
+        }  
+        if (array.indexOf('nuts') >= 0) { 
+        var opt = document.getElementById('a4');
+            opt.selected = true;
+        }  
+        if (array.indexOf('shellfish') >= 0) { 
+        var opt = document.getElementById('a5');
+            opt.selected = true;
+        }  
+        if (array.indexOf('eggs') >= 0) { 
+        var opt = document.getElementById('a6');
+            opt.selected = true;
+        }  
+        if (array.indexOf('meat') >= 0) { 
+        var opt = document.getElementById('a7');
+            opt.selected = true;
+        }  
+        if (array.indexOf('none') >= 0) { 
+        var opt = document.getElementById('aNone');
+            opt.selected = true;
+        } 
+    }
+    setOptionAllergens();
+
+    function setOptionIngredients() {
+        var ingredientString = document.getElementById('ingredientString');
+        var array = ingredientString.textContent.split(",");
+        if (array.indexOf('flour') >= 0) { 
+            var opt = document.getElementById('in1');
+                opt.selected = true;
+            }
+        if (array.indexOf('sugar') >= 0) { 
+        var opt = document.getElementById('in2');
+            opt.selected = true;
+        }    
+        if (array.indexOf('eggs') >= 0) { 
+        var opt = document.getElementById('in3');
+            opt.selected = true;
+        }  
+    }
+    setOptionIngredients();
+
+    const changeUploadBtn = document.getElementById("changeUploadBtn");
+    changeUploadBtn.addEventListener("click", addUpload , false);
+
+    const removeUploadBtn = document.getElementById("removeUploadBtn");
+    removeUploadBtn.addEventListener("click", removeUpload , false);
+
+    function addUpload () {
+        document.getElementById('cover').style.display = 'inline';
+        document.getElementById('changeUploadBtn').style.display = 'none';
+        document.getElementById('removeUploadBtn').style.display = 'inline';
+    }
+
+    function removeUpload() {
+        document.getElementById('cover').style.display = 'none';
+        document.getElementById('changeUploadBtn').style.display = 'inline';
+        document.getElementById('removeUploadBtn').style.display = 'none';
+    }
+
+    function hideUpload() {
+        var x = document.getElementById("changeUpload");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+        }
+
+        document.getElementById("editRecipeForm").onsubmit = function () {
+            var x = document.forms["editRecipeForm"]["recipeName"].value;
+            var y = document.forms["editRecipeForm"]["author"].value;
+            var z = document.forms["editRecipeForm"]["allergens"].value;
+            var a = document.forms["editRecipeForm"]["ingredients"].value;
+            var b = document.forms["editRecipeForm"]["stepName"].value;
+            var c = document.forms["editRecipeForm"]["stepDescription"].value;
+            var d = document.forms["editRecipeForm"]["cover"].value;
+            var d1 = document.getElementById("cover").style.display;
+
+
+            var submit = true;
+
+            if (x == null || x == "") {
+                recipeNameError = "Please enter recipe name";
+                document.getElementById("recipeName_error").innerHTML = recipeNameError;
+                submit = false;
+            }
+
+            if (y == null || y == "") {
+                authorError = "Please enter your name";
+                document.getElementById("author_error").innerHTML = authorError;
+                submit = false;
+            }
+            if (a == null || a == "") {
+                ingredientsError = "Please select ingredients";
+                document.getElementById("ingredients_error").innerHTML = ingredientsError;
+                submit = false;
+            }
+
+            if (b == null || b == "") {
+                stepNameError = "Please enter at least one recipe step instruction";
+                document.getElementById("stepName_error").innerHTML = stepNameError;
+                submit = false;
+            }
+            if (c == null || c == "") {
+                stepDescriptionError = "Please enter at least one recipe step description";
+                document.getElementById("stepDescription_error").innerHTML = stepDescriptionError;
+                submit = false;
+            }
+
+            if(d1 == 'inline' && d == "") {
+                coverError = "Please select an image";
+                document.getElementById("cover_error").innerHTML = coverError;
+                submit = false;
+            }
+
+            return submit;
+        }
+
+        function removeWarning() {
+            document.getElementById(this.id + "_error").innerHTML = "";
+        }
+
+        function removeCoverWarning() {
+            document.getElementById("cover_error").innerHTML = "";
+        }
+        
+        document.getElementById("recipeName").onkeyup = removeWarning;
+        document.getElementById("author").onkeyup = removeWarning;
+        document.getElementById("ingredients").onchange = removeWarning;
+        document.getElementById("stepName").onkeyup = removeWarning;
+        document.getElementById("stepDescription").onkeyup = removeWarning;
+        document.getElementById("removeUploadBtn").onclick = removeCoverWarning;
+        document.getElementById("cover").onchange = removeWarning;
+
+    </script>

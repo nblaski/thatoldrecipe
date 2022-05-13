@@ -1,0 +1,20 @@
+<%- include('./partials/header') -%>
+<%- include('./partials/navbar') -%>
+
+
+<h2 class="page-header">Search Recipe Name</h2>
+<form action="/all" method="GET" enctype="multipart/form-data">
+  <div class="form-row">
+    <div class="form-item">
+      <label>RecipeName</label>
+      <input type="text" name="recipeName" value="<%= searchOptions.recipeName %>">
+    </div>
+  </div>
+
+  <div>
+</form>>
+
+
+
+
+  <%- include('./partials/footer') -%>

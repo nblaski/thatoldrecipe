@@ -1,0 +1,90 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+
+	<div class="container">
+		<h1>Recipe Selected</h1>
+		<div class="col-3">
+			<a class="btn btn-primary" href="/recipes"><- BACK</a>
+		</div>
+		<%- include('../partials/messages') -%>
+		<div>
+			<div>
+				<img src="<%=recipe.imageName%>">
+				<h5><%= recipe.recipeName %></h5>
+				<h5><%= recipe.author %></h5>
+				<% if (recipe.allergens.length !== 0) { %>
+					<h5>Allergens</h5>
+					
+					<ul>
+						<% for (var i = 0; i < recipe.allergens.length; i++) { %>
+						<li><%= recipe.allergens[i] %></li>
+						<% } %>
+					</ul>
+				<% } else { %> 
+					<h5>This Recipe has no Allergens</h5>
+				<% } %>
+				<h5>Ingredients</h5>
+				<ul>
+					<% for (var i = 0; i < recipe.ingredients.length; i++) { %>
+					<li><%= recipe.ingredients[i] %></li>
+					<% } %>
+				</ul>
+				<h5>Steps</h5>
+				<ul>
+					<% for (var i = 0; i < recipe.stepName.length; i++) { %>
+					<li><%= recipe.stepName[i] %></li>
+					<% } %>
+				</ul>
+				<h5>Step Descriptions</h5>
+				<ul>
+					<% for (var i = 0; i < recipe.stepDescription.length; i++) { %>
+					<li><%= recipe.stepDescription[i] %></li>
+					<% } %>
+				</ul>
+				<h5><%= recipe.imageName%></h5>
+			</div>
+		</div>
+		<% if (recipe.author === user.name) { %>
+		<div class="row">
+			<div class="col-sm">
+				<a class="d-inline btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
+			</div>
+		<% } else { %>
+		<% } %>
+				
+
+			<div class="col-sm">
+				<%- include('../partials/deleteForm', { url: `/recipes/${recipe._id}` }) -%>
+			</div>
+			<div class="col-7"> </div>
+		</div>
+				
+	</div>
+
+
+
+
+	<script>
+		// function set
+		//     function setOptionIngredients() {
+        //     var ingredientString = document.getElementById('ingredientString');
+        //     var array = ingredientString.textContent.split(",");
+        //     if (array.indexOf('flour') >= 0) { 
+        //         var opt = document.getElementById('in1');
+        //             opt.selected = true;
+        //         }
+        //     if (array.indexOf('sugar') >= 0) { 
+        //     var opt = document.getElementById('in2');
+        //         opt.selected = true;
+        //     }    
+        //     if (array.indexOf('eggs') >= 0) { 
+        //     var opt = document.getElementById('in3');
+        //         opt.selected = true;
+        //     }  
+        // }
+        // setOptionIngredients();
+	</script>
+
+
+	<%- include('../partials/footer') -%>
+

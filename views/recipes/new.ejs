@@ -1,0 +1,121 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+
+	<h1>To Upload Image on mongoDB</h1>
+	<hr>
+	<div class="container">
+        <%- include('../partials/messages') -%>
+
+		<form id="newRecipeForm" action="/recipes" method="POST" enctype="multipart/form-data">
+
+            <div>
+				<label for="recipeName">Recipe Name</label>
+				<input type="text" id="recipeName" placeholder="Recipe Name" value="" name="recipeName"> <span class="error"><p id="recipeName_error"></p></span>
+			</div>
+            <div>
+				<label for="author">Author</label>
+				<input type="text" id="author" value="<%=user.name%>" name="author" readonly> <span class="error"><p id="author_error"></p></span>
+			</div>
+            <div>
+                <select name="allergens" id="allergens" class="selectpicker" multiple data-live-search="true" data-width="fit">
+
+                <!-- <select name="allergens" id="allergens" class="selectpicker" multiple data-live-search="true" data-width="fit"> -->
+                    <option value="dairy">DAIRY</option>
+                    <option value="fish">FISH</option>
+                    <option value="gluten">GLUTEN</option>
+                    <option value="nuts">NUTS</option>
+                    <option value="shellfish">SHELLFISH</option>
+                    <option value="eggs">EGGS</option>
+                    <option value="meat">MEAT</option>
+                  </select>
+            </div>
+            <div>
+                <select name="ingredients" id="ingredients" multiple>
+                    <option value="flour">flour</option>
+                    <option value="sugar">sugar</option>
+                    <option value="eggs">eggs</option>
+                  </select><span class="error"><p id="ingredients_error"></p></span>
+            </div>
+            <label for="stepName">Step Name</label>
+            <input type="text" id="stepName" placeholder="stepName" value="" name="stepName"> <span class="error"><p id="stepName_error"></p></span>
+            </div>
+                <label for="stepDescription">Step Description</label>
+                <input type="text" id="stepDescription" placeholder="stepDescription" value="" name="stepDescription"> <span class="error"><p id="stepDescription_error"></p></span>
+            </div>
+			<div id="upload">
+				<label for="cover">Upload Image</label>
+				<input type="file" id="cover" name="cover"> <span class="error"><p id="cover_error"></p></span>
+			</div>
+			<div>
+
+				<button type="submit" value="submit">Submit</button>
+			</div>
+		</form>
+	</div>
+
+
+    <script>
+            document.getElementById("newRecipeForm").onsubmit = function () {
+                var x = document.forms["newRecipeForm"]["recipeName"].value;
+                var y = document.forms["newRecipeForm"]["author"].value;
+                var z = document.forms["newRecipeForm"]["allergens"].value;
+                var a = document.forms["newRecipeForm"]["ingredients"].value;
+                var b = document.forms["newRecipeForm"]["stepName"].value;
+                var c = document.forms["newRecipeForm"]["stepDescription"].value;
+                var d = document.forms["newRecipeForm"]["cover"].value;
+    
+                var submit = true;
+    
+                if (x == null || x == "") {
+                    recipeNameError = "Please enter recipe name";
+                    document.getElementById("recipeName_error").innerHTML = recipeNameError;
+                    submit = false;
+                }
+    
+                if (y == null || y == "") {
+                    authorError = "Please enter your name";
+                    document.getElementById("author_error").innerHTML = authorError;
+                    submit = false;
+                }
+                if (a == null || a == "") {
+                    ingredientsError = "Please select ingredients";
+                    document.getElementById("ingredients_error").innerHTML = ingredientsError;
+                    submit = false;
+                }
+    
+                if (b == null || b == "") {
+                    stepNameError = "Please enter at least one recipe step instruction";
+                    document.getElementById("stepName_error").innerHTML = stepNameError;
+                    submit = false;
+                }
+                if (c == null || c == "") {
+                    stepDescriptionError = "Please enter at least one recipe step description";
+                    document.getElementById("stepDescription_error").innerHTML = stepDescriptionError;
+                    submit = false;
+                }
+
+                if(d == null || d == "") {
+                    coverError = "Please select an image";
+                    document.getElementById("cover_error").innerHTML = coverError;
+                    submit = false;
+                }
+    
+                return submit;
+            }
+    
+            function removeWarning() {
+                document.getElementById(this.id + "_error").innerHTML = "";
+            }
+            
+            document.getElementById("recipeName").onkeyup = removeWarning;
+            document.getElementById("author").onkeyup = removeWarning;
+            document.getElementById("ingredients").onchange = removeWarning;
+            document.getElementById("stepName").onkeyup = removeWarning;
+            document.getElementById("stepDescription").onkeyup = removeWarning;
+            document.getElementById("cover").onchange = removeWarning;
+        </script>
+
+    <%- include('../partials/footer') -%>
+
+    
+    

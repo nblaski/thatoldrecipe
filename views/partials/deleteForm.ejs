@@ -1,0 +1,17 @@
+<% if (recipe.author === user.name) { %>
+    <form id="delete" method="POST" action="<%= url %>?_method=DELETE"> 
+        <button class="d-inline btn btn-danger" type="button" onclick="checker()">Delete</button>
+    </form>
+<% } else { %>
+<% } %>
+
+
+<script>
+    function checker(){
+        if(window.confirm("Are you sure you want to delete this recipe?")){
+            document.getElementById("delete").submit();
+        } else {
+            return
+        }
+    }
+</script>  

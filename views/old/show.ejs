@@ -1,0 +1,31 @@
+<%- include('./partials/header') -%>
+<%- include('./partials/navbar') -%>
+
+
+<body>
+	<h1>Uploaded Images</h1>
+	<div>
+		<div>
+			<div>
+				<ol>
+					<li><img src="data:image/<%=recipe.imageR.contentType%>;base64,
+						<%=recipe.imageR.data.toString('base64')%>"></li>
+					<li><%= recipe.recipeName %></li>
+					<li><%= recipe.author %></li>
+					<li><%= recipe.allergens %></li>
+					<li><%= recipe.ingredients %></li>
+					<li><%= recipe.stepName %></li>
+					<li><%= recipe.stepDescription%></li>
+					<li><%= recipe.imageName%></li>
+				</ol>
+			</div>
+		</div>
+	</div>
+	<form method="POST" action="/show/<%= recipe._id %>?_method=DELETE"> 
+		<button class="btn btn-danger" type="submit">Delete</button>
+	  </form>
+
+
+
+	<%- include('./partials/footer') -%>
+

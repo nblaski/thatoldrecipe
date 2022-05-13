@@ -1,0 +1,27 @@
+<%- include('./partials/header') -%>
+<%- include('./partials/navbar') -%>
+
+
+<body>
+	<h1>Uploaded Images</h1>
+
+	<div>
+		<% items.forEach(function(image) { %>
+		<div>
+			<div>
+				<img src="data:image/<%=image.img.contentType%>;base64,
+					<%=image.img.data.toString('base64')%>">
+				<div>
+					<h5><%= image.name %></h5>
+				</div>
+			</div>
+		</div>
+		<% }) %>
+	</div>
+
+
+
+
+
+	<%- include('./partials/footer') -%>
+

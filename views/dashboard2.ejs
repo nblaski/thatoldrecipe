@@ -1,0 +1,141 @@
+<h1 class="mt-4">Dashboard</h1>
+<p class="lead mb-3">Welcome <%= user.name %></p>
+<a href="/users/logout" class="btn btn-secondary">Logout</a>
+<% if (user.role === "admin") { %>
+<a href="/admin" class="btn btn-secondary">Admin Page</a>
+<% } %>
+
+
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body">
+            <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Add Recipe</h1>
+            <%- include('./partials/messages') -%>
+            <form action="/dashboard" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="recipeName">Recipe Name</label>
+                    <input
+                    type="text"
+                    id="recipeName"
+                    name="recipeName"
+                    class="form-control"
+                    placeholder="Enter Recipe Name"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="author">Author</label>
+                    <input
+                    type="text"
+                    
+                    id="author"
+                    name="author"
+                    value="<%= user.name %>"
+                    class="form-control"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="allergens">Contains:</label>
+                    <select name="allergens" id="select-allergens" class="selectpicker" multiple data-live-search="true" data-width="fit">
+                        <option value="dairy">DAIRY</option>
+                        <option value="fish">FISH</option>
+                        <option value="gluten">GLUTEN</option>
+                        <option value="nuts">NUTS</option>
+                        <option value="shellfish">SHELLFISH</option>
+                        <option value="eggs">EGGS</option>
+                        <option value="meat">MEAT</option>
+                      </select>
+                  </div>
+
+                  <!-- <div class="ratings"> <i class="fa fa-star rating-color"></i> <i class="fa fa-star rating-color"></i> <i class="fa fa-star rating-color"></i> <i class="fa fa-star rating-color"></i> <i class="fa fa-star"></i> </div> -->
+
+                  
+                  
+                  <div class="form-group">
+                    <label for="image-link">Link URL for Recipe Picture</label>
+                    <input id="image-link" name="image-link" type="text" class="form-control" placeholder="type in full URL of image">
+                    </div>
+                    <div class="form-item form-item-no-grow">
+                        <label for="image-select">Add Recipe Picture</label>
+                        <input type="file" class="recipe-cover filepond" id="cover">  
+                    </div>
+                    
+                  <br>
+                  
+                    <div class="row">
+                        <div class="form-group">
+
+                            <table id="inputTable" class="table order-list">
+                                <thead>
+                                  <tr class="row text-center">
+                                    <td >Add Instruction Steps</td>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="row step" id="staticRow">
+                                    <td >
+                                      <input type="text" id="stepName" name="stepName" class="col1 form-control" />
+                                    </td>
+                                    <td ></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <button type="button" class="btn btn-success" id="addRow" value="Add Row">AddRow</button>
+                            
+                        </div>
+                        
+                    </div>
+                   
+
+                 
+
+
+                <br>
+                <div class="form-group">
+                    <div class="star-rating">
+                        <input type="radio" id="5-stars" name="rating" value="5" />
+                        <label for="5-stars" class="star">&#9733;</label>
+                        <input type="radio" id="4-stars" name="rating" value="4" />
+                        <label for="4-stars" class="star">&#9733;</label>
+                        <input type="radio" id="3-stars" name="rating" value="3" />
+                        <label for="3-stars" class="star">&#9733;</label>
+                        <input type="radio" id="2-stars" name="rating" value="2" />
+                        <label for="2-stars" class="star">&#9733;</label>
+                        <input type="radio" id="1-star" name="rating" value="1" />
+                        <label for="1-star" class="star">&#9733;</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                 </div>
+                  
+
+                </div>
+            </form>   
+            
+            
+    <!-- User Meal Submit -->
+        <!-- <div>
+            <h2 class="text-center" id="addMeal">Add Meal</h2>
+            <table id="inputTable" class="table order-list">
+              <thead>
+                <tr class="row text-center">
+                  <td >Steps</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row food" id="staticRow">
+                  <td >
+                    <input type="text" id="foodName" name="foodName" class="col1 form-control" />
+                  </td>
+                  <td ></td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+            <button type="button" class="btn btn-success" id="addRow" value="Add Row">AddRow</button>
+        </div>
+             -->
+
+

@@ -1,0 +1,69 @@
+<form id="editRecipeForm" action="/recipes/<%=recipe.id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <img src="<%=recipe.imageName%>">
+    </div>
+    <div id="imageUploadButtons" class="form-group">
+        <!-- <button type="button" class="btn btn-warning" onclick="hideUpload()">Change Image</button> -->
+        <button id="changeUploadBtn" type="button" class="btn btn-warning" style="display: inline">Select to Change Image</button>
+        <button id="removeUploadBtn" type="button" class="btn btn-warning" style="display: none;">Select to keep existing image</button>
+    </div>
+    <div id="changeUpload" class="form-group">
+        <input type="file" id="cover" name="cover" style="display: none;"> <span class="error"><p id="cover_error"></p></span>
+    </div>
+    <div class="form-group">
+        <label for="recipeName">Recipe Name</label>
+        <input type="text" id="recipeName" placeholder="Recipe Name" value="<%=recipe.recipeName%>" name="recipeName"> <span class="error"><p id="recipeName_error"></p></span>
+    </div>
+    <div class="form-group">
+        <label for="author">Author</label>
+        <input type="text" id="author" placeholder="Author" value="<%=recipe.author%>" name="author"> <span class="error"><p id="author_error"></p></span>
+    </div>
+    <div class="form-group">
+        <select name="allergens" id="allergens" class="selectpicker" multiple data-width="fit">
+            <option id="a1" value="dairy">DAIRY</option>
+            <option id="a2" value="fish">FISH</option>
+            <option id="a3" value="gluten">GLUTEN</option>
+            <option id="a4" value="nuts">NUTS</option>
+            <option id="a5" value="shellfish">SHELLFISH</option>
+            <option id="a6" value="eggs">EGGS</option>
+            <option id="a7" value="meat">MEAT</option>
+          </select>
+    </div>
+    <div class="form-group">
+        <select name="ingredients" id="ingredients" class="selectpicker" multiple data-width="fit">
+            <option id="in1" value="flour">flour</option>
+            <option id="in2" value="sugar">sugar</option>
+            <option id="in3" value="eggs">eggs</option>
+          </select><span class="error"><p id="ingredients_error"></p></span>
+    </div>
+    <div class="form-group">
+        <label for="stepName">Step Name</label>
+        <input type="text" id="stepName" placeholder="stepName" value="<%=recipe.stepName%>" name="stepName"> <span class="error"><p id="stepName_error"></p></span>
+    </div>
+    
+    <div class="form-group">
+        <label for="stepDescription">Step Description</label>
+        <input type="text" id="stepDescription" placeholder="stepDescription" value="<%=recipe.stepDescription%>" name="stepDescription"> <span class="error"><p id="stepDescription_error"></p></span>
+    </div>
+    <div style="display: none;" class="form-group">
+        <h5 id="allergenString"><%=recipe.allergens%></h5>
+        <h5 id="ingredientString"><%=recipe.ingredients%></h5>
+    </div>
+    <!-- <div class="control-section">
+        <div class="col-lg-9  content-wrapper" style="height: 350px">
+            <div style="margin: 0px auto; width:450px; padding-top: 40px;">
+                <h4>MultiSelect DropDown</h4>
+                <ejs-multiselect id='sample-list1' [dataSource]='sportsData'  [fields]='fields' [placeholder]='waterMark' [value]="value"></ejs-multiselect>
+                </div>
+            </div>
+    </div> -->
+    
+    <div class="row">
+        <div class="col-sm">
+            <button class="btn btn-success" type="submit" value="submit">Submit</button>
+        </div>
+        <div class="col-8">
+            <a class="btn btn-warning" href="/recipes/<%= recipe.id %>">Back</a>
+        </div>
+    </div>
+</form>
