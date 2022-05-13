@@ -1,15 +1,31 @@
 <%- include('../partials/header') -%>
 <%- include('../partials/navbar') -%>
 
-	<h1>Update Recipe Form</h1>
 	<div class="container">
+        <h1>Update Recipe Form</h1>
+        <hr>
         <%- include('../partials/messages') -%>
-        <%- include('./_form_fields') -%>
-	</div>
 
-    <%- include('./_scripts') -%>
 
-    <%- include('../partials/footer') -%>
+        <form id="formFields" action="/recipes/<%=recipe.id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+        
+         <%- include('./_form_fields') -%>
+
+
+         <div class="row">
+                <div class="col-sm">
+                    <button class="btn btn-success" type="submit" value="submit">Submit</button>
+                </div>
+                <div class="col-8">
+                    <a class="btn btn-warning" href="/recipes/<%= recipe.id %>">Back</a>
+                </div>
+            </div>
+        </form>
+</div>
+
+<%- include('./_scripts') -%>
+
+<%- include('../partials/footer') -%>
 
     
     

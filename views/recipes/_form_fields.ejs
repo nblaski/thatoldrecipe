@@ -1,4 +1,3 @@
-<form id="editRecipeForm" action="/recipes/<%=recipe.id%>?_method=PUT" method="POST" enctype="multipart/form-data">
     <div class="form-group">
         <img src="<%=recipe.imageName%>">
     </div>
@@ -49,21 +48,3 @@
         <h5 id="allergenString"><%=recipe.allergens%></h5>
         <h5 id="ingredientString"><%=recipe.ingredients%></h5>
     </div>
-    <!-- <div class="control-section">
-        <div class="col-lg-9  content-wrapper" style="height: 350px">
-            <div style="margin: 0px auto; width:450px; padding-top: 40px;">
-                <h4>MultiSelect DropDown</h4>
-                <ejs-multiselect id='sample-list1' [dataSource]='sportsData'  [fields]='fields' [placeholder]='waterMark' [value]="value"></ejs-multiselect>
-                </div>
-            </div>
-    </div> -->
-    
-    <div class="row">
-        <div class="col-sm">
-            <button class="btn btn-success" type="submit" value="submit">Submit</button>
-        </div>
-        <div class="col-8">
-            <a class="btn btn-warning" href="/recipes/<%= recipe.id %>">Back</a>
-        </div>
-    </div>
-</form>

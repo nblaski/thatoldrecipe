@@ -78,6 +78,6 @@ app.use('/recipes', require('./routes/recipe.js'));
 
 
 
-app.listen(3003, () => {
-    console.log("connected on 3003 for image testing")
+app.listen(process.env.PORT , () => {
+    console.log("connected on 3003")
 })

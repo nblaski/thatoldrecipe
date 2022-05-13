@@ -1,9 +1,10 @@
 <%- include('../partials/header') -%>
 <%- include('../partials/navbar') -%>
 
-	<h1>To Upload Image on mongoDB</h1>
-	<hr>
+
 	<div class="container">
+        <h1>Create New Recipe</h1>
+        <hr>
         <%- include('../partials/messages') -%>
 
 		<form id="newRecipeForm" action="/recipes" method="POST" enctype="multipart/form-data">
@@ -30,15 +31,17 @@
                   </select>
             </div>
             <div>
-                <select name="ingredients" id="ingredients" multiple>
+                <select name="ingredients" id="ingredients" class="selectpicker" multiple>
                     <option value="flour">flour</option>
                     <option value="sugar">sugar</option>
                     <option value="eggs">eggs</option>
                   </select><span class="error"><p id="ingredients_error"></p></span>
             </div>
-            <label for="stepName">Step Name</label>
-            <input type="text" id="stepName" placeholder="stepName" value="" name="stepName"> <span class="error"><p id="stepName_error"></p></span>
+            <div>
+                <label for="stepName">Step Name</label>
+                <input type="text" id="stepName" placeholder="stepName" value="" name="stepName"> <span class="error"><p id="stepName_error"></p></span>
             </div>
+            <div>
                 <label for="stepDescription">Step Description</label>
                 <input type="text" id="stepDescription" placeholder="stepDescription" value="" name="stepDescription"> <span class="error"><p id="stepDescription_error"></p></span>
             </div>
@@ -47,7 +50,6 @@
 				<input type="file" id="cover" name="cover"> <span class="error"><p id="cover_error"></p></span>
 			</div>
 			<div>
-
 				<button type="submit" value="submit">Submit</button>
 			</div>
 		</form>
