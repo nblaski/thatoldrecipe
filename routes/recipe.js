@@ -37,7 +37,6 @@ router.get('/new', ensureAuthenticated, (req, res) => {
 
 // POST NEW RECIPE ROUTE
 router.post('/', upload.single('cover'), async (req, res) => {
-  console.log(req.file.path)
   const file = req.file;
   if(!file) {
     return console.log('Please select an Image.');
@@ -93,9 +92,7 @@ router.post('/', upload.single('cover'), async (req, res) => {
 router.get('/:id', ensureAuthenticated, async (req, res) => {
   try {
       const recipe = await Recipe.findById(req.params.id);
-      console.log(recipe.allergens)
       const allergenString = JSON.stringify(recipe.allergens)
-      console.log(allergenString)
       res.render('recipes/show', { user: req.user, recipe: recipe })
     } catch(error) {
       console.log(error);
@@ -108,7 +105,6 @@ router.delete('/:id', async (req, res) => {
   let recipe;
   try {
     recipe = await Recipe.findById(req.params.id)
-    console.log(recipe.imageName)
     fs.unlink('public' + recipe.imageName, function (err) {
       if (err) {throw err};
       // if no error, file has been deleted successfully
@@ -169,7 +165,6 @@ router.put('/:id', upload.single('cover'), async (req, res) => {
       } finally {
         let url = file.path.replace('public', '');
         recipe.imageName = url
-        console.log(url)
       }
     } else {
       console.log('there is no url to assign to imageName')

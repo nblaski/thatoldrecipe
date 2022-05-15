@@ -46,7 +46,7 @@
 
 
 
-
+<!-- 
 <div class="container">
     <h2>Recently added by <%=user.name%></h2>  
     <div class="container">
@@ -85,5 +85,30 @@
 
     </div>
 
+</div> -->
+
+
+
+<!-- GRID -->
+
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <header class="col-md-12 text-center">
+                <h2>Recently added by: <%= user.name %></h2>
+            </header>
+                <% recipes.forEach(recipe => { %>
+                    <% if (recipe.author === user.name) { %>
+                        <div class="col-md-3 col-sm-6 col-xs-12 img-recipe">
+                            <a class="cell" href="/recipes/<%= recipe.id %>">
+                            <img class="thumbNail" src="<%= recipe.imageName %>">
+                            </a>
+                            <h5>Recipe by: <%=recipe.author%></h5>
+                        </div>
+                    <% } %>
+                <% }) %>
+        </div>
+    </div>
 </div>
+
   <%- include('../partials/footer') -%>
