@@ -1,4 +1,7 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({ path: '.env' });
+};
+
 const express = require('express');
 // const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
@@ -22,6 +25,7 @@ mongoose.connect(process.env.DB_CONN_STRING2, {
     family : 4},
     () => {console.log("mongoose connected.")}
   );
+
 
 // EJS SETUP
 app.set('view engine', 'ejs')
