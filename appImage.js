@@ -79,6 +79,7 @@ app.use(function(req, res, next) {
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/recipes', require('./routes/recipe.js'));
+app.use('/profile'), require('./routes/profile.js');
 
 
 
