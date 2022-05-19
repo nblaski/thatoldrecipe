@@ -11,7 +11,8 @@ const { authUser, authRole, authRoleAdmin } = require('../permissions/basicAuth'
 const ROLE = { ADMIN: 'admin', BASIC: 'basic' }
 
 const { s3Uploadv2 } = require('../s3Service');
-const randomID = parseInt(Math.random() * 10000000)
+// const randomID = parseInt(Math.random() * 10000000)
+const uuid = require('uuid').v4;
 
 
 
@@ -44,7 +45,9 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 
 router.post("/", upload.array('file'), async (req, res) => {
   const file = req.files[0];
+  console.log(file)
   const result = await s3Uploadv2(file);
+  console.log(result)
   res.json({ status: "success", result });
 });
 
