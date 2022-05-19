@@ -1,5 +1,6 @@
 const { S3 } = require('aws-sdk');
-const uuid = require('uuid').v4;
+const randomID = parseInt(Math.random() * 10000000)
+
 
 
 exports.s3Uploadv2 = async (file) => {
@@ -7,7 +8,7 @@ exports.s3Uploadv2 = async (file) => {
 
     const param = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `uploads/${uuid()}-${file.originalname}`,
+        Key: `uploads/${randomID}-${file.originalname}`,
         // Body = buffer
         Body: file.buffer
     };
