@@ -54,7 +54,8 @@ function getSignedRequest(file){
       if(xhr.status === 200){
           console.log("status" + xhr.status)
           console.log("xhrrespons" + xhr.responseText);
-        const response = await JSON.parse(xhr.responseText);
+        const xhrResponse = await xhr.responseText
+        const response = JSON.parse(xhrResponse);
         console.log("response" + response)
         uploadFile(file, response.signedRequest, response.url);
       }
