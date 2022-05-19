@@ -53,16 +53,11 @@ function getSignedRequest(file){
         console.log("readyState" + xhr.readyState)
       if(xhr.status === 200){
           console.log("status" + xhr.status)
-          console.log("xhrrespons" + xhr.responseText)
-          try {
-            const response = JSON.parse(xhr.responseText);
-            callback(response);
-          } catch (err) {
-            console.log(err);
-          } finally {
-            console.log("response" + response)
-            uploadFile(file, response.signedRequest, response.url);
-          }
+          console.log("xhrrespons" + xhr.responseText);
+        const response = JSON.parse(xhr.responseText);
+        console.log("response" + response)
+        callback(response);
+        uploadFile(file, response.signedRequest, response.url);
       }
       else{
         alert('Could not get signed URL.');
