@@ -1,221 +1,103 @@
 const express = require('express');
 const router = express.Router();
-const methodOverride = require('method-override');
-const fs = require('fs');
-const path = require('path');
 const Recipe  = require('../models/Recipe.js');
 const User = require('../models/User.js');
-router.use(methodOverride('_method'));
-const upload = require('../multer.js');
-
+const multer = require('multer');
+const aws = require('aws-sdk');
+aws.config.update({ region: process.env.AWS_REGION });
 
 const { setUser, ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const { authUser, authRole, authRoleAdmin } = require('../permissions/basicAuth');
-const projectRouter = require('../permissions/project');
 const ROLE = { ADMIN: 'admin', BASIC: 'basic' }
-const User = require('../models/User');
 
-// // WELCOME PAGE
-// router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
-
+const { s3Uploadv2 } = require('../s3Service');
+const uuid = require('uuid').v4;
 
 
-// GET RECENTLY ADDED RECIPES
+
+const storage = multer.memoryStorage()
+
+const fileFilter = (req, file, cb) => {
+    // if (file.mimetype === 'image/jpeg')
+    // file.mimetype.split('/') = ['image', 'jpeg']
+    if (file.mimetype.split('/')[0] === 'image') {
+        cb(null, true);
+    } else {
+        // cb(null, false);
+        // or pass in error
+        cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false)
+    }
+};
+
+
+
+const upload = multer({
+    storage, 
+    fileFilter, 
+    limits: { fileSize: 100000000, files: 2 }
+});
+
 router.get('/', ensureAuthenticated, async (req, res) => {
-  let users
-  try {
-    users = await User.findOne({ name: req.user });
-  } catch {
-    recipes = []
-  }
-  res.render('profile/index', { user: req.user, users: users })
+    res.render('profile/index', { user: req.user });
 });
 
-// GET NEW RECIPE FORM PAGE
-router.get('/new', ensureAuthenticated, (req, res) => {
-  res.render('recipes/new', { user: req.user });
-});
+const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME;
 
-// POST NEW RECIPE ROUTE
-router.post('/', upload.single('cover'), async (req, res) => {
-  const file = req.file;
-  if(!file) {
-    return console.log('Please select an Image.');
-  }
-  
-  let url = file.path.replace('public', '');
+router.get('/sign-s3', (req, res) => {
+  const s3 = new aws.S3();
+  const fileName = req.query['file-name'];
+  const fileType = req.query['file-type'];
+  const s3Params = {
+    Bucket: AWS_BUCKET_NAME,
+    Key: fileName,
+    Expires: 10000,
+    ContentType: fileType,
+    ACL: 'public-read'
+  };
 
-  const recipe = new Recipe ({
-      recipeName: req.body.recipeName,
-      author: req.body.author,
-      allergens: req.body.allergens,
-      ingredients: req.body.ingredients,
-      stepName: req.body.stepName,
-      stepDescription: req.body.stepDescription,
-      imageName: url
+  s3.getSignedUrl('putObject', s3Params, (err, data) => {
+    if(err){
+      console.log(err);
+      return res.end();
+    }
+    const returnData = {
+      signedRequest: data,
+      url: `https://${AWS_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
+    };
+    res.write(JSON.stringify(returnData));
+    res.end();
   });
-  try {
-      await Recipe.findOne({imageName : url})
-        .then( img => {
-          if(img) {
-              console.log('Duplicate Image. Try again!');
-              req.flash(
-                'error_msg',
-                'Duplicate Image. Try again!'
-              );
-              return res.redirect('/recipes/new');
-          }
-          recipe.save()
-              .then(img => {
-                  console.log('Image saved to DB.');
-                  req.flash(
-                    'success_msg',
-                    'Recipe Saved!'
-                  );
-                  res.redirect(`/recipes/${recipe.id}`);
-              })
-        })
-    .catch(err => {
-        return console.log('ERROR: '+err);
-    });
-      
-  } catch(err) {
-      console.log(err)
-      req.flash(
-        'error_msg',
-        'ERROR saving recipe' + err
-      );
-      return res.redirect('/recipes/error' + err)
-  } 
 });
 
-// GET SHOW RECIPE PAGE BY RECIPE ID
-router.get('/:id', ensureAuthenticated, async (req, res) => {
-  try {
-      const recipe = await Recipe.findById(req.params.id);
-      const allergenString = JSON.stringify(recipe.allergens)
-      res.render('recipes/show', { user: req.user, recipe: recipe })
-    } catch(error) {
-      console.log(error);
-      res.render('recipes/error' + errorMessage);
-    }
-});
+// router.post("/upload", upload.array('file'), async (req, res) => {
+//     const file = req.files[0];
+//     const result = await s3Uploadv2(file);
+//     res.json({ status: "success", result });
+// });
 
-// DELETE RECIPE ROUTE
-router.delete('/:id', async (req, res) => {
-  let recipe;
-  try {
-    recipe = await Recipe.findById(req.params.id)
-    fs.unlink('public' + recipe.imageName, function (err) {
-      if (err) {throw err};
-      // if no error, file has been deleted successfully
-      console.log('File deleted!');
-      });
-    await Recipe.deleteOne({ _id: req.params.id });
-    req.flash(
-      'success_msg',
-      'Recipe Deleted!'
-    );
-    res.redirect('/recipes');
-  } catch (error) {
-    if (recipe != null) {
-      res.render('partials/error', {
-        recipe: recipe,
-        errorMessage: 'Could not remove recipe'
-      })
-    } else if (error) {
-      console.log(error)
-      res.redirect('/error', { errorMessage: error })
-    }
-  }
-})
+// // set multer upload errors
+// router.use((error, req, res, next) => {
+//     if (error instanceof multer.MulterError) {
+//         if (error.code === "LIMIT_FILE_SIZE") {
+//             return res.status(400).json({
+//                 message: "file is too large",
+//             });
+//         }
 
-// Edit Book Route
-router.get('/:id/edit', ensureAuthenticated, async (req, res) => {
-  try {
-    const user = req.user
-    const recipe = await Recipe.findById(req.params.id);
-    renderEditPage(res, user, recipe);
-  } catch(error) {
-    console.log(error);
-    req.flash('error_msg', 'Error rendering Edit Page')
-    res.redirect('/');
-  }
-})
+//         if (error.code === "LIMIT_FILE_COUNT") {
+//             return res.status(400).json({
+//                 message: "file limit reached",
+//             });
+//         }
 
-router.put('/:id', upload.single('cover'), async (req, res) => {
-  let recipe
-  const file = req.file;
-  try {
-    recipe = await Recipe.findById(req.params.id)
-    recipe.recipeName = req.body.recipeName
-    recipe.author = req.body.author
-    recipe.allergens = req.body.allergens
-    recipe.ingredients = req.body.ingredients
-    recipe.stepName = req.body.stepName
-    recipe.stepDescription = req.body.stepDescription
-    if (file) {
-      try {
-        fs.unlink('public' + recipe.imageName, function (err) {
-          if (err) {throw err};
-          // if no error, file has been deleted successfully
-          console.log('old file deleted!');
-          });
-      } catch(error) {
-        console.log("there was an error deleting old image")
-      } finally {
-        let url = file.path.replace('public', '');
-        recipe.imageName = url
-      }
-    } else {
-      console.log('there is no url to assign to imageName')
-    }
-      
-    await recipe.save()
-      console.log('Recipe saved to DB.');
-      req.flash(
-        'success_msg',
-        'Recipe UPDATED!'
-      );
-      res.redirect(`/recipes/${recipe.id}`);
-  } catch {
-    if (recipe != null) {
-      renderEditPage(res, recipe, true)
-    } else {
-      req.flash('error_msg', 'ERROR saving edits')
-      redirect('/')
-    }
-  }
-})
+//         if (error.code === "LIMIT_UNEXPECTED_FILE") {
+//             return res.status(400).json({
+//                 message: "file must be an image",
+//             });
+//         }
+//     }
+// })
 
-// GET ERROR PAGE
-router.get('/error', ensureAuthenticated, (req, res) => {
-  res.render('partials/error' + errorMessage, { user: req.user });
-});
 
-async function renderEditPage(res, user, recipe, hasError = false) {
-  renderFormPage(res, user, recipe, 'edit', hasError)
-}
-
-async function renderFormPage(res, user, recipe, form, hasError = false) {
-  try {
-    const params = {
-      user: user,
-      recipe: recipe
-    }
-    if (hasError) {
-      if (form === 'edit') {
-        params.errorMessage = 'Error Updating Book'
-      } else {
-        params.errorMessage = 'Error Creating Book'
-      }
-    }
-    res.render(`recipes/${form}`, params)
-  } catch (error) {
-    console.log(error);
-    req.flash('error_msg', 'Error rendering form')
-    res.redirect('/recipes')
-  }
-}
 
 module.exports = router;

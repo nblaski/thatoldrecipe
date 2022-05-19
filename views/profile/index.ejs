@@ -1,73 +1,90 @@
 
-<%- include('./partials/header') -%>
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+<%- include ('../partials/messages') -%>
 
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
     <div class="card card-body">
       <h1 class="text-center mb-3">
-        <i class="fas fa-user-plus"></i> <%=user.name=%>'s Profile
+        <i class="fas fa-user"></i>  <%=user.name %>'s' Profile
       </h1>
         <input type="file" id="file-input">
-        <p id="status">Please select a file</p>
-        <img id="preview" src="/images/default.png">
-      <%= include ("./partials/messages"); %>
-      <form action="/profile" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <input type="hidden" id="avatar-url" name="avatar-url" value="/images/default.png">
-          </div>
-        <div class="form-group">
-          <label for="name"><% users.name %></label>
-          <input
-            type="name"
-            id="name"
-            name="name"
-            class="form-control"
-            placeholder="Enter Name"
-            value="<%= typeof name != 'undefined' ? name : '' %>"
-          />
-        </div>
-        <div class="form-group">
-          <label for="email"> users.email </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            class="form-control"
-            placeholder="Enter Email"
-            value="<%= typeof email != 'undefined' ? email : '' %>"
-          />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            class="form-control"
-            placeholder="Create Password"
-            value="<%= typeof password != 'undefined' ? password : '' %>"
-          />
-        </div>
-        <div class="form-group">
-          <label for="password2">Confirm Password</label>
-          <input
-            type="password"
-            id="password2"
-            name="password2"
-            class="form-control"
-            placeholder="Confirm Password"
-            value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
-          />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">
-          Update Profile
-        </button>
+                <p id="status">Please select a file</p>
+                <img id="preview" style="width: 200px;" src="/images/default.png">
+            <form class="" action="/profile" method="POST" enctype="multipart/form-data">
+                <div>
+                    <input type="hidden" id="avatar-url" name="avatar-url" value="/images/default.png">
+                </div>
+                <div>
+                    <input type="text" name="username" placeholder="Username"><br>
+                </div>
+                <div>
+                    <input type="text" name="full-name" placeholder="Full name"><br><br>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                Update Profile
+                </button>
       </form>
+       
     </div>
   </div>
 </div>
 
-<%- include('./partials/footer') -%>
+
+<script>
+    (() => {
+  document.getElementById("file-input").onchange = () => {
+    const files = document.getElementById('file-input').files;
+    const file = files[0];
+    console.log(file)
+    if(file == null){
+      return alert('No file selected.');
+    }
+    getSignedRequest(file);
+  };
+})();
+
+function getSignedRequest(file){
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `profile/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+  xhr.onreadystatechange = () => {
+    if(xhr.readyState === 4){
+      if(xhr.status === 200){
+        const response = JSON.parse(xhr.responseText);
+        uploadFile(file, response.signedRequest, response.url);
+      }
+      else{
+        alert('Could not get signed URL.');
+      }
+    }
+  };
+  xhr.send();
+}
+
+function uploadFile(file, signedRequest, url){
+    console.log(file)
+    console.log(signedRequest)
+    console.log(url)
+  const xhr = new XMLHttpRequest();
+  xhr.open('PUT', signedRequest);
+  xhr.onreadystatechange = () => {
+    if(xhr.readyState === 4){
+      if(xhr.status === 200){
+        document.getElementById('preview').src = url;
+        document.getElementById('avatar-url').value = url;
+      }
+      else{
+        alert('Could not upload file.');
+      }
+    }
+  };
+  xhr.send(file);
+}
+</script>
+
+
+<%- include('../partials/footer') -%>
 
 
 

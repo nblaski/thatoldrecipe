@@ -13,13 +13,15 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 var fs = require('fs');
 
+
 const app = express();
+// const aws = require('aws-sdk');
 
 // PASSPORT CONFIG
 require('./config/passport')(passport);
 
 // CONNECT TO MongoDB
-mongoose.connect(process.env.DATABASE_URL, {
+mongoose.connect(process.env.DB_CONN_STRING2, {
     useNewUrlParser : true,
     useUnifiedTopology : true,
     family : 4},
@@ -36,7 +38,7 @@ app.set('views', __dirname + '/views')
 // EXPRESS BODY PARSER
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }))
-// app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use('/static', express.static(path.join(__dirname, 'public')))
@@ -79,10 +81,36 @@ app.use(function(req, res, next) {
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/recipes', require('./routes/recipe.js'));
-app.use('/profile'), require('./routes/profile.js');
+app.use('/profile', require('./routes/profile.js'));
 
+// const AWS_S3_BUCKET = process.env.AWS_S3_BUCKET
 
+// app.get('/sign-s3', (req, res) => {
+//   const s3 = new aws.S3();
+//   const fileName = req.query['file-name'];
+//   const fileType = req.query['file-type'];
+//   const s3Params = {
+//     Bucket: process.env.AWS_BUCKET_NAME,
+//     Key: fileName,
+//     Expires: 1000000,
+//     ContentType: fileType,
+//     ACL: 'public-read'
+//   };
 
-app.listen(process.env.PORT , () => {
+//   s3.getSignedUrl('putObject', s3Params, (err, data) => {
+//     if(err){
+//       console.log(err);
+//       return res.end();
+//     }
+//     const returnData = {
+//       signedRequest: data,
+//       url: `https://${AWS_S3_BUCKET}.s3.amazonaws.com/${fileName}`
+//     };
+//     res.write(JSON.stringify(returnData));
+//     res.end();
+//   });
+// });
+
+app.listen(process.env.PORT || 3003 , () => {
     console.log("connected on 3003")
 })
