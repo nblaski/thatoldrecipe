@@ -64,6 +64,7 @@ router.get('/sign-s3', (req, res) => {
       signedRequest: data,
       url: `https://${AWS_BUCKET_NAME}.s3.amazonaws.com/${fileName}`
     };
+    console.log("getSignedURL"+ data + "DATA"+ returnData)
     res.write(JSON.stringify(returnData));
     res.end();
   });
