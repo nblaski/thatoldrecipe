@@ -48,15 +48,14 @@
 function getSignedRequest(file){
   const xhr = new XMLHttpRequest();
   xhr.open('GET', `profile/sign-s3?file-name=${file.name}&file-type=${file.type}`);
-  xhr.onreadystatechange = () => {
+  xhr.onreadystatechange = async () => {
     if(xhr.readyState === 4){
         console.log("readyState" + xhr.readyState)
       if(xhr.status === 200){
           console.log("status" + xhr.status)
           console.log("xhrrespons" + xhr.responseText);
-        const response = JSON.parse(xhr.responseText);
+        const response = await JSON.parse(xhr.responseText);
         console.log("response" + response)
-        callback(response);
         uploadFile(file, response.signedRequest, response.url);
       }
       else{
