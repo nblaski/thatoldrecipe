@@ -39,15 +39,18 @@ const upload = multer({
 });
 
 router.get('/', ensureAuthenticated, async (req, res) => {
-    res.render('profile/index', { user: req.user });
+    const user = req.user;
+    console.log(req.user)
+    const username = await User.findOne({ name: user});
+    console.log(username);
+    res.render('profile/index', { user: req.user, username: username });
 });
 
 
 router.post("/", upload.array('file'), async (req, res) => {
   const file = req.files[0];
-  console.log(file)
   const result = await s3Uploadv2(file);
-  console.log(result)
+  
   res.json({ status: "success", result });
 });
 

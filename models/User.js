@@ -21,6 +21,11 @@ const UserSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  profileImgURL: {
+    type: String,
+    required: true,
+    default: "/images/default.png"
   }
 });
 
