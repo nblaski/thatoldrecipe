@@ -47,7 +47,7 @@
 
 function getSignedRequest(file){
   const xhr = new XMLHttpRequest();
-  console.log(`profile/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+  console.log(`https://thisoldrecipe.herokuapp.com/profile/sign-s3?file-name=${file.name}&file-type=${file.type}`);
   xhr.open('GET', `profile/sign-s3?file-name=${file.name}&file-type=${file.type}`);
   xhr.onreadystatechange = () => {
     if(xhr.readyState === 4){
