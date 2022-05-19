@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
   profileImgURL: {
     type: String,
     required: true,
-    default: "/images/default.png"
+    default: "https://thisoldrecipe-images.s3.amazonaws.com/uploads/default.png"
   }
 });
 
