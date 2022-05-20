@@ -4,7 +4,7 @@
   "description": "Node.js authentication with Passport",
   "main": "app.js",
   "scripts": {
-    "start": "node addDev.js",
+    "start": "node appDev.js",
     "dev": "nodemon app.js",
     "devImage": "nodemon appImage.js",
     "appDev": "nodemon appDev.js"
