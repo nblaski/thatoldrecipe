@@ -6,28 +6,21 @@
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
     <div class="card card-body">
-      <h1 class="text-center mb-3">
-        <i class="fas fa-user"></i>  <%=user.name %>'s' Profile
-      </h1>
-       
-            <form class="" action="/profile" method="POST" enctype="multipart/form-data">
-                <input type="file" id="file" name="file">
-                <p id="status">Please select a file</p>
-                <img id="preview" style="width: 200px;" src="<%=username.profileImgURL%>">
-                <div>
-                    <input type="hidden" id="avatar-url" name="avatar-url" value="/images/default.png">
-                </div>
-                <div>
-                    <input type="text" name="username" placeholder="Username"><br>
-                </div>
-                <div>
-                    <input type="text" name="full-name" placeholder="Full name"><br><br>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">
-                Update Profile
-                </button>
-      </form>
-       
+        <h1 class="text-center mb-3">
+        <i class="fas fa-user"></i>  <%=username.name %>'s profile<br><br>
+            <img id="preview" style="width: 200px;" src="<%=username.profileImgURL%>">
+        </h1>
+        <div>
+            <label>Account Email</label>
+            <input type="text" name="email" placeholder="Username" value="<%=username.email%>" readonly><br>
+        </div>
+        <div>
+            <label>Account Name</label>
+            <input type="text" name="full-name" placeholder="Full name" value="<%=username.name%>" readonly><br><br>
+        </div>
+        <div>
+            <a href="/profile/<%=username.id%>/update" class="btn btn-warning btn-block">Edit Profile</a>
+        </div>
     </div>
   </div>
 </div>

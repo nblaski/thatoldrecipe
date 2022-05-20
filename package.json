@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node appImage.js",
     "dev": "nodemon app.js",
-    "devImage": "nodemon appImage.js"
+    "devImage": "nodemon appImage.js",
+    "appDev": "nodemon appDev.js"
   },
   "keywords": [],
   "author": "",
