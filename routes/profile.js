@@ -43,7 +43,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
     console.log(req.user)
     const username = await User.findOne({ name: user});
     console.log(username);
-    res.render('profile/index', { user: req.user, username: username });
+    res.render('profile/index', { user: req.user, username: username.name });
 });
 
 
