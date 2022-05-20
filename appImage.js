@@ -9,10 +9,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
-const session = require('express-session');
+// const session = require('express-session');
 const bodyParser = require('body-parser');
 var fs = require('fs');
-
+const cookieSession = require('cookie-session');
+const keys = require('./config/keys');
 
 const app = express();
 // const aws = require('aws-sdk');
@@ -47,14 +48,21 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use(methodOverride('_method'))
 
 
+// COOKIE-SESSION
+app.use(cookieSession ({
+  maxAge: 24 * 60 * 60 * 1000, //a day
+  keys: [keys.session.cookieKey] //encrypts the id
+}))
+
 // EXPRESS SESSION
-app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: true,
-      saveUninitialized: true
-    })
-);
+// app.use(
+//     session({
+//       secret: process.env.SESSION_SECRET,
+//       resave: true,
+//       saveUninitialized: true,
+      
+//     })
+// );
 
 // PASSPORT MIDDLEWARE
 app.use(passport.initialize());
