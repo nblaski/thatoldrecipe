@@ -41,9 +41,9 @@ const upload = multer({
 router.get('/', ensureAuthenticated, async (req, res) => {
     const user = req.user;
     console.log(req.user)
-    const username = await User.findOne({ name: user});
+    const username = await User.findOne({ name: user.name});
     console.log(username);
-    res.render('profile/index', { user: req.user, username: username.name });
+    res.render('profile/index', { user: req.user, username: username });
 });
 
 
