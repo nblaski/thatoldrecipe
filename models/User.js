@@ -21,11 +21,11 @@ const UserSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  profileImgURL: {
+    type: String,
+    default: "https://thisoldrecipe-images.s3.amazonaws.com/uploads/default.png"
   }
-  // profileImgURL: {
-  //   type: String,
-  //   default: "https://thisoldrecipe-images.s3.amazonaws.com/uploads/default.png"
-  // }
 });
 
 const User = mongoose.model('User', UserSchema);
