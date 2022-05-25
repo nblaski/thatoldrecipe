@@ -6,14 +6,16 @@ const path = require('path');
 const Recipe  = require('../models/Recipe.js');
 router.use(methodOverride('_method'));
 const upload = require('../multer.js');
-const multer = require('multer');
-const { s3Delete, s3UploadCover } = require('../s3Service');
+
 
 const { setUser, ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const { authUser, authRole, authRoleAdmin } = require('../permissions/basicAuth');
 const projectRouter = require('../permissions/project');
 const ROLE = { ADMIN: 'admin', BASIC: 'basic' }
 const User = require('../models/User');
+
+// // WELCOME PAGE
+// router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
 
 
 
@@ -33,51 +35,60 @@ router.get('/new', ensureAuthenticated, (req, res) => {
   res.render('recipes/new', { user: req.user });
 });
 
-// POST ROUTE NEW RECIPE
-router.post('/', upload.array('cover'), async (req, res) => { 
-  const file = req.files[0];
+// POST NEW RECIPE ROUTE
+router.post('/', upload.single('cover'), async (req, res) => {
+  const file = req.file;
   if(!file) {
     return console.log('Please select an Image.');
   }
-  let url;
+  
+  let url = file.path.replace('public', '');
+
+  const recipe = new Recipe ({
+      recipeName: req.body.recipeName,
+      author: req.body.author,
+      allergens: req.body.allergens,
+      ingredients: req.body.ingredients,
+      stepName: req.body.stepName,
+      stepDescription: req.body.stepDescription,
+      imageName: url
+  });
   try {
-    if (file) {
-      try {
-        const result = await s3UploadCover(file, req.user.name);
-        url = `https://thisoldrecipe-images.s3.amazonaws.com/${result.paramKey}`;
-      } catch(err) {
-        console.log("error setting cover image" + err);
-      } finally {
-        const recipe = new Recipe ({
-          recipeName: req.body.recipeName,
-          author: req.body.author,
-          allergens: req.body.allergens,
-          ingredients: req.body.ingredients,
-          stepName: req.body.stepName,
-          stepDescription: req.body.stepDescription,
-          imageName: url
-        });
-          await recipe.save();
-          console.log('Image saved to DB.');
-          req.flash(
-            'success_msg',
-            'Recipe Saved!'
-          );
-          res.redirect(`/recipes/${recipe.id}`);
-      }
-    }
+      await Recipe.findOne({imageName : url})
+        .then( img => {
+          if(img) {
+              console.log('Duplicate Image. Try again!');
+              req.flash(
+                'error_msg',
+                'Duplicate Image. Try again!'
+              );
+              return res.redirect('/recipes/new');
+          }
+          recipe.save()
+              .then(img => {
+                  console.log('Image saved to DB.');
+                  req.flash(
+                    'success_msg',
+                    'Recipe Saved!'
+                  );
+                  res.redirect(`/recipes/${recipe.id}`);
+              })
+        })
+    .catch(err => {
+        return console.log('ERROR: '+err);
+    });
+      
   } catch(err) {
-    console.log("ERROR" + err)
-    req.flash(
-      'error_msg',
-      'ERROR saving recipe' + err
-    );
-    return res.redirect('/recipes/error' + err)
-  }
+      console.log(err)
+      req.flash(
+        'error_msg',
+        'ERROR saving recipe' + err
+      );
+      return res.redirect('/recipes/error' + err)
+  } 
 });
 
-
-// GET ROUTE SHOW RECIPE PAGE BY RECIPE ID
+// GET SHOW RECIPE PAGE BY RECIPE ID
 router.get('/:id', ensureAuthenticated, async (req, res) => {
   try {
       const recipe = await Recipe.findById(req.params.id);
@@ -89,12 +100,16 @@ router.get('/:id', ensureAuthenticated, async (req, res) => {
     }
 });
 
-// DELETE ROUTE RECIPE
+// DELETE RECIPE ROUTE
 router.delete('/:id', async (req, res) => {
   let recipe;
   try {
-    recipe = await Recipe.findById(req.params.id);
-    const deleteImg = await s3Delete(recipe.imageName.slice(46));
+    recipe = await Recipe.findById(req.params.id)
+    fs.unlink('public' + recipe.imageName, function (err) {
+      if (err) {throw err};
+      // if no error, file has been deleted successfully
+      console.log('File deleted!');
+      });
     await Recipe.deleteOne({ _id: req.params.id });
     req.flash(
       'success_msg',
@@ -114,7 +129,7 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-// GET ROUTE EDIT RECIPE
+// Edit Book Route
 router.get('/:id/edit', ensureAuthenticated, async (req, res) => {
   try {
     const user = req.user
@@ -127,40 +142,36 @@ router.get('/:id/edit', ensureAuthenticated, async (req, res) => {
   }
 })
 
-// POST ROUTE UPDATE RECIPE
 router.put('/:id', upload.single('cover'), async (req, res) => {
   let recipe
   const file = req.file;
-  let oldFile;
   try {
-    recipe = await Recipe.findById(req.params.id);
-    oldFile = recipe.imageName.slice(46);
+    recipe = await Recipe.findById(req.params.id)
     recipe.recipeName = req.body.recipeName
     recipe.author = req.body.author
     recipe.allergens = req.body.allergens
     recipe.ingredients = req.body.ingredients
     recipe.stepName = req.body.stepName
     recipe.stepDescription = req.body.stepDescription
-
     if (file) {
       try {
-        const result = await s3UploadCover(file, req.user.name);
-        recipe.imageName = `https://thisoldrecipe-images.s3.amazonaws.com/${result.paramKey}`;
+        fs.unlink('public' + recipe.imageName, function (err) {
+          if (err) {throw err};
+          // if no error, file has been deleted successfully
+          console.log('old file deleted!');
+          });
       } catch(error) {
-        console.log("there was an error uploading new image" + error);
-        req.flash(
-          'error_msg',
-          'Error uploading new image'
-        );
-        res.redirect(`/profile/${req.user.id}`);
+        console.log("there was an error deleting old image")
       } finally {
-        console.log(recipe.imageName)
-        console.log(oldFile);
-        const deleteImg = await s3Delete(oldFile);
-      } 
-  }       
+        let url = file.path.replace('public', '');
+        recipe.imageName = url
+      }
+    } else {
+      console.log('there is no url to assign to imageName')
+    }
+      
     await recipe.save()
-      console.log('Recipe updated to DB.');
+      console.log('Recipe saved to DB.');
       req.flash(
         'success_msg',
         'Recipe UPDATED!'
@@ -205,37 +216,5 @@ async function renderFormPage(res, user, recipe, form, hasError = false) {
     res.redirect('/recipes')
   }
 }
-
-//set multer upload errors
-router.use((error, req, res, next) => {
-  const user = req.user;
-  if (error instanceof multer.MulterError) {
-      if (error.code === "LIMIT_FILE_SIZE") {
-        console.log("LIMIT_FILE_SIZE");
-        req.flash('error_msg', 'File is too large.')
-        res.redirect('back');
-        // return res.status(400).json({
-          //     message: "file is too large",
-          // });
-      }
-
-      if (error.code === "LIMIT_FILE_COUNT") {
-        console.log("LIMIT_FILE_COUNT");
-        req.flash('error_msg', 'File limit reached.')
-        res.redirect('back');
-        // return res.status(400).json({
-          //     message: "file limit reached",
-          // });
-      }
-
-      if (error.code === "LIMIT_UNEXPECTED_FILE") {
-        console.log("LIMIT_UNEXPECTED_FILE");
-        req.flash('error_msg', 'File must be an image.')
-        res.redirect('back');
-      }
-  }
-})
-
-
 
 module.exports = router;

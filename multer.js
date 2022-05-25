@@ -1,43 +1,32 @@
-const path = require('path');
+const express = require('express');
+const router = express.Router();
 const multer = require('multer');
 
-let storage = multer.diskStorage({
-    destination: './public/uploads/recipeCovers',
-    filename: (req, file, cb) => {
-          let ext = ''; // set default extension (if any)
-          if (file.originalname.split(".").length>1) // checking if there is an extension or not.
-              ext = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
-          cb(null, Date.now() + ext)
-            // cb(null, file.originalname)
-    }
-  });
-  
-//   let upload = multer({
-//     storage : storage,
-//     fileFilter : (req, file, cb) => {
-//         checkFileType(file, cb);
-//     }
-//   });
-  
-  function checkFileType(file, cb) {
-    const fileTypes = /jpeg|jpg|png|gif/;
-    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
-  
-    if(extname) {
-        return cb(null, true);
-    } else {
-        cb('Error: Please images only.');
-    }
-  }
 
-//   module.exports = {storage}, {upload}, checkFileType
+const storage = multer.memoryStorage()
+
+const fileFilter = (req, file, cb) => {
+    // if (file.mimetype === 'image/jpeg')
+    // file.mimetype.split('/') = ['image', 'jpeg']
+    if (file.mimetype.split('/')[0] === 'image') {
+      console.log("this is an image")
+        cb(null, true);
+    } else {
+        // cb(null, false);
+        // or pass in error
+        console.log("NOT AN IMAGE")
+        cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false)
+    }
+};
+
+const upload = multer({
+    storage, 
+    fileFilter, 
+    limits: { fileSize: 3000000, files: 1 }
+});
 
   module.exports = multer({
-    storage: storage,
-    limits: {
-      fileSize: 1024 * 1024 * 15, // 15mb max size,
-    },
-    fileFilter : (req, file, cb) => {
-        checkFileType(file, cb);
-    }
-  });
+      storage: storage,
+      limits: { fileSize: 3000000, files: 1 },
+      fileFilter
+  })
