@@ -17,6 +17,11 @@
 				<label for="author">Author</label>
 				<input type="text" id="author" value="<%=user.name%>" name="author" readonly> <span class="error"><p id="author_error"></p></span>
 			</div>
+            <div class="field">
+                <input type="text" name="ingredientList[]">
+                <span onclick="addField(this)">+</span>  
+                <span onclick="removeField(this)">-</span>
+            </div>
             <div>
                 <label for="allergens">Allergens</label>
                 <select name="allergens" id="allergens" class="selectpicker" multiple data-live-search="true" data-width="fit">
@@ -57,6 +62,9 @@
 		</form>
 	</div>
 
+    <div>
+        <a href="/recipes/test" class="btn btn-primary">TEST</a>
+    </div>
 
     <script>
             document.getElementById("newRecipeForm").onsubmit = function () {
@@ -117,7 +125,13 @@
             document.getElementById("stepName").onkeyup = removeWarning;
             document.getElementById("stepDescription").onkeyup = removeWarning;
             document.getElementById("cover").onchange = removeWarning;
-        </script>
+
+
+            
+
+</script>
+
+
 
     <%- include('../partials/footer') -%>
 

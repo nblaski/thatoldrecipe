@@ -32,6 +32,10 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 router.get('/new', ensureAuthenticated, (req, res) => {
   res.render('recipes/new', { user: req.user });
 });
+// GET NEW RECIPE FORM PAGE
+router.get('/test', ensureAuthenticated, (req, res) => {
+  res.render('recipes/test', { user: req.user });
+});
 
 // POST ROUTE NEW RECIPE
 router.post('/', upload.array('cover'), async (req, res) => { 

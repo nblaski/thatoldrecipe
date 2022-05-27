@@ -22,7 +22,7 @@ const app = express();
 require('./config/passport')(passport);
 
 // CONNECT TO MongoDB
-mongoose.connect(process.env.DATABASE_URL, {
+mongoose.connect(process.env.DEV_DATABASE, {
     useNewUrlParser : true,
     useUnifiedTopology : true,
     family : 4},
