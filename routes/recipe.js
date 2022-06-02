@@ -38,7 +38,7 @@ router.get('/test', ensureAuthenticated, (req, res) => {
 });
 
 // POST ROUTE NEW RECIPE
-router.post('/', upload.array('cover'), async (req, res) => { 
+router.post('/test', upload.array('cover'), async (req, res) => { 
   const file = req.files[0];
   if(!file) {
     return console.log('Please select an Image.');

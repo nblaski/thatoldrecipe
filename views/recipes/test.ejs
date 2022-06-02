@@ -8,7 +8,11 @@
 
 <div>
     <form id="newForm" action="" method="post" autocomplete="off">
-    <div>
+        <div id="upload">
+            <label for="cover">Upload Image</label>
+            <input type="file" id="cover" name="cover"> <span class="error"><p id="cover_error"></p></span>
+        </div>
+    <div id="recipeNameDiv">
         <label for="recipeName">Recipe Name</label>
         <input type="text" id="recipeName" placeholder="Recipe Name" value="" name="recipeName"> <span class="error"><p id="recipeName_error"></p></span>
     </div>
@@ -16,20 +20,26 @@
         <label for="author">Author</label>
         <input type="text" id="author" value="<%=user.name%>" name="author" readonly> <span class="error"><p id="author_error"></p></span>
     </div>
-    <div class="field">
-            <input type="text" name="notes[]">
-            <span id="add" onclick="addField(this)">+</span>  
+    <div id="stepName">
+        <div class="field">
+            <input type="text" name="stepName[]">
+            <span id="add" onclick="addField(this, getElementById('stepName'))">+</span>  
             <span id="minus" onclick="removeField(this)">-</span>
         </div>
+    </div>
+   
      <div id="name">
         <label>Name</label>
         <input type="text" name="username">
      </div>
-     <div class="field">
-        <input type="text" name="ingredientList[]">
-        <span onclick="addField(this, getElementById('recipeName'))">+</span>  
-        <span onclick="removeField(this)">-</span>
-    </div>
+     <div id="ingredients">
+        <div class="field">
+            <input type="text" name="ingredients[]">
+            <span onclick="addField(this, getElementById('ingredients'))">+</span>  
+            <span onclick="removeField(this)">-</span>
+        </div>
+     </div>
+    
         <button type="submit">Display Notes</button>
     </form>
 </div>
