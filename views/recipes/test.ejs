@@ -6,44 +6,180 @@
     <!-- Displaying content with JavaScript -->
 </div>
 
-<div>
-    <form id="newForm" action="" method="post" autocomplete="off">
+<div class="container" style="margin-top: 1em">
+    <h1>Create New Recipe</h1>
+    <hr>
+    <%- include('../partials/messages') -%>
+
+    <form id="newForm" action="/recipes/test" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="recipeName">Recipe Name</label>
+            <input type="text" id="recipeName" placeholder="Recipe Name" value="" name="recipeName"> <span class="error"><p id="recipeName_error"></p></span>
+        </div>
+        <div>
+            <label for="author">Author</label>
+            <input type="text" id="author" value="<%=user.name%>" name="author" readonly> <span class="error"><p id="author_error"></p></span>
+        </div>
+        <div>
+            <h8>ALLERGENS</h8>
+            <br>
+            <select name="allergens" id="allergens" class="selectpicker" multiple data-live-search="true" data-width="fit">
+
+            <!-- <select name="allergens" id="allergens" class="selectpicker" multiple data-live-search="true" data-width="fit"> -->
+                <option value="dairy">DAIRY</option>
+                <option value="fish">FISH</option>
+                <option value="gluten">GLUTEN</option>
+                <option value="nuts">NUTS</option>
+                <option value="shellfish">SHELLFISH</option>
+                <option value="eggs">EGGS</option>
+                <option value="meat">MEAT</option>
+              </select>
+        </div>
+        <br>
+        <div id="ingredients">
+            <h8>INGREDIENTS</h8>
+            <hr>
+
+            <div class="field">
+                <input id="ingredients" type="text" name="ingredients[]">
+                <span onclick="addField(this, getElementById('ingredients'))">+</span>  
+                <span onclick="removeField(this)">-</span>
+            </div>
+            <span class="error"><p style="display: none" id="ingredients_error">Please add at least 1 ingredient</p></span>
+        </div>
+
+        <div id="stepName">
+            <h8>STEPS</h8>
+            <hr>
+            <div class="field">
+                <h6 id="stepHeader" style="width: 100%">Step 1 </h6>
+                <textarea id="stepName" rows="4" cols="50" name="stepName[]"></textarea>
+                <span id="add" onclick="addField(this, getElementById('stepName'))">+</span>  
+                <span id="minus" onclick="removeField(this)">-</span>
+            </div>
+            <span class="error"><p style="display: none" id="stepName_error">Please add at least one step</p></span>
+        </div>
+
+        <div id="stepNameOL">
+
+            <ol id="stepOL">
+                <li class="field">
+                    <textarea id="stepNameOL" rows="4" cols="50" name="stepNameOL[]"></textarea>
+                    <span id="add" onclick="addLine(this, getElementById('stepOL'))">+</span>  
+                    <span id="minus" onclick="removeField(this)">-</span>
+                </li>
+            </ol>
+
+            <span class="error"><p style="display: none" id="stepNameOL_error">Please add at least one step</p></span>
+        </div>
+
+
+
+
+
+
+        <div>
+            <label for="stepDescription">Step Description</label>
+            <input type="text" id="stepDescription" placeholder="stepDescription" value="" name="stepDescription"> <span class="error"><p id="stepDescription_error"></p></span>
+        </div>
         <div id="upload">
             <label for="cover">Upload Image</label>
             <input type="file" id="cover" name="cover"> <span class="error"><p id="cover_error"></p></span>
         </div>
-    <div id="recipeNameDiv">
-        <label for="recipeName">Recipe Name</label>
-        <input type="text" id="recipeName" placeholder="Recipe Name" value="" name="recipeName"> <span class="error"><p id="recipeName_error"></p></span>
-    </div>
-    <div>
-        <label for="author">Author</label>
-        <input type="text" id="author" value="<%=user.name%>" name="author" readonly> <span class="error"><p id="author_error"></p></span>
-    </div>
-    <div id="stepName">
-        <div class="field">
-            <input type="text" name="stepName[]">
-            <span id="add" onclick="addField(this, getElementById('stepName'))">+</span>  
-            <span id="minus" onclick="removeField(this)">-</span>
-        </div>
-    </div>
-   
-     <div id="name">
-        <label>Name</label>
-        <input type="text" name="username">
-     </div>
-     <div id="ingredients">
-        <div class="field">
-            <input type="text" name="ingredients[]">
-            <span onclick="addField(this, getElementById('ingredients'))">+</span>  
-            <span onclick="removeField(this)">-</span>
-        </div>
-     </div>
-    
-        <button type="submit">Display Notes</button>
+        
+            <button class="btn btn-success" type="submit">SUBMIT</button>
     </form>
 </div>
 
+<script>
+    document.getElementById("newForm").onsubmit = function () {
+        var x = document.forms["newForm"]["recipeName"].value;
+        var y = document.forms["newForm"]["author"].value;
+        var z = document.forms["newForm"]["allergens"].value;
+        var a = document.forms["newForm"]["ingredients"].value;
+        var b = document.forms["newForm"]["stepName"].value;
+        var bb = document.forms["newForm"]["stepNameOL"].value;
+        var c = document.forms["newForm"]["stepDescription"].value;
+        var d = document.forms["newForm"]["cover"].value;
+        var submit = true;
+        var numInputsIng =  $(":input[id^=ingredients]").length
+        console.log("numInputsIng - " + numInputsIng)
+        var numInputsStep =  $(":input[id^=stepName]").length
+        console.log("numInputsStep - " + numInputsStep)
+        // var count = document.getElementById("stepOL").length;
+        // console.log(count);
+        
+        const olCount = document.getElementById("stepOL");
+        let liNodes = [];
 
+        
+            for (var i = 0; i < olCount.childNodes.length; i++) {
+            if (olCount.childNodes[i].nodeName == "LI") {
+                liNodes.push(olCount.childNodes[i]);
+            }
+        }
+
+        console.log(liNodes.length)
+
+
+        if (x == null || x == "") {
+            recipeNameError = "Please enter recipe name";
+            document.getElementById("recipeName_error").innerHTML = recipeNameError;
+            submit = false;
+        }
+
+        if (y == null || y == "") {
+            authorError = "Please enter your name";
+            document.getElementById("author_error").innerHTML = authorError;
+            submit = false;
+        }
+        if (numInputsIng < 2 && a == "") {
+            ingredientsError = document.getElementById("ingredients_error")
+            ingredientsError.setAttribute("style", "display: block");
+            submit = false;
+        }
+
+        if (numInputsStep < 2 && b == "") {
+            stepNameError = document.getElementById("stepName_error")
+            stepNameError.setAttribute("style", "display: block");
+            submit = false;
+        }
+        if (liNodes.length < 2 && bb == "") {
+            stepNameErrorOL = document.getElementById("stepNameOL_error")
+            stepNameErrorOL.setAttribute("style", "display: block");
+            submit = false;
+        }
+        if (c == null || c == "") {
+            stepDescriptionError = "Please enter at least one recipe step description";
+            document.getElementById("stepDescription_error").innerHTML = stepDescriptionError;
+            submit = false;
+        }
+
+        if(d == null || d == "") {
+            coverError = "Please select an image";
+            document.getElementById("cover_error").innerHTML = coverError;
+            submit = false;
+        }
+
+        return submit;
+    }
+
+    function removeWarning() {
+        input = document.getElementById(this.id + "_error");
+        input.setAttribute("style", "display: none");
+    }
+    
+    document.getElementById("recipeName").onkeyup = removeWarning;
+    document.getElementById("author").onkeyup = removeWarning;
+    document.getElementById("ingredients").onchange = removeWarning;
+    document.getElementById("stepName").onkeyup = removeWarning;
+    document.getElementById("stepNameOL").onkeyup = removeWarning;
+    document.getElementById("stepDescription").onkeyup = removeWarning;
+    document.getElementById("cover").onchange = removeWarning;
+
+
+    
+
+</script>
 
 <%- include('../partials/footer') -%>
