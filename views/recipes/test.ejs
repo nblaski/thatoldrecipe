@@ -61,10 +61,10 @@
         </div>
 
         <div id="stepNameOL">
-
+            
             <ol id="stepOL">
-                <li class="field">
-                    <textarea id="stepNameOL" rows="4" cols="50" name="stepNameOL[]"></textarea>
+                <li class="fieldNew">
+                    <textarea class="form-control" id="stepNameOLtxt" name="stepNameOL[]" placeholder="Add a step..."></textarea>
                     <span id="add" onclick="addLine(this, getElementById('stepOL'))">+</span>  
                     <span id="minus" onclick="removeField(this)">-</span>
                 </li>
@@ -72,6 +72,20 @@
 
             <span class="error"><p style="display: none" id="stepNameOL_error">Please add at least one step</p></span>
         </div>
+
+        <div>
+            <ol id="stepOLgrow">
+                <li class="liStepNum">
+                    <div class="grow-wrap">
+                        <textarea name="text" id="text" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
+                        <span id="add" onclick="addLine(this, getElementById('stepOLgrow'))">+</span>  
+                        <span id="minus" onclick="removeField(this)">-</span>
+                    </div>
+
+                </li>
+            </ol>
+        </div>
+
 
 
 
@@ -178,7 +192,18 @@
     document.getElementById("cover").onchange = removeWarning;
 
 
+    const textarea = document.hasFocus();
+    textarea.addEventListener("keyup", e=>{
+        console.log(textarea)
+    textarea.style.height = "auto";
+    let scHeight = e.target.scrollHeight;
     
+    textarea.style.height = `${scHeight}px`;
+    })
+
+ focusMethod = function getFocus() {
+  document.getElementById("stepNameOLtxt").focus();
+}
 
 </script>
 

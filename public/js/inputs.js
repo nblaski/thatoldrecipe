@@ -86,15 +86,15 @@ function addLine(element, input){
 
     // Creating the div container
     let li = document.createElement("li");
-    li.setAttribute("class", "field");
+    li.setAttribute("class", "fieldNew");
+
 
     let field;
     if(input.id === "stepOL") {
         // Creating the input element
         field = document.createElement("textarea");
-        field.setAttribute("rows", 4);
-        field.setAttribute("cols", 50);
-        field.setAttribute("id", "stepNameOL");
+        field.setAttribute("id", "stepNameOLtxt");
+        field.setAttribute("class", "form-control");
         field.setAttribute("name", `${input.id}[]`);
     } else {
         field = document.createElement("input");
@@ -189,4 +189,3 @@ function markAsDone(element){
     element.classList.add("mark");
     element.innerHTML = "&check;";
 }
-
