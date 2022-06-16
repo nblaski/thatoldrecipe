@@ -47,50 +47,21 @@
             </div>
             <span class="error"><p style="display: none" id="ingredients_error">Please add at least 1 ingredient</p></span>
         </div>
-
-        <div id="stepName">
-            <h8>STEPS</h8>
-            <hr>
-            <div class="field">
-                <h6 id="stepHeader" style="width: 100%">Step 1 </h6>
-                <textarea id="stepName" rows="4" cols="50" name="stepName[]"></textarea>
-                <span id="add" onclick="addField(this, getElementById('stepName'))">+</span>  
-                <span id="minus" onclick="removeField(this)">-</span>
-            </div>
-            <span class="error"><p style="display: none" id="stepName_error">Please add at least one step</p></span>
-        </div>
-
-        <div id="stepNameOL">
-            
-            <ol id="stepOL">
-                <li class="fieldNew">
-                    <textarea class="form-control" id="stepNameOLtxt" name="stepNameOL[]" placeholder="Add a step..."></textarea>
-                    <span id="add" onclick="addLine(this, getElementById('stepOL'))">+</span>  
-                    <span id="minus" onclick="removeField(this)">-</span>
-                </li>
-            </ol>
-
-            <span class="error"><p style="display: none" id="stepNameOL_error">Please add at least one step</p></span>
-        </div>
-
+        <br>
         <div>
-            <ol id="stepOLgrow">
+            <h6>STEPS</h6>
+            <hr>
+            <ol id="stepName">
                 <li class="liStepNum">
                     <div class="grow-wrap">
-                        <textarea name="text" id="text" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
-                        <span id="add" onclick="addLine(this, getElementById('stepOLgrow'))">+</span>  
+                        <textarea id="stepTextarea" class="form-control" name="stepName[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Add a step..."></textarea>
+                        <span id="add" onclick="addLine(this, getElementById('stepName'))">+</span>  
                         <span id="minus" onclick="removeField(this)">-</span>
                     </div>
-
+                    <span class="error"><p style="display: none" id="stepName_error">Please add at least one step</p></span>
                 </li>
             </ol>
         </div>
-
-
-
-
-
-
 
         <div>
             <label for="stepDescription">Step Description</label>
@@ -111,8 +82,8 @@
         var y = document.forms["newForm"]["author"].value;
         var z = document.forms["newForm"]["allergens"].value;
         var a = document.forms["newForm"]["ingredients"].value;
-        var b = document.forms["newForm"]["stepName"].value;
-        var bb = document.forms["newForm"]["stepNameOL"].value;
+        var b = document.forms["newForm"]["stepTextarea"].value;
+        // var bb = document.forms["newForm"]["stepTextarea"].value;
         var c = document.forms["newForm"]["stepDescription"].value;
         var d = document.forms["newForm"]["cover"].value;
         var submit = true;
@@ -123,7 +94,7 @@
         // var count = document.getElementById("stepOL").length;
         // console.log(count);
         
-        const olCount = document.getElementById("stepOL");
+        const olCount = document.getElementById("stepName");
         let liNodes = [];
 
         
@@ -158,11 +129,11 @@
             stepNameError.setAttribute("style", "display: block");
             submit = false;
         }
-        if (liNodes.length < 2 && bb == "") {
-            stepNameErrorOL = document.getElementById("stepNameOL_error")
-            stepNameErrorOL.setAttribute("style", "display: block");
-            submit = false;
-        }
+        // if (liNodes.length < 2 && bb == "") {
+        //     stepNameErrorOL = document.getElementById("stepNameOL_error")
+        //     stepNameErrorOL.setAttribute("style", "display: block");
+        //     submit = false;
+        // }
         if (c == null || c == "") {
             stepDescriptionError = "Please enter at least one recipe step description";
             document.getElementById("stepDescription_error").innerHTML = stepDescriptionError;
@@ -187,23 +158,23 @@
     document.getElementById("author").onkeyup = removeWarning;
     document.getElementById("ingredients").onchange = removeWarning;
     document.getElementById("stepName").onkeyup = removeWarning;
-    document.getElementById("stepNameOL").onkeyup = removeWarning;
+    // document.getElementById("stepNameOL").onkeyup = removeWarning;
     document.getElementById("stepDescription").onkeyup = removeWarning;
     document.getElementById("cover").onchange = removeWarning;
 
 
-    const textarea = document.hasFocus();
-    textarea.addEventListener("keyup", e=>{
-        console.log(textarea)
-    textarea.style.height = "auto";
-    let scHeight = e.target.scrollHeight;
+//     const textarea = document.hasFocus();
+//     textarea.addEventListener("keyup", e=>{
+//         console.log(textarea)
+//     textarea.style.height = "auto";
+//     let scHeight = e.target.scrollHeight;
     
-    textarea.style.height = `${scHeight}px`;
-    })
+//     textarea.style.height = `${scHeight}px`;
+//     })
 
- focusMethod = function getFocus() {
-  document.getElementById("stepNameOLtxt").focus();
-}
+//  focusMethod = function getFocus() {
+//   document.getElementById("stepNameOLtxt").focus();
+// }
 
 </script>
 

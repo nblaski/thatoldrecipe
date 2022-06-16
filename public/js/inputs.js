@@ -84,18 +84,24 @@ function addLine(element, input){
     }
     console.log("activated");
 
-    // Creating the div container
+    // Creating the li container
     let li = document.createElement("li");
-    li.setAttribute("class", "fieldNew");
+    li.setAttribute("class", "liStepNum");
+
+    // Creating the div container
+    let div = document.createElement("div");
+    div.setAttribute("class", "grow-wrap");
 
 
     let field;
-    if(input.id === "stepOL") {
+    if(input.id === "stepName") {
         // Creating the input element
         field = document.createElement("textarea");
-        field.setAttribute("id", "stepNameOLtxt");
+        // field.setAttribute("id", "stepName");
         field.setAttribute("class", "form-control");
         field.setAttribute("name", `${input.id}[]`);
+        field.setAttribute("onInput", "this.parentNode.dataset.replicatedValue = this.value");
+        field.setAttribute("placeholder", "Add a step...");
     } else {
         field = document.createElement("input");
         field.setAttribute("type", "text");
@@ -121,9 +127,11 @@ function addLine(element, input){
 
     // Adding the elements to the DOM
     inputOL.insertBefore(li, inputOL.lastChild);
-    li.appendChild(field);
-    li.appendChild(plus);
-    li.appendChild(minus);
+    div.appendChild(field);
+    div.appendChild(plus);
+    div.appendChild(minus);
+    li.appendChild(div);
+
 
 
     // Un hiding the minus sign
@@ -141,7 +149,8 @@ function addLine(element, input){
 
 // Remove element function
 function removeField(element){
-    element.parentElement.remove();
+    console.log(element);
+    element.closest("li").remove();
 }
 
 // form.onsubmit = function(event){
