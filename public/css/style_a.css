@@ -76,7 +76,7 @@ a:active { text-decoration: none; }
     color: white;
     background-color: #1b1b1b;
     font-size: 0.9em;
-    /* padding: 0.65em; */
+    padding: 0.65em;
     border-radius: 3px;
     outline: none;
     cursor: pointer;
@@ -123,7 +123,7 @@ a:active { text-decoration: none; }
 
   .error {
     color: red;
-    grid-column: 5 / 3;
+    grid-column: 1 / 3;
   }
 
 
@@ -133,51 +133,76 @@ a:active { text-decoration: none; }
     padding-left: 0;
     list-style-type: none;
   }
+  /* .fieldNew {
+    display: flex;
+    margin-bottom: .5em;
+    margin-left: 2em;
+    border-color:#1b1b1b;
+  }
+  .fieldNew span{
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+    background-color: #f4f4f4;
+    padding: 10px;
+    font-size: 20px;
+    transition: all 0.3s;
+    font-weight: bold;
+  } */
+  /* .fieldNew span:last-child{
+    display: none;
+    padding: 12px;
+  }
+  .fieldNew span:hover{
+    background-color: #aee2ae;
+  }
+  .fieldNew span:last-child:hover{
+    background-color: pink;
+  }
+  .fieldNew::before {
+    content: "Step " counter(item);
+    counter-increment: item;
+    margin-left: -2em;
+    white-space: nowrap;
+    padding-right: 0.5em;
+    font-weight: bold;
+    text-align: right;
+  }
+
+.fieldNew textarea {
+  resize: none;
+  height: 48px;
   
+} */
 
 
 textarea::-webkit-scrollbar{
   width: 0px;
 }
 
+ /* textarea:is(:focus, :valid){
+  } */
+
   .grow-wrap {
     /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
     display: grid;
-    grid-template-columns: 30% 50%;
-    grid-column: 4;
-    grid-gap: 5px;
-    grid-area: 1 / 2;
-  }
+    grid-template-columns: 95% auto;
 
-  .stepGridAreaTitle {
-    grid-area: 1/1;
-  }
 
-  .stepGridArea {
-    grid-area: 1/ span 2;
   }
-
   .grow-wrap span{
-    grid-area: 1/4;
-    /* margin: 0 0 1rem; */
+    /* display: inline-block; */
+    margin-left: 10px;
     cursor: pointer;
     background-color: #f4f4f4;
+    padding: 10px;
     font-size: 1em;
-    text-align: center;
     transition: all 0.3s;
     font-weight: bold;
-    padding-top: 25%;
   }
   .grow-wrap span:last-child{
     display: none;
-    font-size: 1em;
-    transition: all 0.3s;
-    font-weight: bold;
-    grid-area: 1/4;
-    text-align: center;
-    /* margin: 0 0 1rem; */
-    padding-top: 25%;
-
+    padding: 12px;
   }
   .grow-wrap span:hover{
     background-color: #aee2ae;
@@ -198,20 +223,20 @@ textarea::-webkit-scrollbar{
   .grow-wrap > textarea {
     /* You could leave this, but after a user resizes, then it ruins the auto sizing */
     resize: none;
+  
     /* Firefox shows scrollbar on growth, you can hide like this. */
     overflow: hidden;
   }
-  .grow-wrap > #stepTitleTextarea,
+  .grow-wrap > textarea,
   .grow-wrap::after {
     /* Identical styling required!! */
-    /* border: 1px solid black; */
+    border: 1px solid black;
     padding: 0.5rem;
     font: inherit;
   
     /* Place on top of each other */
-    grid-area: 1 / 1 / 2 / 2 ;
+    grid-area: 1 / 1 / 2 / 2;
   }
-  
 
   .liStepNum::before {
     content: "Step " counter(item);
@@ -219,93 +244,26 @@ textarea::-webkit-scrollbar{
     /* margin-left: -2em; */
     white-space: nowrap;
     /* padding-right: 0.5em; */
-    font-size: 1em;
+    font-weight: bold;
     /* text-align: right; */
-
   }
 
   .liStepNum {
-    /* display: grid;
-    grid-template-columns: 10% 80%;
-    grid-column: 2;
-    gap: 5px; */
+    display: grid;
+    grid-template-columns: 5% auto;
+    gap: 10px;
     background-color: #e6e6e6;
-    /* border-radius: .5em; */
+    border-radius: .5em;
     padding: 10px;
   }
 
   .liStepNum div {
     /* background-color: rgba(255, 255, 255, 0.8); */
     text-align: center;
+    padding: 4px;
     font-size: 1em;
-    margin-top: 5px;
   }
 
-.liStep {
-  counter-increment: item;
-  margin-bottom: 5px;
-}
-.liStep:before {
-  margin-right: 10px;
-  content: counter(item);
-  background:  #1b1b1b;
-  border-radius: 15%;
-  color: white;
-  width: 1.2em;
-  text-align: center;
-  display: inline-block;
-}
-
-.ingredients {
-  display: grid;
-  grid-template-columns: 58% 30% 10%;
-  grid-column: 3;
-  grid-gap: 5px;
-}
-
-.ingGridArea {
-  grid-area: 2 / 1
-}
-
-.amountGridArea {
-  grid-area: 2 / 2
-}
-
-.ingredients span {
- /* display: inline-block; */
- cursor: pointer;
- background-color: #f4f4f4;
- font-size: 1em;
- /* transition: all 0.3s; */
- font-weight: bold;
- grid-area: 2/3;
- text-align: center;
- margin: 0 0 1rem;
- padding-top: 5px;
-}
-
-.ingredients span:last-child{
-  display: none;
-  font-size: 1em;
-  transition: all 0.3s;
-  font-weight: bold;
-  grid-area: 2/3;
-  text-align: center;
-  margin: 0 0 1rem;
-  padding-top: 5px;
-}
-
-.ingredients span:hover {
-  background-color: #aee2ae;
-}
-
-.ingredients span:last-child:hover{
-  background-color: pink;
-
-}
-
-.carousel-item {
-  width: 100%;
-  height: 400px;
-
-}
+ /* #stepName_error {
+   grid-column-start: 1 / 2;
+ } */

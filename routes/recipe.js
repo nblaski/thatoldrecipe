@@ -57,12 +57,14 @@ router.post('/test', upload.array('cover'), async (req, res) => {
           author: req.body.author,
           allergens: req.body.allergens,
           ingredients: req.body.ingredients,
+          amount: req.body.amount,
           stepName: req.body.stepName,
-          stepDescription: req.body.stepDescription,
+          stepNameTitle: req.body.stepNameTitle,
           imageName: url
         });
           await recipe.save();
           console.log('Image saved to DB.');
+          console.log(recipe.id)
           req.flash(
             'success_msg',
             'Recipe Saved!'

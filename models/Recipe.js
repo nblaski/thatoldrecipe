@@ -23,7 +23,11 @@ const recipeSchema = new Schema({
     type: Array
     // required: true
   },
-  stepDescription: {
+  stepNameTitle: {
+    type: Array
+    // required: true
+  },
+  amount: {
     type: Array
     // required: true
   },

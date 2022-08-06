@@ -4,7 +4,7 @@
   "description": "Node.js authentication with Passport",
   "main": "app.js",
   "scripts": {
-    "start": "node appDev.js",
+    "start": "nodemon appDev.js",
     "dev": "nodemon app.js",
     "devImage": "nodemon appImage.js",
     "appDev": "nodemon appDev.js"
@@ -18,7 +18,7 @@
     "body-parser": "^1.20.0",
     "connect-flash": "^0.1.1",
     "cookie-session": "^2.0.0",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.0.1",
     "ejs": "^3.1.7",
     "express": "^4.16.4",
     "express-ejs-layouts": "^2.5.1",
@@ -27,7 +27,7 @@
     "method-override": "^3.0.0",
     "mongoose": "^6.3.1",
     "multer": "^1.4.4",
-    "passport": "^0.4.0",
+    "passport": "^0.5.3",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "uuid": "^8.3.2"
