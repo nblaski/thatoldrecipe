@@ -1,0 +1,413 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+
+
+<div class="container" style="margin-top: 1em">
+    <h1>Create New Recipe</h1>
+    <hr>
+    <%- include('../partials/messages') -%>
+
+    <form id="newForm" action="/recipes/newForm" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="recipeName">Recipe Name</label>
+            <input type="text" id="recipeName" class="form-control" placeholder="Recipe Name" name="recipeName"> <span class="error"><p id="recipeName_error"></p></span>
+        </div>
+        
+        <div>
+            <label for="author">Author</label>
+            <input type="text" id="author" value="<%=user.name%>" name="author" readonly> <span class="error"><p id="author_error"></p></span>
+        </div>
+        
+        <div>
+            <h8>ALLERGENS </h8><p style="display: inline-block; color: grey; font-size:small"> (optional)</p>
+            <br>
+            <select name="allergens" id="allergens" class="selectpicker" multiple data-width="fit">
+                <option id="a1" value="dairy">DAIRY</option>
+                <option id="a2" value="fish">FISH</option>
+                <option id="a3" value="gluten">GLUTEN</option>
+                <option id="a4" value="nuts">NUTS</option>
+                <option id="a5" value="shellfish">SHELLFISH</option>
+                <option id="a6" value="eggs">EGGS</option>
+                <option id="a7" value="meat">MEAT</option>
+                </select>
+        </div>
+        
+        <br>
+        
+        <h8>Ingredients</h8>
+            <hr>
+        
+        <div id="divOlIngredients">
+            <ol id="olIngredients">
+                <div class="ingredients">
+                    <label>Ingredient</label>
+                    <label>Amount</label>
+                </div>
+                <span class="error"><p style="display: none" id="ingredients_0_error"></p></span>
+                <span class="error"><p style="display: none" id="amount_0_error"></p></span>
+                <li>
+                    <div class="ingredients">
+                        <input id="ingredients_0" class="form-control ingGridArea" type="text" name="ingredients[]">
+                        <input id="amount_0" class="form-control amountGridArea" type="text" name="amount[]">
+                        <span id="add" onclick="addLine(this, getElementById('olIngredients'))">+</span>  
+                        <span id="minus" onclick="removeField(this, getElementById('olIngredients'))">-</span>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        
+        <br>
+            <h6>STEPS</h6>
+            <hr>
+        
+        <div id="divStepName">
+            <span class="error"><p style="display: none" id="stepTitleTextarea_0_error"></p></span>
+            <span class="error"><p style="display: none" id="stepTextarea_0_error"></p></span>
+            <ol id="stepName">
+                <li class="liStepNum">
+                    <div class="grow-wrap">
+                        <textarea id="stepTitleTextarea_0" class="form-control stepGridAreaTitle" name="stepNameTitle[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step title..."></textarea>
+                        <textarea id="stepTextarea_0" class="form-control stepGridArea" name="stepName[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step instructions..."></textarea>
+                        <span id="add" onclick="addLine(this, getElementById('stepName'))">+</span>  
+                        <span id="minus" onclick="removeField(this, getElementById('stepName'))">-</span>
+                    </div>
+                </li>
+            </ol>
+        </div>        
+        <div mb-3>
+
+
+            <div>
+                <img id="preview"></img>
+                <input type="file" id="cover" accept="image/*" name="cover">
+                <span class="error"><p id="cover_error"></p></span>
+                <span id="size"></span>
+            </div>
+<!-- 
+            <div id="changeUpload" class="form-group">
+                <img id="output"/>
+                <input type="file" class="form-control-file" id="cover" name="cover" accept="image/*" onchange="loadFile(event)">
+                <span class="error"><p id="cover_error"></p></span>
+                <span id="size"></span>
+            </div> -->
+        </div>
+
+        <div>
+            <button class="btn btn-success" type="submit">SUBMIT</button>
+          </div>
+    </form>
+</div>
+
+
+
+
+
+
+<script>
+ 
+        // let imgInput = document.getElementById('cover');
+        // imgInput.addEventListener('change', function (e) {
+        //     if (e.target.files) {
+        //         let imageFile = e.target.files[0];
+        //         var reader = new FileReader();
+        //         reader.onload = function (e) {
+        //             var img = document.createElement("img");
+        //             img.onload = function (event) {
+        //                 // Dynamically create a canvas element
+        //                 var canvas = document.createElement("canvas");
+
+        //                 // var canvas = document.getElementById("canvas");
+        //                 var ctx = canvas.getContext("2d");
+
+        //                 // Actual resizing
+        //                 ctx.drawImage(img, 0, 0 ,300, 300);
+
+        //                 // Show resized image in preview element
+        //                 var dataurl = canvas.toDataURL(imageFile.type);
+        //                 document.getElementById("preview").src = dataurl;
+        //             }
+        //             img.src = e.target.result;
+        //         }
+        //         reader.readAsDataURL(imageFile);
+        //     }
+        // });
+
+    //     fileValidation = () => {
+    // console.log("fileValidation Activated");
+    //     let fi = document.getElementById('cover');
+    //     let img = document.getElementById('output')
+    //     let size = document.getElementById('size')
+    //     if (fi.files.length > 0) {
+    //         for (let i = 0; i <= fi.files.length - 1; i++) {
+ 
+    //             const fsize = fi.files.item(i).size;
+    //             const file = Math.round((fsize / 1024));
+    //             // The size of the file.
+    //             if (file >= 2096) {
+    //                 alert(
+    //                   "File too Big, please select a file less than 2mb");
+    //                   fi.value = "";
+    //                   img.src = "";
+    //                   size.innerHTML = "";
+    //             } else {
+    //                 input = document.getElementById("cover_error").innerHTML = "";
+    //                 fi.style.borderWidth = ""
+    //                 fi.style.borderColor = ""
+    //                 document.getElementById('size').innerHTML = 'File size: <b>'
+    //                 + file + '</b> KB';
+    //             }
+    //         }
+    //     }
+    // }
+
+        let imgInput = document.getElementById('cover');
+        imgInput.addEventListener('change', function (e) {
+            if (e.target.files) {
+                let imageFile = e.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (e) {
+
+                    console.log("fileValidation Activated");
+                    let fi = document.getElementById('cover');
+                    let imgPreview = document.getElementById('preview')
+                    let size = document.getElementById('size')
+                    if (fi.files.length > 0) {
+                        for (let i = 0; i <= fi.files.length - 1; i++) {
+            
+                            const fsize = fi.files.item(i).size;
+                            const file = Math.round((fsize / 1024));
+                            // The size of the file.
+                            // if (file >= 2096) {
+                                // alert(
+                                // "File too Big, please select a file less than 2mb");
+                                // fi.value = "";
+                                // imgPreview.src = "";
+                                // size.innerHTML = "";
+                            // } else {
+                                input = document.getElementById("cover_error").innerHTML = "";
+                                fi.style.borderWidth = ""
+                                fi.style.borderColor = ""
+                                document.getElementById('size').innerHTML = 'File size: <b>'
+                                + file + '</b> KB';
+                            // }
+                        }
+                    }
+
+
+                    var img = document.createElement("img");
+                    img.onload = function (event) {
+                        // Dynamically create a canvas element
+                        // var canvas = document.createElement("canvas");
+
+                        // var canvas = document.getElementById("canvas");
+                        // var ctx = canvas.getContext("2d");
+
+                        // Actual resizing
+                        var MAX_WIDTH = 300;
+                        var MAX_HEIGHT = 300;
+
+                        var width = img.width;
+                        var height = img.height;
+
+                        // Change the resizing logic
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height = height * (MAX_WIDTH / width);
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width = width * (MAX_HEIGHT / height);
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        var canvas = document.createElement("canvas");
+                        canvas.width = width;
+                        canvas.height = 300;
+                        var ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Show resized image in preview element
+                        var dataurl = canvas.toDataURL(imageFile.type);
+                        document.getElementById("preview").src = dataurl;
+                        // document.getElementById('size').innerHTML = 'File size: <b>' + file + '</b> KB';
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(imageFile);
+            }
+        });
+
+
+
+
+
+
+
+document.getElementById("newForm").onsubmit = function () {
+        var x = document.forms["newForm"]["recipeName"].value;
+        var y = document.forms["newForm"]["author"].value;
+        var z = document.forms["newForm"]["allergens"].value;
+        var a = document.getElementById("ingredients_0").value;
+        console.log("a - " + a)
+        var aa = document.getElementById("amount_0").value;
+        console.log("aa - " + aa)
+        var b = document.getElementById("stepTextarea_0").value;
+        console.log("b - " + b)
+        var bb = document.getElementById("stepTitleTextarea_0").value;
+        console.log("bb - " + bb)
+        var d = document.getElementById("cover").value;
+        var d1 = document.getElementById("cover").style;
+
+
+        let olIngredients = document.getElementById("olIngredients");
+        for (var i = 0; i < olIngredients.length; i++) {
+            let i_a = document.forms["newForm"][`ingredients_${i}`].value
+            return i_a;
+        }
+        var submit = true;
+
+        var numInputsIng =  $(":input[id^=ingredients_0]").length
+        console.log("numInputsIng - " + numInputsIng)
+        var numInputsAmount =  $(":input[id^=amount_0]").length
+        console.log("numInputsAmount - " + numInputsIng)
+        var numInputsStep =  $(":input[id^=stepTextarea_0]").length
+        console.log("numInputsStep - " + numInputsStep)
+        // var count = document.getElementById("stepOL").length;
+        // console.log(count);
+        var numInputsStepTitle =  $(":input[id^=stepTitleTextarea_0]").length
+        console.log("numInputsStepTitle - " + numInputsStepTitle)
+
+
+
+
+
+        if (x == null || x == "") {
+            console.log("recipeName true");
+            recipeNameError = "Please enter recipe name";
+            document.getElementById("recipeName_error").innerHTML = recipeNameError;
+            document.getElementById("recipeName").style.borderWidth = "thin"
+            document.getElementById("recipeName").style.borderColor = "red"
+            submit = false;
+        }
+
+        if (y == null || y == "") {
+            authorError = "Please enter your name";
+            document.getElementById("author_error").innerHTML = authorError;
+            submit = false;
+        }
+        if (a == null || a == "") {
+            let ingredientsError = "Please enter ingredient";
+            let ingredientsElement = document.getElementById("ingredients_0_error");
+            ingredientsElement.innerHTML = ingredientsError;
+            ingredientsElement.setAttribute("style", "display: inline-block");
+            document.getElementById("ingredients_0").style.borderWidth = "thin"
+            document.getElementById("ingredients_0").style.borderColor = "red"
+            submit = false;
+        }
+        if (aa == null || aa == "") {
+            let amountError = "Please enter amount";
+            let amountElement = document.getElementById("amount_0_error");
+            amountElement.innerHTML = amountError;
+            amountElement.setAttribute("style", "display: inline-block");
+            document.getElementById("amount_0").style.borderWidth = "thin"
+            document.getElementById("amount_0").style.borderColor = "red"
+            submit = false;
+        }
+        if (b == null || b == "") {
+            let stepTextareaError = "Please enter step instructions.";
+            let stepTextareaElement = document.getElementById("stepTextarea_0_error");
+            stepTextareaElement.innerHTML = stepTextareaError;
+            stepTextareaElement.setAttribute("style", "display: inline-block");
+            document.getElementById("stepTextarea_0").style.borderWidth = "thin"
+            document.getElementById("stepTextarea_0").style.borderColor = "red"
+            submit = false;
+        }
+        if (bb == null || bb == "") {
+            let stepTitleTextareaError = "Please enter step title";
+            let stepTitleTextareaElement = document.getElementById("stepTitleTextarea_0_error");
+            stepTitleTextareaElement.innerHTML = stepTitleTextareaError;
+            stepTitleTextareaElement.setAttribute("style", "display: inline-block");
+            document.getElementById("stepTitleTextarea_0").style.borderWidth = "thin"
+            document.getElementById("stepTitleTextarea_0").style.borderColor = "red"
+            submit = false;
+        }
+
+        if(d== null || d == "") {
+            coverError = "Please select an image";
+            document.getElementById("cover_error").innerHTML = coverError;
+            document.getElementById("cover").style.borderWidth = "thin"
+            document.getElementById("cover").style.borderColor = "red"
+            submit = false;
+        }
+
+        return submit;
+    }
+
+
+
+    function removeWarning() {
+        input = document.getElementById(this.id + "_error");
+        input.setAttribute("style", "display: none");
+        this.setAttribute("style", "border-width: ");
+        this.setAttribute("style", "border-color: ");
+    }
+
+    function removeCoverWarning() {
+        document.getElementById("cover_error").innerHTML = "";
+        document.getElementById("cover").style.borderWidth = ""
+        document.getElementById("cover").style.borderColor = ""
+    }
+    
+    document.getElementById("recipeName").onkeyup = removeWarning;
+    document.getElementById("author").onkeyup = removeWarning;
+    document.getElementById("stepTextarea_0").onkeyup = removeWarning;
+    document.getElementById("stepTitleTextarea_0").onkeyup = removeWarning;
+    document.getElementById("ingredients_0").onkeyup = removeWarning;
+    document.getElementById("amount_0").onkeyup = removeWarning;
+    document.getElementById("cover").onclick = removeCoverWarning;
+    
+
+    var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.setAttribute("style", "display:inline");
+    output.setAttribute("style", "max-height: 20em");
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+    // fileValidation();
+  };
+
+  fileValidation = () => {
+    console.log("fileValidation Activated");
+        let fi = document.getElementById('cover');
+        let img = document.getElementById('output')
+        let size = document.getElementById('size')
+        if (fi.files.length > 0) {
+            for (let i = 0; i <= fi.files.length - 1; i++) {
+ 
+                const fsize = fi.files.item(i).size;
+                const file = Math.round((fsize / 1024));
+                // The size of the file.
+                if (file >= 2096) {
+                    alert(
+                      "File too Big, please select a file less than 2mb");
+                      fi.value = "";
+                      img.src = "";
+                      size.innerHTML = "";
+                } else {
+                    input = document.getElementById("cover_error").innerHTML = "";
+                    fi.style.borderWidth = ""
+                    fi.style.borderColor = ""
+                    document.getElementById('size').innerHTML = 'File size: <b>'
+                    + file + '</b> KB';
+                }
+            }
+        }
+    }
+
+</script>
+
+<%- include('../partials/footer') -%>

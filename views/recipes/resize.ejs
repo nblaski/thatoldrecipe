@@ -1,0 +1,19 @@
+<%- include('../partials/header') -%>
+<%- include('../partials/navbar') -%>
+
+
+
+<h1>TESTING</h1>
+<br>
+<hr>
+<html>
+  	<body>
+		<h3>Welcome to NodeJS File Upload</h3>
+		<form ref='uploadForm' id='uploadForm' action='/recipes/upload_resize' method='post' encType="multipart/form-data">
+			<input type="file" name="inputFile" />
+			<input type='submit' value='Upload' />
+		</form>
+  	</body>
+</html>
+
+<%- include('../partials/footer') -%>

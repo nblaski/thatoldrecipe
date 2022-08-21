@@ -10,60 +10,82 @@
 
 <%- include('../partials/messages') -%>
 
-<div class="container" style="margin-top: 1em">
-	<nav class="grid-container bredcrumb">
-		<a class="btn btn-warning" href="/recipes"> ← Back to recipes</a>
-	</nav>
-	<hr>
+<div class="container " style="margin-top: 1em">
+
 	<div class="grid-container">
-		<h1><%= recipe.recipeName %></h1>
-		<h6>Author: <%= recipe.author %></h6>
-		<img class="img-recipe" src="<%=recipe.imageName%>">
-		<hr>
+		<div class="row">
+			<div class="col-10">
+				<a class="btn btn-warning" href="/recipes"> ← Back to recipes</a>
+				<% if (recipe.author === user.name) { %>
+					<a class="btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
+					<% } else { %>
+					<% } %>
+			</div>
+			<div class="col-1" style="align-content: right;">
+				<%- include('../partials/deleteForm', { url: `/recipes/${recipe._id}` }) -%>
+			</div>	
+		</div>
+		
+	</div>
+
+
+
+
+	<br>
+	<div class="row">
+		<div class="col-sm show-title">
+			<h1><%= recipe.recipeName %></h1>
+			<h6>Author: <%= recipe.author %></h6>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm">
+			<img class="img-show" src="<%=recipe.imageName%>">
+		</div>
+	</div>
+	<br>
+	<br>
 		<% if (recipe.allergens.length !== 0) { %>
-			<h5>Allergens</h5>
+			<h6><b>Allergens</b></h6>
+			<hr style="height:1px;border:none;color:#333;background-color:#333;" >
 			<ul>
 				<% for (var i = 0; i < recipe.allergens.length; i++) { %>
-				<li style="display: inline-block"><%= recipe.allergens[i]  %></li>
+				<li style="display: inline-block"><%= recipe.allergens[i]%></li>
 				<% } %>
 			</ul>
 		<% } else { %> 
-			<h5>This Recipe has no Allergens</h5>
+			<div>
+				<h6><b>Allergens</b></h6>
+				<hr style="height:1px;border:none;color:#333;background-color:#333;" >
+				<h6>This Recipe has no known Allergens. Consume at your own risk!</h6>
+			</div>
+			<br>
 		<% } %>
-	
-		<hr>
 		
-		<h5>Ingredients</h5>
+		<h6><b>Ingredients</b></h6>
+		<hr style="height:1px;border:none;color:#333;background-color:#333;" >
 		<ul>
 			<% for (var i = 0; i < recipe.ingredients.length; i++) { %>
-			<li style="list-style: none"><b><%= recipe.amount[i] %></b> - <b><%= recipe.ingredients[i] %></b></li>
+				<% if (recipe.ingredients[i] !== "") {%> 
+					<li id="ingredient_<%=i%>" style="list-style: none"><%= recipe.ingredients[i] %> - <%= recipe.amount[i] %></li>
+					<% } else { %> 
+						<%  %> 
+					<% } %> 
 			<% } %>
 		</ul>
-	
+		<h6 class="showStepsHeader"><b>Steps</b></h6>
+		<hr style="height:1px;border:none;color:#333;background-color:#333;" >
 		<div class="showSteps">
-			<h5>Steps</h5>
-			<br>
 			<ol>
 				<% for (var i = 0; i < recipe.stepName.length; i++) { %>
-				<li class="liStep"><b><%= recipe.stepNameTitle[i] %></b></li>
-				<li style="text-indent: 1.9em"><%= recipe.stepName[i] %></li><br>
+					<% if (recipe.stepNameTitle[i] !== "") { %> 
+						<li id="stepNameTitle_<%=i%>" class="liStep"><b><%= recipe.stepNameTitle[i] %></b></li>
+						<li id="stepName_<%=i%>"><%= recipe.stepName[i] %></li><br>
+					<% } else { %>
+					<% } %>
 				<% } %>
 			</ol>	
 		</div>
-	
-			<div class="grid-x grid-margin-x">
-				<div class="cell small-1">
-					<% if (recipe.author === user.name) { %>
-						<a class="btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
-						<% } else { %>
-						<% } %>
-				</div>
-				<div class="cell auto">
-					<%- include('../partials/deleteForm', { url: `/recipes/${recipe._id}` }) -%>
-				</div>	
-			  </div>
-	</div>
-
 </div>
 
 	<%- include('../partials/footer') -%>

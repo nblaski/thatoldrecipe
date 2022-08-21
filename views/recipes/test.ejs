@@ -2,9 +2,19 @@
 <%- include('../partials/navbar') -%>
 
 
-<div class="notes">
-    <!-- Displaying content with JavaScript -->
-</div>
+
+
+
+
+<h1>!!!!!!!!!UPLOAD SUCCESS SUCCESS!!!!!!!</h1>
+
+
+
+
+
+
+
+
 
 <div class="container" style="margin-top: 1em">
     <h1>Create New Recipe</h1>
@@ -72,77 +82,29 @@
                 </li>
             </ol>
         </div>
+
         <div id="upload">
-            <label for="cover">Upload Image</label>
-            <input type="file" id="cover" name="cover"> <span class="error"><p id="cover_error"></p></span>
+          <label for="cover">Upload Image</label>
+          <div class="row">
+                <img id="output"/>
+          </div>
+          <div class="row">
+            <div class="col">
+              <span id="size"></span>
+              <span class="error"><p id="cover_error"></p></span>
+            </div>
+          </div>
+          <div class="row">
+            <input type="file" class="form-control" id="cover" name="cover" accept="image/*" onchange="loadFile(event)">
+          </div>
         </div>
-        
-            <button class="btn btn-success" type="submit">SUBMIT</button>
+        <div class="row">
+          <button class="btn btn-success" type="submit">SUBMIT</button>
+        </div>
     </form>
 </div>
 
 
-
-
-<!-- TEST -------------------------------------------------------------- -->
-<!-- 
-
-<div class="container py-4">
-    <div class="row">
-      <div class="col-md-12 form_sec_outer_task border">
-        <div class="row">
-          <div class="col-md-12 bg-light p-2 mb-3">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="row">
-                  <div class="col-md-6">
-                    <h4 class="frm_section_n">Form Title</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <label>Mobile No.</label>
-          </div>
-          <div class="col-md-4">
-            <label> Type </label>
-          </div>
-        </div>
-        <div class="col-md-12 p-0">
-          <div class="col-md-12 form_field_outer p-0">
-            <div class="row form_field_outer_row">
-              <div class="form-group col-md-6">
-                <input type="text" class="form-control w_90" name="stepNameTitle[]" id="stepNameTitle_no_1" placeholder="Enter mobiel no." />
-              </div>
-              <div class="form-group col-md-4">
-                <textarea name="stepName[]" id="stepName_no_1" class="form-control"></textarea>
-              </div>
-              <div class="form-group col-md-2 add_del_btn_outer">
-                <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
-                  <i class="fas fa-copy"></i>
-                </button>
-  
-                <button class="btn_round remove_node_btn_frm_field" disabled>
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row ml-0 bg-light mt-3 border py-3">
-        <div class="col-md-12">
-          <button class="btn btn-outline-lite py-0 add_new_frm_field_btn"><i class="fas fa-plus add_icon"></i> Add New field row</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
- -->
-
-
-<!-- TEST -------------------------------------------------------------- -->
 
 
 
@@ -235,6 +197,8 @@
     function removeWarning() {
         input = document.getElementById(this.id + "_error");
         input.setAttribute("style", "display: none");
+        this.setAttribute("style", "border-width: ");
+        this.setAttribute("style", "border-color: ");
     }
     
     document.getElementById("recipeName").onkeyup = removeWarning;
@@ -243,6 +207,51 @@
     document.getElementById("stepTextarea").onkeyup = removeWarning;
     document.getElementById("stepTitleTextarea").onkeyup = removeWarning;
     document.getElementById("cover").onchange = removeWarning;
+
+
+
+
+
+
+    var loadFile = function(event) {
+      console.log("loadFile activated!")
+    var output = document.getElementById('output');
+    // output.setAttribute("style", "display:inline");
+    // output.setAttribute("style", "max-height: 20em");
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+    fileValidation();
+  };
+
+    fileValidation = () => {
+    console.log("fileValidation Activated");
+        let fi = document.getElementById('cover');
+        let img = document.getElementById('output')
+        let size = document.getElementById('size')
+        if (fi.files.length > 0) {
+            for (let i = 0; i <= fi.files.length - 1; i++) {
+ 
+                const fsize = fi.files.item(i).size;
+                const file = Math.round((fsize / 1024));
+                // The size of the file.
+                if (file >= 2096) {
+                    alert(
+                      "File too Big, please select a file less than 2mb");
+                      fi.value = "";
+                      img.src = "";
+                      size.innerHTML = "";
+                } else {
+                    input = document.getElementById("cover_error").innerHTML = "";
+                    fi.style.borderWidth = ""
+                    fi.style.borderColor = ""
+                    document.getElementById('size').innerHTML = 'File size: <b>'
+                    + file + '</b> KB';
+                }
+            }
+        }
+    }
 
 </script>
 

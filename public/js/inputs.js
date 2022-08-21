@@ -9,32 +9,11 @@ let nameInput = document.getElementById("name");
 function addLine(element, input){
     let inputOL = document.getElementById(input.id)
     let olIngredients = document.getElementById(input.id);
-    // Stopping the function if the input field is empty
+    //Stopping the function if the input field is empty
     if(element.previousElementSibling.value.trim() === ""){
-        // inputIngredients = document.getElementById("ingredients_error");
-        // inputIngredients.setAttribute("style", "display: block");
         return false;
     }
     console.log("activated");
-
-
-
-    // const last = document.getElementsByClassName("form-control ingGridArea");
-    // const lastNum = last.length;
-    // const lastElement = last.item(lastNum - 1);
-    // console.log(lastElement + " " + lastNum);
-    // console.log(lastElement);
-
-    // // remove warning function
-    // function removeWarning() {
-    //     input = document.getElementById(this.id + "_error");
-    //     input.setAttribute("style", "display: none");
-    // }
-    // // remove warning
-    // lastElement.onkeyup = removeWarning;
-
-
-
 
     // Creating the li container
     let li = document.createElement("li");
@@ -51,6 +30,9 @@ function addLine(element, input){
     let divIng = document.createElement("div");
     divIng.setAttribute("class", "ingredients");
 
+    let idSequenceNum = $(`#${input.id} li`).length;
+    console.log("idSeq outside" + idSequenceNum);
+    
 
     let field;
     let fieldTitle;
@@ -58,30 +40,51 @@ function addLine(element, input){
     let amount;
     if(input.id === "stepName") {
         fieldTitle = document.createElement("textarea");
+        idSequenceNum = $(`#${input.id} li`).length;
         fieldTitle.setAttribute("class", "form-control stepGridAreaTitle");
         fieldTitle.setAttribute("name", `${input.id}Title[]`);
-        fieldTitle.setAttribute("id", "stepTitleTextarea")
         fieldTitle.setAttribute("onInput", "this.parentNode.dataset.replicatedValue = this.value");
         fieldTitle.setAttribute("placeholder", "Step title...");
-
+        if ( idSequenceNum == 1 ) {
+            fieldTitle.setAttribute("id", "stepTitleTextarea_1");
+        } else {
+            fieldTitle.setAttribute("id", `stepTitleTextarea_${idSequenceNum}`);
+        }
         // Creating the input element
         field = document.createElement("textarea");
-        // field.setAttribute("id", "stepName");
-        field.setAttribute("id", "stepTextarea")
         field.setAttribute("class", "form-control stepGridArea");
         field.setAttribute("name", `${input.id}[]`);
         field.setAttribute("onInput", "this.parentNode.dataset.replicatedValue = this.value");
         field.setAttribute("placeholder", "Step instructions...");
+        if ( idSequenceNum == 1 ) {
+            field.setAttribute("id", "stepTextarea_1");
+        } else {
+            field.setAttribute("id", `stepTextarea_${idSequenceNum}`);
+        }
 
     } else {
         ingredient = document.createElement("input");
+        idSequenceNum = $(`#${input.id} li`).length;
         ingredient.setAttribute("type", "text");
         ingredient.setAttribute("name", "ingredients[]");
         ingredient.setAttribute("class", "form-control ingGridArea");
+
+        if ( idSequenceNum == 1 ) {
+            ingredient.setAttribute("id", "ingredients_1");
+        } else {
+            ingredient.setAttribute("id", `ingredients_${idSequenceNum}`);
+        }
+
         amount = document.createElement("input");
         amount.setAttribute("type", "text");
         amount.setAttribute("name", "amount[]");
         amount.setAttribute("class", "form-control amountGridArea");
+
+        if ( idSequenceNum == 1 ) {
+            amount.setAttribute("id", "amount_1" );
+        } else {
+            amount.setAttribute("id", `amount_${idSequenceNum}`);
+        }
     }
 
     // Creating the span  plus element
@@ -93,7 +96,12 @@ function addLine(element, input){
 
     // Creating the span minus element
     let minus = document.createElement("span");
-    minus.setAttribute("onclick", "removeField(this)");
+    minus.setAttribute("onclick", `removeField(this, getElementById('${input.id}'))`);
+    if ( idSequenceNum == 1 ) {
+        minus.setAttribute("id", "minus_1" );
+    } else {
+        minus.setAttribute("id", `minus_${idSequenceNum}`);
+    }
     let minusText = document.createTextNode("-");
     minus.appendChild(minusText);
 
@@ -127,17 +135,31 @@ function addLine(element, input){
     element.style.display = "none";
 }
 
-
-
-
-
-
-
 // Remove element function
-function removeField(element){
-    console.log(element);
-    element.closest("li").remove();
+function removeField(element, input){
+    idSequenceNum = $(`#${input.id} li`).length;
+    if (idSequenceNum === 2 ) {
+        const ingredientElement = document.querySelector(`#divOlIngredients > ol > li:last-child > div > input`);
+        const amountElement = document.querySelector("#divOlIngredients > ol > li:last-child > div > input:nth-child(2)");
+        const stepTitleNameElement = document.querySelector(`#divStepName > ol > li:last-child > div > textarea`);
+        const stepNameElement = document.querySelector(`#divStepName > ol > li:last-child > div > textarea:nth-child(2)`);
+        ingredientElement.setAttribute("id", "ingredients_0");
+        amountElement.setAttribute("id", "amount_0");
+        stepTitleNameElement.setAttribute("id", "stepTitleTextarea_0");
+        stepNameElement.setAttribute("id", "stepTextarea_0");
+        ingredientElement.addEventListener('keyup', removeWarning);
+        amountElement.addEventListener('keyup', removeWarning);
+        stepTitleNameElement.addEventListener('keyup', removeWarning);
+        stepNameElement.addEventListener('keyup', removeWarning);
+
+        element.closest("li").remove();
+    } else {
+        element.closest("li").remove();
+    }
 }
+
+
+
 
 // form.onsubmit = function(event){
 //     // Prevent the form to communicate with the server

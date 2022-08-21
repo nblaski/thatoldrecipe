@@ -1,151 +1,334 @@
 <script>
-    function setOptionAllergens() {
-        var allergenString = document.getElementById('allergenString');
-        var array = allergenString.textContent.split(",");
-        if (array.indexOf('dairy') >= 0) { 
-            var opt = document.getElementById('a1');
-                opt.selected = true;
-            }
-        if (array.indexOf('fish') >= 0) { 
-        var opt = document.getElementById('a2');
-            opt.selected = true;
-        }    
-        if (array.indexOf('gluten') >= 0) { 
-        var opt = document.getElementById('a3');
-            opt.selected = true;
-        }  
-        if (array.indexOf('nuts') >= 0) { 
-        var opt = document.getElementById('a4');
-            opt.selected = true;
-        }  
-        if (array.indexOf('shellfish') >= 0) { 
-        var opt = document.getElementById('a5');
-            opt.selected = true;
-        }  
-        if (array.indexOf('eggs') >= 0) { 
-        var opt = document.getElementById('a6');
-            opt.selected = true;
-        }  
-        if (array.indexOf('meat') >= 0) { 
-        var opt = document.getElementById('a7');
-            opt.selected = true;
-        }  
-        if (array.indexOf('none') >= 0) { 
-        var opt = document.getElementById('aNone');
-            opt.selected = true;
-        } 
-    }
-    setOptionAllergens();
 
-    function setOptionIngredients() {
-        var ingredientString = document.getElementById('ingredientString');
-        var array = ingredientString.textContent.split(",");
-        if (array.indexOf('flour') >= 0) { 
-            var opt = document.getElementById('in1');
-                opt.selected = true;
-            }
-        if (array.indexOf('sugar') >= 0) { 
-        var opt = document.getElementById('in2');
-            opt.selected = true;
-        }    
-        if (array.indexOf('eggs') >= 0) { 
-        var opt = document.getElementById('in3');
-            opt.selected = true;
-        }  
-    }
-    setOptionIngredients();
-
-    const changeUploadBtn = document.getElementById("changeUploadBtn");
-    changeUploadBtn.addEventListener("click", addUpload , false);
-
-    const removeUploadBtn = document.getElementById("removeUploadBtn");
-    removeUploadBtn.addEventListener("click", removeUpload , false);
-
-    function addUpload () {
-        document.getElementById('cover').style.display = 'inline';
-        document.getElementById('changeUploadBtn').style.display = 'none';
-        document.getElementById('removeUploadBtn').style.display = 'inline';
-    }
-
-    function removeUpload() {
-        document.getElementById('cover').style.display = 'none';
-        document.getElementById('changeUploadBtn').style.display = 'inline';
-        document.getElementById('removeUploadBtn').style.display = 'none';
-    }
-
-    function hideUpload() {
-        var x = document.getElementById("changeUpload");
-        if (x.style.display === "none") {
-            x.style.display = "block";
+function setOptionAllergens() {
+    var allergenString = document.getElementById('allergenString');
+        if (allergenString === null || allergenString == undefined) {
+            console.log("no allergens");
         } else {
-            x.style.display = "none";
+            var array = allergenString.textContent.split(",");
+            if (array.indexOf('dairy') >= 0) { 
+                    var opt = document.getElementById('a1');
+                        opt.selected = true;
+                    }
+                if (array.indexOf('fish') >= 0) { 
+                var opt = document.getElementById('a2');
+                    opt.selected = true;
+                }    
+                if (array.indexOf('gluten') >= 0) { 
+                var opt = document.getElementById('a3');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('nuts') >= 0) { 
+                var opt = document.getElementById('a4');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('shellfish') >= 0) { 
+                var opt = document.getElementById('a5');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('eggs') >= 0) { 
+                var opt = document.getElementById('a6');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('meat') >= 0) { 
+                var opt = document.getElementById('a7');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('none') >= 0) { 
+                var opt = document.getElementById('aNone');
+                    opt.selected = true;
+                } 
         }
+}
+
+var allergen = document.getElementById('allergenString');
+setOptionAllergens();
+
+
+
+const changeUploadBtn = document.getElementById("changeUploadBtn");
+const editImage = document.getElementById("editImage");
+changeUploadBtn.addEventListener("click", addUpload , false);
+
+const removeUploadBtn = document.getElementById("removeUploadBtn");
+removeUploadBtn.addEventListener("click", removeUpload , false);
+
+function addUpload () {
+    document.getElementById("editImage").style.display = 'none';
+    document.getElementById('cover').style.display = 'inline-block';
+    document.getElementById('changeUploadBtn').style.display = 'none';
+    document.getElementById('removeUploadBtn').style.display = 'inline-block';
+    document.getElementById('cover').style.onchange = "loadFile(event)";
+}
+
+function removeUpload() {
+    document.getElementById("editImage").style.display = 'inline-block';
+    document.getElementById('cover').style.display = 'none';
+    document.getElementById('cover').value = "";
+    document.getElementById('size').innerHTML = "";
+    document.getElementById('cover_error').innerHTML = "";
+    document.getElementById('preview').style.display = 'none';
+    document.getElementById('changeUploadBtn').style.display = 'inline-block';
+    document.getElementById('removeUploadBtn').style.display = 'none';
+   
+}
+
+function hideUpload() {
+    var x = document.getElementById("changeUpload");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+    }
+
+
+
+
+
+
+    document.getElementById("formFields").onsubmit = function () {
+        var x = document.forms["formFields"]["recipeName"].value;
+        var y = document.forms["formFields"]["author"].value;
+        var z = document.forms["formFields"]["allergens"].value;
+        var a = document.forms["formFields"]["ingredients_0"].value;
+        console.log("a - " + a)
+        var aa = document.forms["formFields"]["amount_0"].value;
+        console.log("aa - " + aa)
+        var b = document.getElementById("stepTextarea_0").value;
+        console.log("b - " + b)
+        var bb = document.getElementById("stepTitleTextarea_0").value;
+        console.log("bb - " + bb)
+        var d = document.forms["formFields"]["cover"].value;
+        var d1 = document.getElementById("cover").style.display;
+
+
+        let olIngredients = document.getElementById("olIngredients");
+        for (var i = 0; i < olIngredients.length; i++) {
+            let i_a = document.forms["formFields"][`ingredients_${i}`].value
+            return i_a;
+        }
+        var submit = true;
+
+        var numInputsIng =  $(":input[id^=ingredients_0]").length
+        console.log("numInputsIng - " + numInputsIng)
+        var numInputsAmount =  $(":input[id^=amount_0]").length
+        console.log("numInputsAmount - " + numInputsIng)
+        var numInputsStep =  $(":input[id^=stepTextarea_0]").length
+        console.log("numInputsStep - " + numInputsStep)
+        // var count = document.getElementById("stepOL").length;
+        // console.log(count);
+        var numInputsStepTitle =  $(":input[id^=stepTitleTextarea_0]").length
+        console.log("numInputsStepTitle - " + numInputsStepTitle)
+
+
+
+
+
+        if (x == null || x == "") {
+            console.log("recipeName true");
+            recipeNameError = "Please enter recipe name";
+            document.getElementById("recipeName_error").innerHTML = recipeNameError;
+            document.getElementById("recipeName").style.borderWidth = "thin"
+            document.getElementById("recipeName").style.borderColor = "red"
+            submit = false;
         }
 
-        document.getElementById("formFields").onsubmit = function () {
-            var x = document.forms["formFields"]["recipeName"].value;
-            var y = document.forms["formFields"]["author"].value;
-            var z = document.forms["formFields"]["allergens"].value;
-            var a = document.forms["formFields"]["ingredients"].value;
-            var b = document.forms["formFields"]["stepName"].value;
-            var c = document.forms["formFields"]["stepDescription"].value;
-            var d = document.forms["formFields"]["cover"].value;
-            var d1 = document.getElementById("cover").style.display;
-
-
-            var submit = true;
-
-            if (x == null || x == "") {
-                recipeNameError = "Please enter recipe name";
-                document.getElementById("recipeName_error").innerHTML = recipeNameError;
-                submit = false;
-            }
-
-            if (y == null || y == "") {
-                authorError = "Please enter your name";
-                document.getElementById("author_error").innerHTML = authorError;
-                submit = false;
-            }
-            if (a == null || a == "") {
-                ingredientsError = "Please select ingredients";
-                document.getElementById("ingredients_error").innerHTML = ingredientsError;
-                submit = false;
-            }
-
-            if (b == null || b == "") {
-                stepNameError = "Please enter at least one recipe step instruction";
-                document.getElementById("stepName_error").innerHTML = stepNameError;
-                submit = false;
-            }
-            if (c == null || c == "") {
-                stepDescriptionError = "Please enter at least one recipe step description";
-                document.getElementById("stepDescription_error").innerHTML = stepDescriptionError;
-                submit = false;
-            }
-
-            if(d1 == 'inline' && d == "") {
-                coverError = "Please select an image";
-                document.getElementById("cover_error").innerHTML = coverError;
-                submit = false;
-            }
-
-            return submit;
+        if (y == null || y == "") {
+            authorError = "Please enter your name";
+            document.getElementById("author_error").innerHTML = authorError;
+            submit = false;
+        }
+        if (a == null || a == "") {
+            let ingredientsError = "Please enter ingredient";
+            let ingredientsElement = document.getElementById("ingredients_0_error");
+            ingredientsElement.innerHTML = ingredientsError;
+            ingredientsElement.setAttribute("style", "display: inline-block");
+            document.getElementById("ingredients_0").style.borderWidth = "thin"
+            document.getElementById("ingredients_0").style.borderColor = "red"
+            submit = false;
+        }
+        if (aa == null || aa == "") {
+            let amountError = "Please enter amount";
+            let amountElement = document.getElementById("amount_0_error");
+            amountElement.innerHTML = amountError;
+            amountElement.setAttribute("style", "display: inline-block");
+            document.getElementById("amount_0").style.borderWidth = "thin"
+            document.getElementById("amount_0").style.borderColor = "red"
+            submit = false;
+        }
+        if (b == null || b == "") {
+            let stepTextareaError = "Please enter step instructions.";
+            let stepTextareaElement = document.getElementById("stepTextarea_0_error");
+            stepTextareaElement.innerHTML = stepTextareaError;
+            stepTextareaElement.setAttribute("style", "display: inline-block");
+            document.getElementById("stepTextarea_0").style.borderWidth = "thin"
+            document.getElementById("stepTextarea_0").style.borderColor = "red"
+            submit = false;
+        }
+        if (bb == null || bb == "") {
+            let stepTitleTextareaError = "Please enter step title";
+            let stepTitleTextareaElement = document.getElementById("stepTitleTextarea_0_error");
+            stepTitleTextareaElement.innerHTML = stepTitleTextareaError;
+            stepTitleTextareaElement.setAttribute("style", "display: inline-block");
+            document.getElementById("stepTitleTextarea_0").style.borderWidth = "thin"
+            document.getElementById("stepTitleTextarea_0").style.borderColor = "red"
+            submit = false;
         }
 
-        function removeWarning() {
-            document.getElementById(this.id + "_error").innerHTML = "";
+        if(d1 == 'inline-block' && d == "") {
+            coverError = "Please select an image";
+            document.getElementById("cover_error").innerHTML = coverError;
+            document.getElementById("cover").style.borderWidth = "thin"
+            document.getElementById("cover").style.borderColor = "red"
+            submit = false;
         }
 
-        function removeCoverWarning() {
-            document.getElementById("cover_error").innerHTML = "";
-        }
-        
-        document.getElementById("recipeName").onkeyup = removeWarning;
-        document.getElementById("author").onkeyup = removeWarning;
-        document.getElementById("ingredients").onchange = removeWarning;
-        document.getElementById("stepName").onkeyup = removeWarning;
-        document.getElementById("stepDescription").onkeyup = removeWarning;
-        document.getElementById("removeUploadBtn").onclick = removeCoverWarning;
-        document.getElementById("cover").onchange = removeWarning;
+        return submit;
+    }
 
-    </script>
+
+
+    function removeWarning() {
+        input = document.getElementById(this.id + "_error");
+        input.setAttribute("style", "display: none");
+        this.setAttribute("style", "border-width: ");
+        this.setAttribute("style", "border-color: ");
+    }
+
+    function removeCoverWarning() {
+        document.getElementById("cover_error").innerHTML = "";
+        document.getElementById("cover").style.borderWidth = ""
+        document.getElementById("cover").style.borderColor = ""
+    }
+    
+    document.getElementById("recipeName").onkeyup = removeWarning;
+    document.getElementById("author").onkeyup = removeWarning;
+    document.getElementById("stepTextarea_0").onkeyup = removeWarning;
+    document.getElementById("stepTitleTextarea_0").onkeyup = removeWarning;
+    document.getElementById("ingredients_0").onkeyup = removeWarning;
+    document.getElementById("amount_0").onkeyup = removeWarning;
+    document.getElementById("removeUploadBtn").onclick = removeCoverWarning;
+    
+
+//     var loadFile = function(event) {
+//     var output = document.getElementById('output');
+//     output.setAttribute("style", "display:inline");
+//     output.setAttribute("style", "max-height: 20em");
+//     output.src = URL.createObjectURL(event.target.files[0]);
+//     output.onload = function() {
+//       URL.revokeObjectURL(output.src) // free memory
+//     }
+//     fileValidation();
+//   };
+
+//   fileValidation = () => {
+//     console.log("fileValidation Activated");
+//         let fi = document.getElementById('cover');
+//         let img = document.getElementById('output')
+//         let size = document.getElementById('size')
+//         if (fi.files.length > 0) {
+//             for (let i = 0; i <= fi.files.length - 1; i++) {
+ 
+//                 const fsize = fi.files.item(i).size;
+//                 const file = Math.round((fsize / 1024));
+//                 // The size of the file.
+//                 if (file >= 2096) {
+//                     alert(
+//                       "File too Big, please select a file less than 2mb");
+//                       fi.value = "";
+//                       img.src = "";
+//                       size.innerHTML = "";
+//                 } else {
+//                     input = document.getElementById("cover_error").innerHTML = "";
+//                     fi.style.borderWidth = ""
+//                     fi.style.borderColor = ""
+//                     document.getElementById('size').innerHTML = 'File size: <b>'
+//                     + file + '</b> KB';
+//                 }
+//             }
+//         }
+//     }
+
+
+let imgInput = document.getElementById('cover');
+        imgInput.addEventListener('change', function (e) {
+            if (e.target.files) {
+                let imageFile = e.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (e) {
+
+                    console.log("fileValidation Activated");
+                    let fi = document.getElementById('cover');
+                    let imgPreview = document.getElementById('preview')
+                    let size = document.getElementById('size')
+                    if (fi.files.length > 0) {
+                        for (let i = 0; i <= fi.files.length - 1; i++) {
+            
+                            const fsize = fi.files.item(i).size;
+                            const file = Math.round((fsize / 1024));
+                            // The size of the file.
+                            if (file >= 2096) {
+                                alert(
+                                "File too Big, please select a file less than 2mb");
+                                fi.value = "";
+                                imgPreview.src = "";
+                                size.innerHTML = "";
+                            } else {
+                                input = document.getElementById("cover_error").innerHTML = "";
+                                fi.style.borderWidth = ""
+                                fi.style.borderColor = ""
+                                document.getElementById('size').innerHTML = 'File size: <b>'
+                                + file + '</b> KB';
+                            }
+                        }
+                    }
+
+
+                    var img = document.createElement("img");
+                    img.onload = function (event) {
+                        // Dynamically create a canvas element
+                        // var canvas = document.createElement("canvas");
+
+                        // var canvas = document.getElementById("canvas");
+                        // var ctx = canvas.getContext("2d");
+
+                        // Actual resizing
+                        var MAX_WIDTH = 300;
+                        var MAX_HEIGHT = 300;
+
+                        var width = img.width;
+                        var height = img.height;
+
+                        // Change the resizing logic
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height = height * (MAX_WIDTH / width);
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width = width * (MAX_HEIGHT / height);
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        var canvas = document.createElement("canvas");
+                        canvas.width = width;
+                        canvas.height = 300;
+                        var ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Show resized image in preview element
+                        var dataurl = canvas.toDataURL(imageFile.type);
+                        document.getElementById("preview").src = dataurl;
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(imageFile);
+            }
+        });
+
+
+
+</script>

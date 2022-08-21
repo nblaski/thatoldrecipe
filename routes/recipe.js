@@ -6,8 +6,9 @@ const path = require('path');
 const Recipe  = require('../models/Recipe.js');
 router.use(methodOverride('_method'));
 const upload = require('../multer.js');
+const upload_resize = require('../multerResize.js')
 const multer = require('multer');
-const { s3Delete, s3UploadCover } = require('../s3Service');
+const { s3Delete, s3UploadCover, s3UploadResize } = require('../s3Service');
 
 const { setUser, ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const { authUser, authRole, authRoleAdmin } = require('../permissions/basicAuth');
@@ -29,17 +30,20 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 });
 
 // GET NEW RECIPE FORM PAGE
-router.get('/new', ensureAuthenticated, (req, res) => {
-  res.render('recipes/new', { user: req.user });
-});
-// GET NEW RECIPE FORM PAGE
 router.get('/test', ensureAuthenticated, (req, res) => {
   res.render('recipes/test', { user: req.user });
 });
 
+// GET newFORM RECIPE FORM PAGE
+router.get('/newForm', ensureAuthenticated, (req, res) => {
+  res.render('recipes/newForm', { user: req.user });
+});
+
+
 // POST ROUTE NEW RECIPE
-router.post('/test', upload.array('cover'), async (req, res) => { 
-  const file = req.files[0];
+router.post('/newForm', upload.single('cover'), async (req, res) => { 
+  console.log(req.file.paramKey + "in new form route");
+  const file = req.file;
   if(!file) {
     return console.log('Please select an Image.');
   }
@@ -47,7 +51,7 @@ router.post('/test', upload.array('cover'), async (req, res) => {
   try {
     if (file) {
       try {
-        const result = await s3UploadCover(file, req.user.name);
+        const result = await s3UploadResize(file, req.user.name);
         url = `https://thisoldrecipe-images.s3.amazonaws.com/${result.paramKey}`;
       } catch(err) {
         console.log("error setting cover image" + err);
@@ -91,7 +95,7 @@ router.get('/:id', ensureAuthenticated, async (req, res) => {
       res.render('recipes/show', { user: req.user, recipe: recipe })
     } catch(error) {
       console.log(error);
-      res.render('recipes/error' + errorMessage);
+      res.render('recipes/error' + error);
     }
 });
 
@@ -146,7 +150,8 @@ router.put('/:id', upload.single('cover'), async (req, res) => {
     recipe.allergens = req.body.allergens
     recipe.ingredients = req.body.ingredients
     recipe.stepName = req.body.stepName
-    recipe.stepDescription = req.body.stepDescription
+    recipe.stepNameTitle = req.body.stepNameTitle
+    recipe.amount = req.body.amount
 
     if (file) {
       try {
@@ -221,8 +226,8 @@ router.use((error, req, res, next) => {
         req.flash('error_msg', 'File is too large.')
         res.redirect('back');
         // return res.status(400).json({
-          //     message: "file is too large",
-          // });
+        //       message: "file is too large",
+        //   });
       }
 
       if (error.code === "LIMIT_FILE_COUNT") {
@@ -241,6 +246,91 @@ router.use((error, req, res, next) => {
       }
   }
 })
+
+
+
+
+// TESTING //////////////////////////////////////////////////////////////////////////////////
+
+
+// GET RESIZE FORM TEST PAGE
+router.get('/resize', ensureAuthenticated, (req, res) => {
+  res.render('recipes/resize', { user: req.user });
+});
+
+// router.post('/upload_resize', upload_resize.single('inputFile'), (req, res) => {
+//   console.log(req.file); // Print upload details
+//   res.send('Successfully uploaded!');
+// });
+
+
+
+
+
+router.post('/upload_resize', upload_resize.single('inputFile'), async (req, res) => {
+  console.log(req.file); // Print upload details
+
+  const file = req.files[0];
+  if(!file) {
+    return console.log('Please select an Image.');
+  }
+  let url;
+  try {
+    if (file) {
+      try {
+        const result = await s3UploadResize(file, req.user.name);
+        url = `https://thisoldrecipe-images.s3.amazonaws.com/${result.paramKey}`;
+      } catch(err) {
+        console.log("error setting cover image" + err);
+      } finally {
+        const recipe = new Recipe ({
+          recipeName: req.body.recipeName,
+          author: req.body.author,
+          allergens: req.body.allergens,
+          ingredients: req.body.ingredients,
+          amount: req.body.amount,
+          stepName: req.body.stepName,
+          stepNameTitle: req.body.stepNameTitle,
+          imageName: url
+        });
+          await recipe.save();
+          console.log('Image saved to DB.');
+          console.log(recipe.id)
+          req.flash(
+            'success_msg',
+            'Recipe Saved! and SUCCESSFULLY UPLOADED!!!'
+          );
+          res.redirect('/recipes/test');
+      }
+    }
+  } catch(err) {
+    console.log("ERROR" + err)
+    req.flash(
+      'error_msg',
+      'ERROR saving recipe' + err
+    );
+    return res.redirect('/recipes/error' + err)
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
