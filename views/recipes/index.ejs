@@ -4,18 +4,14 @@
 <br>
 <%- include('../partials/messages') -%>
 
-
 <!-- SLIDE TEST ---------------------------- -->
-<div class="container mt-4">
-    <h1 class="text-secondary">Recently Added Recipes.</h1>
-    <p>RECENTLY ADDED RECIPES</p>
     <div class="splide bg-secondary">
         <div class="splide__slider">
             <div class="splide__track">
                 <ul class="splide__list">
                     <% recipes.forEach(recipe => { %>
                         <% console.log(recipe) %> 
-                        <li class="splide__slide"><a href="http://localhost:3004/recipes/<%= recipe.id %>"><img src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 300px; object-fit: cover;"></li></a>
+                        <li class="splide__slide"><a href="http://localhost:3003/recipes/<%= recipe.id %>"><img src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 300px; object-fit: cover;"></li></a>
                     <% }) %>  
                         <!-- <li class="splide__slide"><img src="images/celestia-dristi_tn.svg" alt="dristi"></li> -->
                         <!-- <li class="splide__slide">Slide 01</li>
@@ -25,6 +21,28 @@
             </div>
         </div>
     </div> 
+<div class="container mt-12">
+    <!-- <h2 class="text-secondary">Recently Added Recipes</h2> -->
+    <!-- <p>RECENTLY ADDED RECIPES</p> -->
+    
+    <h2 style="margin-top: 10px; text-align: center; font-size: 1.5rem"><%= user.name %>'s Recipes</h2>
+    <hr>
+    <div class="container">
+        
+        <div class="flex-parent">
+            <% for (var i = 0; i < recipes.length; i++) { %>
+                <% if (recipes[i].author == user.name) { %> 
+                    <div class="flex-item">
+                        <a href="/recipes/<%= recipes[i].id %>">
+                            <img src="<%= recipes[i].imageName %>">
+                            <br>
+                            <h8><%=recipes[i].recipeName%></h8>
+                        </a>
+                    </div>
+                <% } %> 
+            <% } %> 
+      </div>
+    </div>
 </div>
 
 
@@ -34,8 +52,14 @@
 
 
 
+
+
+
+
+
+
     <!-- GRID GRID X FROM TREEHOUSE RECIPE BOX -->
-    <header class="grid-container intro">
+    <!-- <header class="grid-container intro">
         <h2>Recently added by: <%= user.name %></h2>
     </header>
     <div class="grid-container grid-x grid-margin-x medium-up-2 large-up-3">
@@ -64,7 +88,7 @@
                     </a>
             <% }) %>
 
-    </div>
+    </div> -->
 
 
 </div>
@@ -83,7 +107,7 @@
     perPage: 5,
     // start: 1,
     perMove: 1,
-    autoplay: false,
+    autoplay: 'true',
     interval: 3000,
     // arrows: false,
     // pagination: false,
@@ -91,7 +115,7 @@
     pauseOnHover: true,
     wheel: true,
     // height   : '10rem',
-    focus    : 'center',
+    focus: 'center',
     autoWidth: true,
     autoHeight: true
   });
