@@ -10,7 +10,6 @@
             <div class="splide__track">
                 <ul class="splide__list">
                     <% recipes.forEach(recipe => { %>
-                        <% console.log(recipe) %> 
                         <li class="splide__slide"><a href="http://localhost:3003/recipes/<%= recipe.id %>"><img src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 300px; object-fit: cover;"></li></a>
                     <% }) %>  
                         <!-- <li class="splide__slide"><img src="images/celestia-dristi_tn.svg" alt="dristi"></li> -->

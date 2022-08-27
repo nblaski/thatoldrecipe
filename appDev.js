@@ -21,7 +21,7 @@ const app = express();
 // PASSPORT CONFIG
 require('./config/passport')(passport);
 
-// CONNECT TO MongoDB THIS IS A GIT TEST
+// CONNECT TO MongoDB
 mongoose.connect(process.env.DEV_DATABASE, {
     useNewUrlParser : true,
     useUnifiedTopology : true,
