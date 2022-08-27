@@ -12,20 +12,17 @@
 
 <div class="container " style="margin-top: 1em">
 
-	<div class="grid-container">
-		<div class="row">
-			<div class="col-10">
+	<div class="showOptions-grid">
+			<div>
 				<a class="btn btn-warning" href="/recipes"> ← Back to recipes</a>
 				<% if (recipe.author === user.name) { %>
 					<a class="btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
 					<% } else { %>
-					<% } %>
+					<% } %>		
 			</div>
-			<div class="col-1" style="align-content: right;">
+			<div class="" style="align-content: right; display: inline">
 				<%- include('../partials/deleteForm', { url: `/recipes/${recipe._id}` }) -%>
 			</div>	
-		</div>
-		
 	</div>
 
 

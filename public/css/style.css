@@ -421,3 +421,10 @@ textarea::-webkit-scrollbar{
   /* opacity:0.2; */
 }
 
+.showOptions-grid {
+  display: grid;
+  grid-template-columns: 80% 20%;
+  grid-column: 2;
+  grid-gap: 5px;
+}
+
