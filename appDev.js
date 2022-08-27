@@ -22,12 +22,24 @@ const app = express();
 require('./config/passport')(passport);
 
 // CONNECT TO MongoDB
-mongoose.connect(process.env.DEV_DATABASE, {
-    useNewUrlParser : true,
-    useUnifiedTopology : true,
-    family : 4},
-    () => {console.log("mongoose connected.")}
-  );
+// mongoose.connect(process.env.DEV_DATABASE, {
+//     useNewUrlParser : true,
+//     useUnifiedTopology : true,
+//     family : 4},
+//     () => {console.log("mongoose connected.")}
+//   );
+
+const connectionParams={
+  // useNewUrlParser: true,
+  useUnifiedTopology: true 
+}
+mongoose.connect(process.env.DEV_DATABASE,connectionParams)
+  .then( () => {
+      console.log('Connected to the database ')
+  })
+  .catch( (err) => {
+      console.error(`Error connecting to the database. n${err}`);
+  })
 
 
 // EJS SETUP
