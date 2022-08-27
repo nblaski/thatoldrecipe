@@ -33,7 +33,7 @@ const connectionParams={
   // useNewUrlParser: true,
   useUnifiedTopology: true 
 }
-mongoose.connect(process.env.DEV_DATABASE,connectionParams)
+mongoose.connect(process.env.DATABASE_URL,connectionParams)
   .then( () => {
       console.log('Connected to the database ')
   })
