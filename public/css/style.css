@@ -121,7 +121,7 @@ a:active { text-decoration: none; }
   ol {
     counter-reset: item;
     margin-left: 0;
-    padding-left: 0;
+    padding-left: 0 !important;
     list-style-type: none;
   }
   
@@ -297,7 +297,7 @@ textarea::-webkit-scrollbar{
  font-weight: bold;
  grid-area: 2/3;
  text-align: center;
- margin: 0 0 1rem;
+ /* margin: 0 0 1rem; */
  padding-top: 5px;
 }
 
@@ -308,7 +308,7 @@ textarea::-webkit-scrollbar{
   font-weight: bold;
   grid-area: 2/3;
   text-align: center;
-  margin: 0 0 1rem;
+  /* margin: 0 0 1rem; */
   padding-top: 5px;
 }
 
