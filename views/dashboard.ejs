@@ -2,16 +2,57 @@
 <%- include('./partials/navbar') -%>
 
 
-<h1 class="mt-4">Dashboard</h1>
-<p class="lead mb-3">Welcome <%= user.name %></p>
-<a href="/users/logout" class="btn btn-secondary">Logout</a>
-<% if (user.role === "admin") { %>
-<a href="/admin" class="btn btn-secondary">Admin Page</a>
-<% } %>
+<!-- <h1 class="mt-4">Welcome <%= user.name %>!</h1> -->
 
-<div>
-    <a href="/recipes" class="btn btn-secondary">Recipes</a>
-</div>
+<!-- <p class="lead mb-3">Welcome <%= user.name %>!</p> -->
+<!-- <br> -->
+<% if (user.role === "admin") { %>
+    <p class="btn btn-secondary btn-block">Admin Page</p>
+    <% } %>
+<div class="jumbotron">
+    <div class="container" style="  border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
+        <div class="row">
+            <div class="col">
+                <h1 class="display-4" style="text-align:center">Welcome <%= user.name %>!</h1>
+            </div>
+            <div class="col" style="text-align:center">
+                <img id="preview" style="height: 15em; display: inline-block; align-items: center;" src="<%=user.profileImgURL%>">
+            </div>
+        </div>
+    </div>
+   
+    <h2 style="margin-top: 10px; text-align: center; font-size: 1.5rem"><%= user.name %>'s Recipes</h2>
+    <hr>
+    <div class="container">
+        <div class="flex-parent">
+            <% for (var i = 0; i < recipes.length; i++) { %>
+                <% if (recipes[i].author == user.name) { %> 
+                    <div class="flex-item">
+                        <a href="/recipes/<%= recipes[i].id %>">
+                            <img class="thumbnail" src="<%= recipes[i].imageName %>">
+                            <br>
+                            <h8><%=recipes[i].recipeName%></h8>
+                        </a>
+                    </div>
+                <% } %> 
+            <% } %> 
+      </div>
+    </div>
+    <hr class="my-4">
+    
+    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="/recipes" role="button">Recipes</a>
+
+    </p>
+    <a href="/users/logout" class="btn btn-secondary">Logout</a>
+  </div>
+
+
+
+
+
+
 
 
 <%- include('./partials/footer') -%>

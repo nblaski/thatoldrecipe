@@ -11,11 +11,10 @@
 <%- include('../partials/messages') -%>
 
 <div class="container " style="margin-top: 1em">
-
 	<div class="showOptions-grid">
 			<div>
 				<a class="btn btn-warning" href="/recipes"> ← Back to recipes</a>
-				<% if (recipe.author === user.name) { %>
+				<% if (recipe.author === user.name || user.role == "admin") { %>
 					<a class="btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
 					<% } else { %>
 					<% } %>		

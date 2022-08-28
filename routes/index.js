@@ -12,11 +12,15 @@ const Recipe = require('../models/Recipe');
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
 
 // Dashboard
-router.get('/dashboard', ensureAuthenticated, (req, res) => {
+router.get('/dashboard', ensureAuthenticated, async (req, res) => {
     // console.log(req.user)
-      res.render('dashboard', {
-        user: req.user
-      })
+    let recipes
+    try {
+      recipes = await Recipe.find().sort({ createdAt: 'desc' }).limit(10).exec()
+    } catch {
+      recipes = []
+    }
+    res.render('dashboard', { user: req.user, recipes: recipes })
     }
   );
 

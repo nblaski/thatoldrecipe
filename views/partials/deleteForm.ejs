@@ -1,4 +1,4 @@
-<% if (recipe.author === user.name) { %>
+<% if (recipe.author === user.name || user.role == "admin") { %>
     <form id="delete" method="POST" action="<%= url %>?_method=DELETE"> 
         <button class="d-inline btn btn-danger" type="button" onclick="checker()">Delete</button>
     </form>

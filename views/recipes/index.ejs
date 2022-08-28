@@ -10,12 +10,9 @@
             <div class="splide__track">
                 <ul class="splide__list">
                     <% recipes.forEach(recipe => { %>
-                        <li class="splide__slide"><a href="https://thisoldrecipe.herokuapp.com/recipes/<%= recipe.id %>"><img src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 300px; object-fit: cover;"></li></a>
+                        <li class="splide__slide"><a href="http://localhost:3003/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 200px; object-fit: cover;"><h8 style="display:block; text-align:center; padding: 2px;"><%=recipe.recipeName%></h8></li></a>
+                        <!-- <li class="splide__slide"><a href="https://thisoldrecipe.herokuapp.com/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 300px; object-fit: cover;"></li></a> -->
                     <% }) %>  
-                        <!-- <li class="splide__slide"><img src="images/celestia-dristi_tn.svg" alt="dristi"></li> -->
-                        <!-- <li class="splide__slide">Slide 01</li>
-                        <li class="splide__slide">Slide 02</li>
-                        <li class="splide__slide">Slide 03</li> -->
                 </ul>
             </div>
         </div>
@@ -33,7 +30,7 @@
                 <% if (recipes[i].author == user.name) { %> 
                     <div class="flex-item">
                         <a href="/recipes/<%= recipes[i].id %>">
-                            <img src="<%= recipes[i].imageName %>">
+                            <img class="thumbnail" src="<%= recipes[i].imageName %>">
                             <br>
                             <h8><%=recipes[i].recipeName%></h8>
                         </a>
@@ -74,8 +71,8 @@
                 <% } %>
             <% }) %>
 
-    </div>
-
+    </div> -->
+<!-- 
     <header class="grid-container intro">
         <h2>Recently added:</h2>
     </header>
@@ -116,7 +113,7 @@
     // height   : '10rem',
     focus: 'center',
     autoWidth: true,
-    autoHeight: true
+    // autoHeight: true
   });
   splide.mount();
   

@@ -10,15 +10,15 @@
         <i class="fas fa-user"></i>  <%=username.name %>'s profile<br><br>
             <img id="preview" style="width: 200px;" src="<%=username.profileImgURL%>">
         </h1>
-        <div>
+        <div class="form-group">
             <label>Account Email</label>
-            <input type="text" name="email" placeholder="Username" value="<%=username.email%>" readonly><br>
+            <input class="form-control" type="text" name="email" placeholder="Username" value="<%=username.email%>" readonly><br>
         </div>
-        <div>
+        <div class="form-group">
             <label>Account Name</label>
-            <input type="text" name="full-name" placeholder="Full name" value="<%=username.name%>" readonly><br><br>
+            <input class="form-control" type="text" name="full-name" placeholder="Full name" value="<%=username.name%>" readonly><br><br>
         </div>
-        <div>
+        <div class="form-group">
             <a href="/profile/<%=username.id%>/update" class="btn btn-warning btn-block">Edit Profile</a>
         </div>
     </div>

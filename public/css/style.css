@@ -84,13 +84,11 @@ a:active { text-decoration: none; }
   }
   
   .thumbnail {
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
     transition: transform 0.2s;
-    border: solid 6px #343a40;
-    border-radius: .25em;
-    width: 200px;
-    height: 300px;
-    object-fit: 'cover';
+    /* border: solid 6px #343a40; */
+    /* border-radius: .25em; */
+    /* object-fit: 'cover'; */
   }
   
   .thumbnail:hover {
@@ -428,3 +426,8 @@ textarea::-webkit-scrollbar{
   grid-gap: 5px;
 }
 
+.jumbotron {
+  background-color: rgb(255, 255, 255) !important;
+
+  /* background-image: url('../images/background_light25.png') !important; */
+}
