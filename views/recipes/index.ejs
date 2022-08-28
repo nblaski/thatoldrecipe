@@ -10,8 +10,8 @@
             <div class="splide__track">
                 <ul class="splide__list">
                     <% recipes.forEach(recipe => { %>
-                        <li class="splide__slide"><a href="http://localhost:3003/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 200px; object-fit: cover;"><h8 style="display:block; text-align:center; padding: 2px;"><%=recipe.recipeName%></h8></li></a>
-                        <!-- <li class="splide__slide"><a href="https://thisoldrecipe.herokuapp.com/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 300px; object-fit: cover;"></li></a> -->
+                        <!-- <li class="splide__slide"><a href="http://localhost:3003/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 200px; object-fit: cover;"><h8 style="display:block; text-align:center; padding: 2px;"><%=recipe.recipeName%></h8></li></a> -->
+                        <li class="splide__slide"><a href="https://thisoldrecipe.herokuapp.com/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 300px; object-fit: cover;"></li></a>
                     <% }) %>  
                 </ul>
             </div>
@@ -40,52 +40,6 @@
       </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- GRID GRID X FROM TREEHOUSE RECIPE BOX -->
-    <!-- <header class="grid-container intro">
-        <h2>Recently added by: <%= user.name %></h2>
-    </header>
-    <div class="grid-container grid-x grid-margin-x medium-up-2 large-up-3">
-            <% recipes.forEach(recipe => { %>
-                <% if (recipe.author === user.name) { %>
-                        <a class="cell" href="/recipes/<%= recipe.id %>">
-                        <img class="thumbnail" src="<%= recipe.imageName %>">
-                        <div class="thumbnailTitle">
-                            <h5 style="text-align: center;"><%=recipe.recipeName%></h5>
-                            <p style="display: inline; text-align: center;">Recipe by: <%=recipe.author%></p>
-                        </div>
-                        </a>
-                <% } %>
-            <% }) %>
-
-    </div> -->
-<!-- 
-    <header class="grid-container intro">
-        <h2>Recently added:</h2>
-    </header>
-    <div class="grid-container grid-x grid-margin-x medium-up-2 large-up-3">
-            <% recipes.forEach(recipe => { %>
-                    <a class="cell" href="/recipes/<%= recipe.id %>">
-                    <img class="thumbnail" src="<%= recipe.imageName %>">
-                    <h5>Recipe by: <%=recipe.author%></h5>
-                    </a>
-            <% }) %>
-
-    </div> -->
-
 
 </div>
 
