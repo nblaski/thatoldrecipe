@@ -15,7 +15,9 @@ exports.s3UploadProfileIcon = async (file, username) => {
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: `profileIcon/${randomID}-${file.originalname}-${username}`,
             // Body = buffer
-            Body: file.buffer
+            Body: sharp(file.buffer)
+            .toFormat('jpeg')
+            .resize({ height: 1200, fit: 'contain' })
     };
         return await s3.upload(param).promise(), { paramKey: param.Key };
     } else {
@@ -88,40 +90,3 @@ exports.s3UploadResize = async (file, username) => {
 
 
 
-
-
-
-
-
-
-// exports.s3UploadResize = async (file, username) => {
-//     const s3 = new S3();
-//     if(file) {
-//         const storage = s3Storage({
-//             Bucket: process.env.AWS_BUCKET_NAME,
-//             Key: `coverImages/${randomID}-${file.originalname}-${username}`,
-//             // Body = buffer
-//             // Body: file.buffer,
-//             ACL: 'public-read',
-//             resize: {
-//                 height: 300
-//             }
-//     });
-//     const upload = multer({ storage: storage })
-
-//         return await s3.upload(storage).promise(), { storageKey: storage.Key };
-//     } else {
-//         console.log("no file selected");
-//     }
-// }
-
-// const storage = s3Storage({
-//     s3,
-//     Bucket: process.env.AWS_BUCKET_NAME,
-//     Key: `${process.env.AWS_BUCKET_NAME}/test/${Date.now()}-myImage`,
-//     ACL: 'public-read',
-//     resize: {
-//       height: 300
-//     }
-//   })
-//   const upload = multer({ storage: storage })

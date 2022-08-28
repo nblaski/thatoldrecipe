@@ -11,7 +11,7 @@
                 <ul class="splide__list">
                     <% recipes.forEach(recipe => { %>
                         <!-- <li class="splide__slide"><a href="http://localhost:3003/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 200px; object-fit: cover;"><h8 style="display:block; text-align:center; padding: 2px;"><%=recipe.recipeName%></h8></li></a> -->
-                        <li class="splide__slide"><a href="https://thisoldrecipe.herokuapp.com/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 300px; object-fit: cover;"></li></a>
+                        <li class="splide__slide"><a href="https://thisoldrecipe.herokuapp.com/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 200px; object-fit: cover;"><h8 style="display:block; text-align:center; padding: 2px;"><%=recipe.recipeName%></h8></li></a>
                     <% }) %>  
                 </ul>
             </div>
@@ -20,23 +20,35 @@
 <div class="container mt-12">
     <!-- <h2 class="text-secondary">Recently Added Recipes</h2> -->
     <!-- <p>RECENTLY ADDED RECIPES</p> -->
-    
-    <h2 style="margin-top: 10px; text-align: center; font-size: 1.5rem"><%= user.name %>'s Recipes</h2>
+    <div class="row form-group">
+        <div class="col-3">
+            <h2 style="margin-top: 10px; text-align: left; font-size: 1.5rem">Family Recipes  </h2>
+        </div>
+        <div class="col">
+           
+        </div>
+       
+    </div>
+    <div class="input-group mb-3"  style="padding-top: .5em">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-default">Search Recipe Name</span>
+        </div>
+        <input id="search" name="search" onkeyup="query(getElementById('search'))" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+      </div>    
     <hr>
     <div class="container">
         
-        <div class="flex-parent">
+        <div id="cards" class="flex-parent">
             <% for (var i = 0; i < recipes.length; i++) { %>
-                <% if (recipes[i].author == user.name) { %> 
                     <div class="flex-item">
                         <a href="/recipes/<%= recipes[i].id %>">
                             <img class="thumbnail" src="<%= recipes[i].imageName %>">
                             <br>
-                            <h8><%=recipes[i].recipeName%></h8>
+                            <h8 id="recipeName_<%i%>"><%=recipes[i].recipeName%></h8>
                         </a>
                     </div>
-                <% } %> 
             <% } %> 
+            <p id="noResults" style="display: none">There are no recipe names that match your search.</p>
       </div>
     </div>
 </div>
@@ -44,6 +56,34 @@
 </div>
 
 <script>
+
+
+function query(searchValue) {
+    console.log(searchValue.value);
+    let search = searchValue.value;
+    let cards = document.getElementsByClassName('flex-item');
+    let noResults = document.getElementById('noResults')
+    let array = [];
+    for (var i = 0; i < cards.length; i++) {
+        let card = cards[i].innerText.toLowerCase();
+        let cardAttribute = cards[i].style.display;
+        if (card.includes(search)) {
+            cards[i].setAttribute('style', 'display: inline')
+        } else {
+            cards[i].setAttribute('style', 'display: none')
+        }
+        let nodeValue = cards[i].attributes.style.nodeValue;
+        array.push(nodeValue);
+    }
+    if (array.includes('display: inline')) {
+        noResults.setAttribute('style', 'display: none')
+        } else {
+            noResults.setAttribute('style', 'display: inline')
+        }
+}
+
+
+
     const splide = new Splide('.splide', {
     type: 'loop', //slide, loop, fade
     padding: { y: 10 }, //css values
