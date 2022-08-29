@@ -18,23 +18,45 @@
         </div>
     </div> 
 <div class="container mt-12">
-    <!-- <h2 class="text-secondary">Recently Added Recipes</h2> -->
-    <!-- <p>RECENTLY ADDED RECIPES</p> -->
-    <div class="row form-group">
-        <div class="col">
-            <h2 style="margin-top: 10px; text-align: left; font-size: 1.5rem">All Recipes  </h2>
-        </div>
-        <!-- <div class="col">
-           
-        </div> -->
-       
-    </div>
+        <div>
+            <h2 style="margin-top: 10px; text-align: left; font-size: 1.5rem">All Recipes</h2>
+            <p>Search all recipes by name or category.</p>
+        </div>       
     <div class="input-group mb-3"  style="padding-top: .5em">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-default">Search Name</span>
+          <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
         </div>
         <input id="search" name="search" onkeyup="query(getElementById('search'))" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-      </div>    
+      </div>  
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Category</label>
+        </div>
+        <select class="custom-select" id="categorySearch" onchange="querySelect(getElementById('categorySearch'))">
+          <option selected>Choose...</option>
+          <option id="c1" value="Appetizer">Appetizer</option>
+          <option id="c2" value="Baked-goods">Baked-goods</option>
+          <option id="c3" value="Bread">Bread</option>
+          <option id="c4" value="Breakfast">Breakfast</option>
+          <option id="c5" value="Cookies">Cookies</option>
+          <option id="c6" value="Dessert">Dessert</option>
+          <option id="c7" value="Dinner">Dinner</option>
+          <option id="c8" value="Gluten-free">Gluten-free</option>
+          <option id="c9" value="Holiday-Multiple">Holiday-Multiple</option>
+          <option id="c10" value="Holiday-Easter">Holiday-Easter</option>
+          <option id="c11" value="Holiday-Halloween">Holiday-Halloween</option>
+          <option id="c12" value="Holiday-4thJuly">Holiday-4thJuly</option>
+          <option id="c13" value="Holiday-Thanksgiving">Holiday-Thanksgiving</option>
+          <option id="c14" value="Holiday-Xmas">Holiday-Xmas</option>
+          <option id="c15" value="Lunch">Lunch</option>
+          <option id="c16" value="Main-course">Main-course</option>
+          <option id="c17" value="Salad">Salad</option>
+          <option id="c18" value="Side-dish">Side-dish</option>
+          <option id="c19" value="Snack">Snack</option>
+          <option id="c20" value="Soup">Soup</option>
+          <option id="c21" value="Vegetarian">Vegetarian</option>
+        </select>
+      </div>  
     <hr>
     <div class="container">
         
@@ -44,7 +66,8 @@
                         <a href="/recipes/<%= recipes[i].id %>">
                             <img class="thumbnail" src="<%= recipes[i].imageName %>">
                             <br>
-                            <h8 id="recipeName_<%i%>"><%=recipes[i].recipeName%></h8>
+                            <h8 id="recipeName_<%=i%>"><%=recipes[i].recipeName%></h8>
+                            <h8 id="category_<%=i%>" style="display: none;"><%=recipes[i].category%></h8>
                         </a>
                     </div>
             <% } %> 
@@ -57,11 +80,37 @@
 
 <script>
 
+function querySelect(searchValue) {
+    let search = searchValue.value;
+    console.log("search = " + search);
+    document.getElementById('search').value = "";
+    let cards = document.getElementsByClassName('flex-item');
+    let noResults = document.getElementById('noResults')
+    let array = [];
+    for (var i = 0; i < cards.length; i++) {
+        let card = document.getElementById(`category_${i}`).innerText;
+
+        console.log("card innerTExt = " + card)
+        let cardAttribute = cards[i].style.display;
+        if (card.includes(search) || search == "Choose...") {
+            cards[i].setAttribute('style', 'display: inline')
+        } else {
+            cards[i].setAttribute('style', 'display: none')
+        }
+        let nodeValue = cards[i].attributes.style.nodeValue;
+        array.push(nodeValue);
+    }
+    if (array.includes('display: inline')) {
+        noResults.setAttribute('style', 'display: none')
+        } else {
+            noResults.setAttribute('style', 'display: inline')
+        }
+}
 
 function query(searchValue) {
     let search = searchValue.value.toLowerCase();
     console.log(search);
-
+    document.getElementById('categorySearch').value = "Choose...";
     let cards = document.getElementsByClassName('flex-item');
     let noResults = document.getElementById('noResults')
     let array = [];
