@@ -41,12 +41,20 @@
 	</div>
 	<br>
 	<br>
+	<h6><b>Categories</b></h6>
+	<hr style="height:1px;border:none;color:#333;background-color:#333;" >
+	<ul>
+		<% for (var i = 0; i < recipe.category.length; i++) { %>
+		<li style="display: inline-block"><%= recipe.category[i]%>, </li>
+		<% } %>
+	</ul>
+
 		<% if (recipe.allergens.length !== 0) { %>
 			<h6><b>Allergens</b></h6>
 			<hr style="height:1px;border:none;color:#333;background-color:#333;" >
 			<ul>
 				<% for (var i = 0; i < recipe.allergens.length; i++) { %>
-				<li style="display: inline-block"><%= recipe.allergens[i]%></li>
+				<li style="display: inline-block"><%= recipe.allergens[i]%>, </li>
 				<% } %>
 			</ul>
 		<% } else { %> 

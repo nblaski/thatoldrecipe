@@ -9,11 +9,45 @@
 </div>
 
 <br>
+
+<h6>Category </h6>
+<br>
+
+<div id="categoryDiv" class="form-group">
+    <select name="category" id="category" class="selectpicker" multiple data-width="100%">
+        <option id="c1" value="Appetizer">Appetizer</option>
+        <option id="c2" value="Baked-goods">Baked-goods</option>
+        <option id="c3" value="Bread">Bread</option>
+        <option id="c4" value="Breakfast">Breakfast</option>
+        <option id="c5" value="Cookies">Cookies</option>
+        <option id="c6" value="Dessert">Dessert</option>
+        <option id="c7" value="Dinner">Dinner</option>
+        <option id="c8" value="Gluten-free">Gluten-free</option>
+        <option id="c9" value="Holiday-Multiple">Holiday-Multiple</option>
+        <option id="c10" value="Holiday-Easter">Holiday-Easter</option>
+        <option id="c11" value="Holiday-Halloween">Holiday-Halloween</option>
+        <option id="c12" value="Holiday-4thJuly">Holiday-4thJuly</option>
+        <option id="c13" value="Holiday-Thanksgiving">Holiday-Thanksgiving</option>
+        <option id="c14" value="Holiday-Xmas">Holiday-Xmas</option>
+        <option id="c15" value="Lunch">Lunch</option>
+        <option id="c16" value="Main-course">Main-course</option>
+        <option id="c17" value="Salad">Salad</option>
+        <option id="c18" value="Side-dish">Side-dish</option>
+        <option id="c19" value="Snack">Snack</option>
+        <option id="c20" value="Soup">Soup</option>
+        <option id="c21" value="Vegetarian">Vegetarian</option>
+    </select>
+</div>
+<span class="error"><p id="category_error"></p></span>
+
+<br>
+
 <h8>Allergens </h8><p style="display: inline-block; color: grey; font-size:small"> (optional)</p>
 <br>
 
+
 <div class="form-group">
-    <select name="allergens" id="allergens" class="selectpicker" multiple data-width="fit">
+    <select name="allergens" id="allergens" class="selectpicker" multiple data-width="100%">
         <option id="a1" value="dairy">DAIRY</option>
         <option id="a2" value="fish">FISH</option>
         <option id="a3" value="gluten">GLUTEN</option>
@@ -131,4 +165,5 @@
 
 <div style="display: none" class="form-group">
     <h5 id="allergenString"><%=recipe.allergens%></h5>
+    <h5 id="categoryString"><%=recipe.category%></h5>
 </div>

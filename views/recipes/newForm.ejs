@@ -19,11 +19,43 @@
         </div>
         
         <br>
+
+        <h6>Category </h6>
+        <br>
+        <div id="categoryDiv" class="form-group">
+            <select id="category" name="category" class="selectpicker" multiple data-width="100%">
+                <option id="c1" value="Appetizer">Appetizer</option>
+                <option id="c2" value="Baked-goods">Baked-goods</option>
+                <option id="c3" value="Bread">Bread</option>
+                <option id="c4" value="Breakfast">Breakfast</option>
+                <option id="c5" value="Cookies">Cookies</option>
+                <option id="c6" value="Dessert">Dessert</option>
+                <option id="c7" value="Dinner">Dinner</option>
+                <option id="c8" value="Gluten-free">Gluten-free</option>
+                <option id="c9" value="Holiday-Multiple">Holiday-Multiple</option>
+                <option id="c10" value="Holiday-Easter">Holiday-Easter</option>
+                <option id="c11" value="Holiday-Halloween">Holiday-Halloween</option>
+                <option id="c12" value="Holiday-4thJuly">Holiday-4thJuly</option>
+                <option id="c13" value="Holiday-Thanksgiving">Holiday-Thanksgiving</option>
+                <option id="c14" value="Holiday-Xmas">Holiday-Xmas</option>
+                <option id="c15" value="Lunch">Lunch</option>
+                <option id="c16" value="Main-course">Main-course</option>
+                <option id="c17" value="Salad">Salad</option>
+                <option id="c18" value="Side-dish">Side-dish</option>
+                <option id="c19" value="Snack">Snack</option>
+                <option id="c20" value="Soup">Soup</option>
+                <option id="c21" value="Vegetarian">Vegetarian</option>
+            </select>
+        </div>
+        <div><p id="showCategorySelections"></p></div> 
+        <span class="error"><p id="category_error"></p></span>
+        <br>
+
         <h8>Allergens </h8><p style="display: inline-block; color: grey; font-size:small"> (optional)</p>
         <br>
 
         <div class="form-group">
-            <select name="allergens" id="allergens" class="selectpicker" multiple data-width="fit">
+            <select name="allergens" id="allergens" class="selectpicker" multiple data-width="100%">
                 <option id="a1" value="dairy">DAIRY</option>
                 <option id="a2" value="fish">FISH</option>
                 <option id="a3" value="gluten">GLUTEN</option>
@@ -77,21 +109,12 @@
             </ol>
         </div>        
         <div mb-3>
-
-
             <div class="form-group">
                 <img id="preview"></img>
                 <input type="file" class="form-control" id="cover" accept="image/*" name="cover">
                 <span class="error"><p id="cover_error"></p></span>
                 <span id="size"></span>
             </div>
-<!-- 
-            <div id="changeUpload" class="form-group">
-                <img id="output"/>
-                <input type="file" class="form-control-file" id="cover" name="cover" accept="image/*" onchange="loadFile(event)">
-                <span class="error"><p id="cover_error"></p></span>
-                <span id="size"></span>
-            </div> -->
         </div>
 
         <div>
@@ -107,61 +130,6 @@
 
 <script>
  
-        // let imgInput = document.getElementById('cover');
-        // imgInput.addEventListener('change', function (e) {
-        //     if (e.target.files) {
-        //         let imageFile = e.target.files[0];
-        //         var reader = new FileReader();
-        //         reader.onload = function (e) {
-        //             var img = document.createElement("img");
-        //             img.onload = function (event) {
-        //                 // Dynamically create a canvas element
-        //                 var canvas = document.createElement("canvas");
-
-        //                 // var canvas = document.getElementById("canvas");
-        //                 var ctx = canvas.getContext("2d");
-
-        //                 // Actual resizing
-        //                 ctx.drawImage(img, 0, 0 ,300, 300);
-
-        //                 // Show resized image in preview element
-        //                 var dataurl = canvas.toDataURL(imageFile.type);
-        //                 document.getElementById("preview").src = dataurl;
-        //             }
-        //             img.src = e.target.result;
-        //         }
-        //         reader.readAsDataURL(imageFile);
-        //     }
-        // });
-
-    //     fileValidation = () => {
-    // console.log("fileValidation Activated");
-    //     let fi = document.getElementById('cover');
-    //     let img = document.getElementById('output')
-    //     let size = document.getElementById('size')
-    //     if (fi.files.length > 0) {
-    //         for (let i = 0; i <= fi.files.length - 1; i++) {
- 
-    //             const fsize = fi.files.item(i).size;
-    //             const file = Math.round((fsize / 1024));
-    //             // The size of the file.
-    //             if (file >= 2096) {
-    //                 alert(
-    //                   "File too Big, please select a file less than 2mb");
-    //                   fi.value = "";
-    //                   img.src = "";
-    //                   size.innerHTML = "";
-    //             } else {
-    //                 input = document.getElementById("cover_error").innerHTML = "";
-    //                 fi.style.borderWidth = ""
-    //                 fi.style.borderColor = ""
-    //                 document.getElementById('size').innerHTML = 'File size: <b>'
-    //                 + file + '</b> KB';
-    //             }
-    //         }
-    //     }
-    // }
-
         let imgInput = document.getElementById('cover');
         imgInput.addEventListener('change', function (e) {
             if (e.target.files) {
@@ -251,6 +219,7 @@ document.getElementById("newForm").onsubmit = function () {
         var x = document.forms["newForm"]["recipeName"].value;
         var y = document.forms["newForm"]["author"].value;
         var z = document.forms["newForm"]["allergens"].value;
+        var c = document.getElementById('category').value;
         var a = document.getElementById("ingredients_0").value;
         console.log("a - " + a)
         var aa = document.getElementById("amount_0").value;
@@ -299,6 +268,19 @@ document.getElementById("newForm").onsubmit = function () {
             document.getElementById("author_error").innerHTML = authorError;
             submit = false;
         }
+
+        if (c == null || c == "") {
+            let categoryError = "Please select categories";
+            let categoryElement = document.getElementById("category_error");
+            categoryElement.innerHTML = categoryError;
+            categoryElement.setAttribute("style", "display: inline-block");
+            document.getElementById("categoryDiv").style.borderStyle = "solid"
+            document.getElementById("categoryDiv").style.borderRadius = ".25em"
+            document.getElementById("categoryDiv").style.borderWidth = "thin"
+            document.getElementById("categoryDiv").style.borderColor = "red"
+            submit = false;
+        }
+
         if (a == null || a == "") {
             let ingredientsError = "Please enter ingredient";
             let ingredientsElement = document.getElementById("ingredients_0_error");
@@ -354,6 +336,13 @@ document.getElementById("newForm").onsubmit = function () {
         input.setAttribute("style", "display: none");
         this.setAttribute("style", "border-width: ");
         this.setAttribute("style", "border-color: ");
+        categorySelect = this.id + "Div";
+        if (categorySelect == "categoryDiv") {
+            document.getElementById("categoryDiv").setAttribute("style", "border-width: ");
+            document.getElementById("categoryDiv").setAttribute("style", "border-style: ");
+            document.getElementById("categoryDiv").setAttribute("style", "border-color: ");
+        } else {
+        }
     }
 
     function removeCoverWarning() {
@@ -364,6 +353,7 @@ document.getElementById("newForm").onsubmit = function () {
     
     document.getElementById("recipeName").onkeyup = removeWarning;
     document.getElementById("author").onkeyup = removeWarning;
+    document.getElementById("category").onchange = removeWarning;
     document.getElementById("stepTextarea_0").onkeyup = removeWarning;
     document.getElementById("stepTitleTextarea_0").onkeyup = removeWarning;
     document.getElementById("ingredients_0").onkeyup = removeWarning;

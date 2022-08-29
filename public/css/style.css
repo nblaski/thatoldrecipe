@@ -431,3 +431,14 @@ textarea::-webkit-scrollbar{
 
   /* background-image: url('../images/background_light25.png') !important; */
 }
+
+option {
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: normal !important;
+  white-space: normal;
+}
+
+option:before {
+  white-space: break-spaces;
+}

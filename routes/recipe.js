@@ -59,6 +59,7 @@ router.post('/newForm', upload.single('cover'), async (req, res) => {
         const recipe = new Recipe ({
           recipeName: req.body.recipeName,
           author: req.body.author,
+          category: req.body.category,
           allergens: req.body.allergens,
           ingredients: req.body.ingredients,
           amount: req.body.amount,
@@ -92,6 +93,7 @@ router.get('/:id', ensureAuthenticated, async (req, res) => {
   try {
       const recipe = await Recipe.findById(req.params.id);
       const allergenString = JSON.stringify(recipe.allergens)
+      const categoryString = JSON.stringify(recipe.category)
       res.render('recipes/show', { user: req.user, recipe: recipe })
     } catch(error) {
       console.log(error);
@@ -147,6 +149,7 @@ router.put('/:id', upload.single('cover'), async (req, res) => {
     oldFile = recipe.imageName.slice(46);
     recipe.recipeName = req.body.recipeName
     recipe.author = req.body.author
+    recipe.category = req.body.category
     recipe.allergens = req.body.allergens
     recipe.ingredients = req.body.ingredients
     recipe.stepName = req.body.stepName

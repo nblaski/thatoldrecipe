@@ -33,6 +33,9 @@ const recipeSchema = new Schema({
   },
   imageName: {
     type: String
+  },
+  category: {
+    type: Array
   }
 });
 

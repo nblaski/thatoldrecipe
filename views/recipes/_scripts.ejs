@@ -41,9 +41,105 @@ function setOptionAllergens() {
         }
 }
 
+function setOptionCategories() {
+    var categoryString = document.getElementById('categoryString');
+        if (categoryString === null || categoryString == undefined) {
+            console.log("need to select categories");
+        } else {
+            var array = categoryString.textContent.split(",");
+                if (array.indexOf('Appetizer') >= 0) { 
+                var opt = document.getElementById('c1');
+                    opt.selected = true;
+                }
+                if (array.indexOf('Baked-goods') >= 0) { 
+                var opt = document.getElementById('c2');
+                    opt.selected = true;
+                }    
+                if (array.indexOf('Bread') >= 0) { 
+                var opt = document.getElementById('c3');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('Breakfast') >= 0) { 
+                var opt = document.getElementById('c4');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('Cookies') >= 0) { 
+                var opt = document.getElementById('c5');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('Dessert') >= 0) { 
+                var opt = document.getElementById('c6');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('Dinner') >= 0) { 
+                var opt = document.getElementById('c7');
+                    opt.selected = true;
+                }  
+                if (array.indexOf('Gluten-free') >= 0) { 
+                var opt = document.getElementById('c8');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Holiday-Multiple') >= 0) { 
+                var opt = document.getElementById('c9');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Holiday-Easter') >= 0) { 
+                var opt = document.getElementById('c10');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Holiday-Halloween') >= 0) { 
+                var opt = document.getElementById('c11');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Holiday-4thJuly') >= 0) { 
+                var opt = document.getElementById('c12');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Holiday-Thanksgiving') >= 0) { 
+                var opt = document.getElementById('c13');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Holiday-Xmas') >= 0) { 
+                var opt = document.getElementById('c14');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Lunch') >= 0) { 
+                var opt = document.getElementById('c15');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Main-course') >= 0) { 
+                var opt = document.getElementById('c16');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Salad') >= 0) { 
+                var opt = document.getElementById('c17');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Side-dish') >= 0) { 
+                var opt = document.getElementById('c18');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Snack') >= 0) { 
+                var opt = document.getElementById('c19');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Soup') >= 0) { 
+                var opt = document.getElementById('c20');
+                    opt.selected = true;
+                } 
+                if (array.indexOf('Vegetarian') >= 0) { 
+                var opt = document.getElementById('c21');
+                    opt.selected = true;
+                } 
+        }
+}
+
+
 var allergen = document.getElementById('allergenString');
 setOptionAllergens();
 
+var category = document.getElementById('categoryString');
+setOptionCategories();
 
 
 const changeUploadBtn = document.getElementById("changeUploadBtn");
@@ -90,6 +186,8 @@ function hideUpload() {
     document.getElementById("formFields").onsubmit = function () {
         var x = document.forms["formFields"]["recipeName"].value;
         var y = document.forms["formFields"]["author"].value;
+        var c = document.getElementById('category').value;
+        console.log("update c value "+c)
         var z = document.forms["formFields"]["allergens"].value;
         var a = document.forms["formFields"]["ingredients_0"].value;
         console.log("a - " + a)
@@ -139,6 +237,19 @@ function hideUpload() {
             document.getElementById("author_error").innerHTML = authorError;
             submit = false;
         }
+
+        if (c == null || c == "") {
+            let categoryError = "Please select categories";
+            let categoryElement = document.getElementById("category_error");
+            categoryElement.innerHTML = categoryError;
+            categoryElement.setAttribute("style", "display: inline-block");
+            document.getElementById("categoryDiv").style.borderStyle = "solid"
+            document.getElementById("categoryDiv").style.borderRadius = ".25em"
+            document.getElementById("categoryDiv").style.borderWidth = "thin"
+            document.getElementById("categoryDiv").style.borderColor = "red"
+            submit = false;
+        }
+
         if (a == null || a == "") {
             let ingredientsError = "Please enter ingredient";
             let ingredientsElement = document.getElementById("ingredients_0_error");
@@ -194,6 +305,13 @@ function hideUpload() {
         input.setAttribute("style", "display: none");
         this.setAttribute("style", "border-width: ");
         this.setAttribute("style", "border-color: ");
+        categorySelect = this.id + "Div";
+        if (categorySelect == "categoryDiv") {
+            document.getElementById("categoryDiv").setAttribute("style", "border-width: ");
+            document.getElementById("categoryDiv").setAttribute("style", "border-style: ");
+            document.getElementById("categoryDiv").setAttribute("style", "border-color: ");
+        } else {
+        }
     }
 
     function removeCoverWarning() {
@@ -204,6 +322,7 @@ function hideUpload() {
     
     document.getElementById("recipeName").onkeyup = removeWarning;
     document.getElementById("author").onkeyup = removeWarning;
+    document.getElementById("category").onchange = removeWarning;
     document.getElementById("stepTextarea_0").onkeyup = removeWarning;
     document.getElementById("stepTitleTextarea_0").onkeyup = removeWarning;
     document.getElementById("ingredients_0").onkeyup = removeWarning;
