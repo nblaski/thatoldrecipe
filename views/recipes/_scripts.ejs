@@ -152,6 +152,7 @@ removeUploadBtn.addEventListener("click", removeUpload , false);
 function addUpload () {
     document.getElementById("editImage").style.display = 'none';
     document.getElementById('cover').style.display = 'inline-block';
+    document.getElementById('preview').style.display = 'inline-block';
     document.getElementById('changeUploadBtn').style.display = 'none';
     document.getElementById('removeUploadBtn').style.display = 'inline-block';
     document.getElementById('cover').style.onchange = "loadFile(event)";
@@ -159,6 +160,7 @@ function addUpload () {
 
 function removeUpload() {
     document.getElementById("editImage").style.display = 'inline-block';
+    document.getElementById('preview').src = '';
     document.getElementById('cover').style.display = 'none';
     document.getElementById('cover').value = "";
     document.getElementById('size').innerHTML = "";

@@ -141,12 +141,7 @@
 </div>        
 
 <div class="form-group">
-    <img id="editImage" style="max-height: 20em" src="<%=recipe.imageName%>">
-</div>
-
-<div id="imageUploadButtons" class="form-group">
-    <button id="changeUploadBtn" type="button" class="btn btn-warning" style="display: inline">Select to Change Image</button>
-    <button id="removeUploadBtn" type="button" class="btn btn-warning" style="display: none;">Select to keep existing image</button>
+    <img id="editImage" style="max-width: 20em" src="<%=recipe.imageName%>">
 </div>
 
 <!-- <div id="changeUpload" class="form-group">
@@ -158,6 +153,10 @@
 
 <div class="form-group">
     <img id="preview"></img>
+    <div id="imageUploadButtons" class="form-group">
+        <button id="changeUploadBtn" type="button" class="btn btn-danger" style="display: inline">Select to CHANGE image</button>
+        <button id="removeUploadBtn" type="button" class="btn btn-danger" style="display: none;">Select to KEEP ORIGINAL image</button>
+    </div>
     <input type="file" class="form-control" id="cover" accept="image/*" name="cover" style="display: none;">
     <span class="error"><p id="cover_error"></p></span>
     <span id="size"></span>

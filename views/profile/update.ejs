@@ -7,15 +7,31 @@
   <div class="col-md-6 m-auto">
     <div class="card card-body">
       <h1 class="text-center mb-3">
-        <i class="fas fa-user"></i>  <%=username.name %>'s profile<br><br>
+        <!-- <i class="fas fa-user"></i>   -->
+        <%=username.name %>'s profile<br><br>
             <img id="preview" style="width: 200px;" src="<%=username.profileImgURL%>">
       </h1>
+
+      
        
           <form class="" action="/profile/<%=username.id%>/update" method="POST" enctype="multipart/form-data">
-              <div class="form-group">
+            <h1 class="text-center mb-3">
+              <img id="previewNew"></img>
+            </h1>
+            <div class="form-group">
+              <div id="imageUploadButtons" class="form-group">
+                <button id="changeUploadBtn" type="button" class="btn btn-danger" style="display: inline">Select to CHANGE image</button>
+                <button id="removeUploadBtn" type="button" class="btn btn-danger" style="display: none;">Select to KEEP ORIGINAL image</button>
+             </div>
+              <input type="file" class="form-control" id="file" accept="image/*" name="file" style="display: none;">
+              <span class="error"><p id="cover_error"></p></span>
+              <span id="size"></span>
+          </div>
+              <!-- <div class="form-group">
                     <p>Update Profile Icon</p>
                     <input class="form-control" type="file" id="file" name="file">   
-              </div>
+                    
+              </div> -->
                 <div class="form-group">
                     <label>Account Email</label>
                     <input class="form-control" type="text" name="email" value="<%=username.email%>" readonly><br>
@@ -36,6 +52,137 @@
     </div>
   </div>
 </div>
+
+<script>
+
+
+const changeUploadBtn = document.getElementById("changeUploadBtn");
+const editImage = document.getElementById("preview");
+changeUploadBtn.addEventListener("click", addUpload , false);
+
+const removeUploadBtn = document.getElementById("removeUploadBtn");
+removeUploadBtn.addEventListener("click", removeUpload , false);
+
+function addUpload () {
+    document.getElementById("preview").style.display = 'none';
+    document.getElementById("previewNew").style.display = 'inline-block';
+    document.getElementById('file').style.display = 'inline-block';
+    document.getElementById('changeUploadBtn').style.display = 'none';
+    document.getElementById('removeUploadBtn').style.display = 'inline-block';
+    removeUploadBtn.addEventListener("click", removeUpload , false);
+    document.getElementById('file').onchange = previewImg;
+
+}
+
+function removeUpload() {
+    document.getElementById("preview").style.display = 'inline';
+    document.getElementById("preview").style.width = '200px';
+    document.getElementById('previewNew').style.display = 'none';
+    document.getElementById('previewNew').src = '';
+    document.getElementById('file').value = "";
+    document.getElementById('size').innerHTML = "";
+    document.getElementById('cover_error').innerHTML = "";
+    document.getElementById('file').style.display = 'none';
+    document.getElementById('changeUploadBtn').style.display = 'inline-block';
+    document.getElementById('removeUploadBtn').style.display = 'none';
+    changeUploadBtn.addEventListener("click", addUpload , false);
+    document.getElementById('file').onchange = previewImg;
+
+   
+}
+
+function hideUpload() {
+    var x = document.getElementById("changeUpload");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+    }
+
+
+document.getElementById('file').onchange = previewImg;
+        // imgInput.addEventListener('change', function (e) {
+function previewImg (e) {
+            if (e.target.files) {
+                let imageFile = e.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (e) {
+
+                    console.log("fileValidation Activated");
+                    let fi = document.getElementById('file');
+                    let imgPreview = document.getElementById('previewNew')
+                    let size = document.getElementById('size')
+                    if (fi.files.length > 0) {
+                        for (let i = 0; i <= fi.files.length - 1; i++) {
+            
+                            const fsize = fi.files.item(i).size;
+                            const file = Math.round((fsize / 1024));
+                            // // The size of the file.
+                            // if (file >= 2096) {
+                            //     alert(
+                            //     "File too Big, please select a file less than 2mb");
+                            //     fi.value = "";
+                            //     imgPreview.src = "";
+                            //     size.innerHTML = "";
+                            // } else {
+                                input = document.getElementById("cover_error").innerHTML = "";
+                                fi.style.borderWidth = ""
+                                fi.style.borderColor = ""
+                                document.getElementById('size').innerHTML = 'File size: <b>'
+                                + file + '</b> KB';
+                            // }
+                         }
+                    }
+
+
+                    var img = document.createElement("img");
+                    img.onload = function (event) {
+                        // Dynamically create a canvas element
+                        // var canvas = document.createElement("canvas");
+
+                        // var canvas = document.getElementById("canvas");
+                        // var ctx = canvas.getContext("2d");
+
+                        // Actual resizing
+                        var MAX_WIDTH = 300;
+                        var MAX_HEIGHT = 300;
+
+                        var width = img.width;
+                        var height = img.height;
+
+                        // Change the resizing logic
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height = height * (MAX_WIDTH / width);
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width = width * (MAX_HEIGHT / height);
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        var canvas = document.createElement("canvas");
+                        canvas.width = width;
+                        canvas.height = 300;
+                        var ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Show resized image in preview element
+                        var dataurl = canvas.toDataURL(imageFile.type);
+                        document.getElementById("previewNew").src = dataurl;
+                        document.getElementById("preview").setAttribute("style", "display: none");
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(imageFile);
+            }
+        };
+
+
+</script>
 
 <%- include('../partials/footer') -%>
 
