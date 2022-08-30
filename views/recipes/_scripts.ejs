@@ -389,7 +389,7 @@ let imgInput = document.getElementById('cover');
                             const fsize = fi.files.item(i).size;
                             const file = Math.round((fsize / 1024));
                             // The size of the file.
-                            if (file >= 2096) {
+                            if (file >= 100096) {
                                 alert(
                                 "File too Big, please select a file less than 2mb");
                                 fi.value = "";

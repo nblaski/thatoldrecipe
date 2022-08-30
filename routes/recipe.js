@@ -22,7 +22,8 @@ const User = require('../models/User');
 router.get('/', ensureAuthenticated, async (req, res) => {
   let recipes
   try {
-    recipes = await Recipe.find().sort({ createdAt: 'desc' }).limit(10).exec()
+    recipes = await Recipe.find().sort({ createdAt: 'desc' }).exec()
+    // recipes = await Recipe.find().sort({ createdAt: 'desc' }).limit(10).exec()
   } catch {
     recipes = []
   }
