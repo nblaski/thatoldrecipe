@@ -13,7 +13,7 @@ exports.s3UploadProfileIcon = async (file, username) => {
         const s3 = new S3();
         const param = {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `profileIcon/${randomID}-${file.originalname}-${username}`,
+            Key: `profileIcon/${randomID}-${username}-${file.originalname}`,
             // Body = buffer
             Body: sharp(file.buffer)
             .toFormat('jpeg')
@@ -68,7 +68,7 @@ exports.s3UploadResize = async (file, username) => {
         const s3 = new S3();
         const param = {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `coverImages/${randomID}-${file.originalname}-${username}`,
+            Key: `coverImages/${randomID}-${username}-${file.originalname}`,
             // Body = buffer
             Body: sharp(file.buffer)
             .toFormat('jpeg')
