@@ -1,5 +1,8 @@
 <nav class="py-1 navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand text-white" href="/recipes"><b>That Old Recipe</b></a>
+    <a class="navbar-brand text-white" href="/recipes"><b>That Old Recipe 
+    <% if (user.role === "admin") { %>
+       <i>  ADMIN </i>
+        <% } %></b></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -9,17 +12,20 @@
 
         <div class="mr-5">
             <ul class="navbar-nav mr-auto mr-0">
+
+                <li class="nav-item">
+                    <!-- <a class="nav-link text-white" href="/password/change">Change Password</a> -->
+                    <a class="nav-link text-white" href="/">Home</a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/recipes">All Recipes</b></a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/recipes/newForm">Add Recipe</b></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/profile/<%=user.id%>">Profile</b></a>
-                </li>
-
-                <li class="nav-item">
-                    <!-- <a class="nav-link text-white" href="/password/change">Change Password</a> -->
-                    <a class="nav-link text-white" href="/">Dashboard</a>
-
                 </li>
 
                 <li class="nav-item">

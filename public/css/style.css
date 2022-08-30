@@ -444,3 +444,7 @@ option:before {
   white-space: break-spaces;
 }
 
+.btn-secondary {
+color: white !important;
+background-color: #343a40 !important;
+}

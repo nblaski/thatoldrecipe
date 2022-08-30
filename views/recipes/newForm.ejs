@@ -1,8 +1,15 @@
 <%- include('../partials/header') -%>
 <%- include('../partials/navbar') -%>
 
+<div class="jumbotron" style="background: none !important; padding: 20px; margin: 0px; display: inline-block;">
+    <div>
+        <a class="btn btn-secondary" href="/recipes">Back</a>
+
+    </div>
+</div>
+
 <div class="jumbotron" style="background: none !important; padding-top: 20px;">
-    <div class="jumbotron" style="padding: 10px 20px 10px 20px;">
+    <div class="jumbotron" style="padding: 20px 20px 10px 20px;">
         <h2>Create New Recipe</h2>
         <hr>
         <%- include('../partials/messages') -%>
@@ -118,7 +125,7 @@
             </div>
 
             <div>
-                <button class="btn btn-success" type="submit">SUBMIT</button>
+                <button class="btn btn-success btn-block" type="submit">SUBMIT</button>
             </div>
         </form>
     </div>

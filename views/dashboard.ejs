@@ -1,9 +1,7 @@
 <%- include('./partials/header') -%>
 <%- include('./partials/navbar') -%>
 
-<% if (user.role === "admin") { %>
-    <p class="btn btn-secondary btn-block">Admin Page</p>
-    <% } %>
+
 <div class="jumbotron" style="background: none !important; padding-top: 20px;">
     <div class="container" style="border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
         <div class="row align-items-center">
@@ -11,7 +9,7 @@
             <div class="col">
                 <h2 class="display-4" style="text-align: center">Welcome, </h2>
                 <h1 style="text-align:center"><%= user.name %>!</h1>
-                <p style="text-align:justify; padding: 15px;">Start sharing old recipes with family and friends! So you don't get stuck calling your aunt for that old recipe your grandma created on a beat up index card from the 1950's. </p>
+                <p style="text-align:justify; padding: 15px;">Start sharing old recipes with family and friends! So you don't get stuck calling your aunt for <b><i>That Old Recipe</i></b> your grandma created on a beat up index card from the 1950's. </p>
                     <div style="text-align:center; padding: 5px;">
                         <div class="row">
                             <div class="col">

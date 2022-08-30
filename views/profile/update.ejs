@@ -3,6 +3,13 @@
 <%- include('../partials/navbar') -%>
 <%- include ('../partials/messages') -%>
 
+<div class="jumbotron" style="background: none !important; padding: 20px; margin: 0px; display: inline-block;">
+  <div class="">
+      <a class="btn btn-secondary" href="/profile/<%= user.id %>">Back</a>
+  </div>
+</div>
+
+
 <div class="jumbotron" style="background: none !important; padding-top: 20px;">
   <div class="container" style="border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
     <form class="" action="/profile/<%=username.id%>/update" method="POST" enctype="multipart/form-data">
@@ -19,8 +26,7 @@
             <input class="form-control" type="text" name="name" value="<%=username.name%>"><br><br>
           </div>
           <div class="row form-group">
-            <a class="btn btn-warning" href="/profile/<%=user.id%>" style="max-width: 25%; margin: 5px;">Back</a>
-            <button type="submit" class="btn btn-success" style="display: inline-block; max-width: 65%; margin: 5px;">
+            <button type="submit" class="btn btn-success btn-block" style="display: inline-block; margin: 5px;">
               Submit Changes
             </button>
           </div>
