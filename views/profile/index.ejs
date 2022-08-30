@@ -3,28 +3,29 @@
 <%- include('../partials/navbar') -%>
 <%- include ('../partials/messages') -%>
 
-<div class="container mt-5">
-  <div class="col-md-6 m-auto">
-    <div class="card card-body">
-        <h1 class="text-center mb-3">
-        <!-- <i class="fas fa-user"></i>   -->
-        <%=username.name %>'s profile<br><br>
-            <img id="preview" style="width: 200px;" src="<%=username.profileImgURL%>">
-        </h1>
-        <div class="form-group">
-            <label>Account Email</label>
-            <input class="form-control" type="text" name="email" placeholder="Username" value="<%=username.email%>" readonly><br>
-        </div>
-        <div class="form-group">
-            <label>Account Name</label>
-            <input class="form-control" type="text" name="full-name" placeholder="Full name" value="<%=username.name%>" readonly><br><br>
-        </div>
-        <div class="form-group">
-            <a href="/profile/<%=username.id%>/update" class="btn btn-warning btn-block">Edit Profile</a>
-        </div>
+<div class="jumbotron" style="background: none !important; padding-top: 20px;">
+    <div class="container" style="border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
+
+        <div class="row align-items-center" style="padding: 15px;">
+            <div class="col">
+                <h1 style="text-align:center"><%= user.name %> Profile</h1>
+                <br>
+                <div class="row form-group">
+                    <label>Account Email</label>
+                    <input class="form-control" type="text" name="email" placeholder="Username" value="<%=username.email%>" readonly><br>
+                </div>
+                <div class="row form-group">
+                    <label>Account Name</label>
+                    <input class="form-control" type="text" name="full-name" placeholder="Full name" value="<%=username.name%>" readonly><br><br>
+                </div>
+                <div class="row form-group">
+                    <a href="/profile/<%=username.id%>/update" class="btn btn-warning btn-block">Edit Profile</a>
+                </div>
+            </div>
+
+            <div class="col" style="text-align: center;">
+                <img id="preview" style="width: 100%; height: 100%; min-width: 225px; max-width: 250px; object-fit: cover; display: inline-block; align-items: center;" src="<%=user.profileImgURL%>">
+            </div>
     </div>
-  </div>
 </div>
-
-
 <%- include('../partials/footer') -%>

@@ -1,127 +1,130 @@
 <%- include('../partials/header') -%>
 <%- include('../partials/navbar') -%>
 
+<div class="jumbotron" style="background: none !important; padding-top: 20px;">
+    <div class="jumbotron" style="padding: 10px 20px 10px 20px;">
+        <h2>Create New Recipe</h2>
+        <hr>
+        <%- include('../partials/messages') -%>
 
-<div class="container" style="margin-top: 1em">
-    <h2>Create New Recipe</h2>
-    <hr>
-    <%- include('../partials/messages') -%>
-
-    <form id="newForm" action="/recipes/newForm" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="recipeName">Recipe Name</label>
-            <input type="text" id="recipeName" class="form-control" placeholder="Recipe Name" name="recipeName"> <span class="error"><p id="recipeName_error"></p></span>
-        </div>
-        
-        <div class="form-group">
-            <label for="author">Author</label>
-            <input type="text" class="form-control" id="author" value="<%=user.name%>" name="author" readonly> <span class="error"><p id="author_error"></p></span>
-        </div>
-        
-        <br>
-
-        <h6>Category </h6>
-        <br>
-        <div id="categoryDiv" class="form-group">
-            <select id="category" name="category" class="selectpicker" multiple data-width="100%">
-                <option id="c1" value="Appetizer">Appetizer</option>
-                <option id="c2" value="Baked-goods">Baked-goods</option>
-                <option id="c3" value="Bread">Bread</option>
-                <option id="c4" value="Breakfast">Breakfast</option>
-                <option id="c5" value="Cookies">Cookies</option>
-                <option id="c6" value="Dessert">Dessert</option>
-                <option id="c7" value="Dinner">Dinner</option>
-                <option id="c8" value="Gluten-free">Gluten-free</option>
-                <option id="c9" value="Holiday-Multiple">Holiday-Multiple</option>
-                <option id="c10" value="Holiday-Easter">Holiday-Easter</option>
-                <option id="c11" value="Holiday-Halloween">Holiday-Halloween</option>
-                <option id="c12" value="Holiday-4thJuly">Holiday-4thJuly</option>
-                <option id="c13" value="Holiday-Thanksgiving">Holiday-Thanksgiving</option>
-                <option id="c14" value="Holiday-Xmas">Holiday-Xmas</option>
-                <option id="c15" value="Lunch">Lunch</option>
-                <option id="c16" value="Main-course">Main-course</option>
-                <option id="c17" value="Salad">Salad</option>
-                <option id="c18" value="Side-dish">Side-dish</option>
-                <option id="c19" value="Snack">Snack</option>
-                <option id="c20" value="Soup">Soup</option>
-                <option id="c21" value="Vegetarian">Vegetarian</option>
-            </select>
-        </div>
-        <div><p id="showCategorySelections"></p></div> 
-        <span class="error"><p id="category_error"></p></span>
-        <br>
-
-        <h8>Allergens </h8><p style="display: inline-block; color: grey; font-size:small"> (optional)</p>
-        <br>
-
-        <div class="form-group">
-            <select name="allergens" id="allergens" class="selectpicker" multiple data-width="100%">
-                <option id="a1" value="dairy">DAIRY</option>
-                <option id="a2" value="fish">FISH</option>
-                <option id="a3" value="gluten">GLUTEN</option>
-                <option id="a4" value="nuts">NUTS</option>
-                <option id="a5" value="shellfish">SHELLFISH</option>
-                <option id="a6" value="eggs">EGGS</option>
-                <option id="a7" value="meat">MEAT</option>
-                </select>
-        </div>
-        
-        <br>
-        
-        <h6>Ingredients</h6>
-            <hr>
-        
-        <div id="divOlIngredients">
-            <ol id="olIngredients">
-                <div class="ingredients">
-                    <label>Ingredient</label>
-                    <label>Amount</label>
-                </div>
-                <span class="error"><p style="display: none" id="ingredients_0_error"></p></span>
-                <span class="error"><p style="display: none" id="amount_0_error"></p></span>
-                <li>
-                    <div class="ingredients">
-                        <input id="ingredients_0" class="form-control ingGridArea" type="text" name="ingredients[]">
-                        <input id="amount_0" class="form-control amountGridArea" type="text" name="amount[]">
-                        <span id="add" onclick="addLine(this, getElementById('olIngredients'))">+</span>  
-                        <span id="minus" onclick="removeField(this, getElementById('olIngredients'))">-</span>
-                    </div>
-                </li>
-            </ol>
-        </div>
-        
-        <br>
-            <h6>STEPS</h6>
-            <hr>
-        
-        <div id="divStepName">
-            <span class="error"><p style="display: none" id="stepTitleTextarea_0_error"></p></span>
-            <span class="error"><p style="display: none" id="stepTextarea_0_error"></p></span>
-            <ol id="stepName">
-                <li class="liStepNum">
-                    <div class="grow-wrap">
-                        <textarea id="stepTitleTextarea_0" class="form-control stepGridAreaTitle" name="stepNameTitle[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step title..."></textarea>
-                        <textarea id="stepTextarea_0" class="form-control stepGridArea" name="stepName[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step instructions..."></textarea>
-                        <span id="add" onclick="addLine(this, getElementById('stepName'))">+</span>  
-                        <span id="minus" onclick="removeField(this, getElementById('stepName'))">-</span>
-                    </div>
-                </li>
-            </ol>
-        </div>        
-        <div mb-3>
+        <form id="newForm" action="/recipes/newForm" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <img id="preview"></img>
-                <input type="file" class="form-control" id="cover" accept="image/*" name="cover">
-                <span class="error"><p id="cover_error"></p></span>
-                <span id="size"></span>
+                <label for="recipeName">Recipe Name</label>
+                <input type="text" id="recipeName" class="form-control" placeholder="Recipe Name" name="recipeName"> <span class="error"><p id="recipeName_error"></p></span>
             </div>
-        </div>
+            
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" class="form-control" id="author" value="<%=user.name%>" name="author" readonly> <span class="error"><p id="author_error"></p></span>
+            </div>
+            
+            <br>
 
-        <div>
-            <button class="btn btn-success" type="submit">SUBMIT</button>
-          </div>
-    </form>
+            <h6>Category </h6>
+            <br>
+            <div id="categoryDiv" class="form-group">
+                <select id="category" name="category" class="selectpicker" multiple data-width="100%">
+                    <option id="c1" value="Appetizer">Appetizer</option>
+                    <option id="c2" value="Baked-goods">Baked-goods</option>
+                    <option id="c3" value="Bread">Bread</option>
+                    <option id="c4" value="Breakfast">Breakfast</option>
+                    <option id="c5" value="Cookies">Cookies</option>
+                    <option id="c6" value="Dessert">Dessert</option>
+                    <option id="c7" value="Dinner">Dinner</option>
+                    <option id="c8" value="Gluten-free">Gluten-free</option>
+                    <option id="c9" value="Holiday-Multiple">Holiday-Multiple</option>
+                    <option id="c10" value="Holiday-Easter">Holiday-Easter</option>
+                    <option id="c11" value="Holiday-Halloween">Holiday-Halloween</option>
+                    <option id="c12" value="Holiday-4thJuly">Holiday-4thJuly</option>
+                    <option id="c13" value="Holiday-Thanksgiving">Holiday-Thanksgiving</option>
+                    <option id="c14" value="Holiday-Xmas">Holiday-Xmas</option>
+                    <option id="c15" value="Lunch">Lunch</option>
+                    <option id="c16" value="Main-course">Main-course</option>
+                    <option id="c17" value="Salad">Salad</option>
+                    <option id="c18" value="Side-dish">Side-dish</option>
+                    <option id="c19" value="Snack">Snack</option>
+                    <option id="c20" value="Soup">Soup</option>
+                    <option id="c21" value="Vegetarian">Vegetarian</option>
+                </select>
+            </div>
+            <div><p id="showCategorySelections"></p></div> 
+            <span class="error"><p id="category_error"></p></span>
+            <br>
+
+            <h8>Allergens </h8><p style="display: inline-block; color: grey; font-size:small"> (optional)</p>
+            <br>
+
+            <div class="form-group">
+                <select name="allergens" id="allergens" class="selectpicker" multiple data-width="100%">
+                    <option id="a1" value="dairy">DAIRY</option>
+                    <option id="a2" value="fish">FISH</option>
+                    <option id="a3" value="gluten">GLUTEN</option>
+                    <option id="a4" value="nuts">NUTS</option>
+                    <option id="a5" value="shellfish">SHELLFISH</option>
+                    <option id="a6" value="eggs">EGGS</option>
+                    <option id="a7" value="meat">MEAT</option>
+                    </select>
+            </div>
+            
+            <br>
+            
+            <h6>Ingredients</h6>
+                <hr>
+            
+            <div id="divOlIngredients">
+                <ol id="olIngredients">
+                    <div class="ingredients">
+                        <label>Ingredient</label>
+                        <label>Amount</label>
+                    </div>
+                    <span class="error"><p style="display: none" id="ingredients_0_error"></p></span>
+                    <span class="error"><p style="display: none" id="amount_0_error"></p></span>
+                    <li>
+                        <div class="ingredients">
+                            <input id="ingredients_0" class="form-control ingGridArea" type="text" name="ingredients[]">
+                            <input id="amount_0" class="form-control amountGridArea" type="text" name="amount[]">
+                            <span id="add" onclick="addLine(this, getElementById('olIngredients'))">+</span>  
+                            <span id="minus" onclick="removeField(this, getElementById('olIngredients'))">-</span>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+            
+            <br>
+                <h6>STEPS</h6>
+                <hr>
+            
+            <div id="divStepName">
+                <span class="error"><p style="display: none" id="stepTitleTextarea_0_error"></p></span>
+                <span class="error"><p style="display: none" id="stepTextarea_0_error"></p></span>
+                <ol id="stepName">
+                    <li class="liStepNum">
+                        <div class="grow-wrap">
+                            <textarea id="stepTitleTextarea_0" class="form-control stepGridAreaTitle" name="stepNameTitle[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step title..."></textarea>
+                            <textarea id="stepTextarea_0" class="form-control stepGridArea" name="stepName[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step instructions..."></textarea>
+                            <span id="add" onclick="addLine(this, getElementById('stepName'))">+</span>  
+                            <span id="minus" onclick="removeField(this, getElementById('stepName'))">-</span>
+                        </div>
+                    </li>
+                </ol>
+            </div>        
+            <div mb-3>
+                <div class="form-group">
+                    <img id="preview"></img>
+                    <input type="file" class="form-control" id="cover" accept="image/*" name="cover">
+                    <span class="error"><p id="cover_error"></p></span>
+                    <span id="size"></span>
+                </div>
+            </div>
+
+            <div>
+                <button class="btn btn-success" type="submit">SUBMIT</button>
+            </div>
+        </form>
+    </div>
 </div>
+
+
 
 
 

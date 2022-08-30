@@ -1,29 +1,31 @@
 <%- include('./partials/header') -%>
 <%- include('./partials/navbar') -%>
 
-
-<!-- <h1 class="mt-4">Welcome <%= user.name %>!</h1> -->
-
-<!-- <p class="lead mb-3">Welcome <%= user.name %>!</p> -->
-<!-- <br> -->
 <% if (user.role === "admin") { %>
     <p class="btn btn-secondary btn-block">Admin Page</p>
     <% } %>
-<div class="jumbotron">
+<div class="jumbotron" style="background: none !important; padding-top: 20px;">
     <div class="container" style="border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
         <div class="row align-items-center">
 
             <div class="col">
-                <h1 class="display-4" style="text-align:center">Welcome <%= user.name %>!</h1>
+                <h2 class="display-4" style="text-align: center">Welcome, </h2>
+                <h1 style="text-align:center"><%= user.name %>!</h1>
                 <p style="text-align:justify; padding: 15px;">Start sharing old recipes with family and friends! So you don't get stuck calling your aunt for that old recipe your grandma created on a beat up index card from the 1950's. </p>
                     <div style="text-align:center; padding: 5px;">
-                        <a class="btn btn-warning btn-lg" href="/recipes" role="button" style="display: inline-block; margin-right: 1em; margin: .5em;">View Recipes</a>
-                        <a href="/recipes/newForm" class="btn btn-success btn-lg" style="margin: .5em;">Add Recipe</a>
+                        <div class="row">
+                            <div class="col">
+                                <a class="btn btn-warning btn-md" href="/recipes" role="button" style="margin: .25em;">View Recipes</a>
+                            </div>
+                            <div class="col">
+                                <a href="/recipes/newForm" class="btn btn-success btn-md" style="margin:.25em;">Add Recipe</a>   
+                            </div>
+                        </div>
                     </div>
             </div>
 
-            <div class="col">
-                <img id="preview" style="width: 100%; height: 100%; min-width: 225px; max-width: 350px; object-fit: cover; display: inline-block; align-items: center;" src="<%=user.profileImgURL%>">
+            <div class="col" style="text-align: center;">
+                <img id="preview" style="width: 100%; height: 100%; min-width: 225px; max-width: 250px; object-fit: cover; display: inline-block; align-items: center;" src="<%=user.profileImgURL%>">
             </div>
 
            
@@ -35,9 +37,12 @@
 
 
    <br>
-    <h2 style="margin-top: 10px; text-align: center; font-size: 1.5rem"><%= user.name %>'s Recipes</h2>
-    <hr>
-    <div class="container">
+    
+    <div class="jumbotron" style="padding: 10px 20px 10px 20px;">
+        <div class="row">
+            <h2 style="margin-top: 10px; text-align: center; font-size: 1.5rem"><%= user.name %>'s Recipes</h2>
+            <hr style="width: 90%; margin: auto;" >
+        </div>
         <div class="flex-parent">
             <% for (var i = 0; i < recipes.length; i++) { %>
                 <% if (recipes[i].author == user.name) { %> 

@@ -1,18 +1,17 @@
 <%- include('../partials/header') -%>
 <%- include('../partials/navbar') -%>
-
-	<div class="container" style="margin-top: 1em">
+    <div class="jumbotron" style="background: none !important; padding-top: 20px;">
+        <div class="jumbotron" style="padding: 10px 20px 10px 20px;">
         <h2>Update Recipe Form</h2>
         <hr>
         <%- include('../partials/messages') -%>
 
-
         <form id="formFields" action="/recipes/<%=recipe.id%>?_method=PUT" method="POST" enctype="multipart/form-data">
         
-         <%- include('./_form_fields') -%>
+            <%- include('./_form_fields') -%>
 
         <br>
-         <div class="row">
+            <div class="row">
                 <div class="col-3">
                     <button class="btn btn-success" type="submit" value="submit">Submit</button>
                 </div>
@@ -20,10 +19,8 @@
                     <a class="btn btn-warning" href="/recipes/<%= recipe.id %>">Back</a>
                 </div>
             </div>
-           
-
-    
         </form>
+    </div>
 </div>
 
 

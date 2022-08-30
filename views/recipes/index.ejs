@@ -7,7 +7,7 @@
 <!-- SLIDE TEST ---------------------------- -->
     <div class="splide bg-secondary">
         <div class="splide__slider">
-            <div class="splide__track">
+            <div class="splide__track" style="margin-bottom: 30px;">
                 <ul class="splide__list">
                     <% recipes.forEach(recipe => { %>
                         <!-- <li class="splide__slide"><a href="http://localhost:3003/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 200px; object-fit: cover;"><h8 style="display:block; text-align:center; padding: 2px;"><%=recipe.recipeName%></h8></li></a> -->
@@ -17,7 +17,8 @@
             </div>
         </div>
     </div> 
-<div class="container mt-12">
+<div class="container mt-12" style="background: none !important;">
+    <div class="jumbotron" style="padding: 10px 20px 10px 20px;">
         <div>
             <h2 style="margin-top: 10px; text-align: left; font-size: 1.5rem">All Recipes</h2>
             <p>Search all recipes by name or category.</p>
@@ -57,8 +58,10 @@
           <option id="c21" value="Vegetarian">Vegetarian</option>
         </select>
       </div>  
-    <hr>
-    <div class="container">
+
+    </div>
+       
+    <div class="jumbotron" style="padding: 10px 20px 10px 20px;">
         
         <div id="cards" class="flex-parent">
             <% for (var i = 0; i < recipes.length; i++) { %>
