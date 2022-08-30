@@ -388,6 +388,7 @@ textarea::-webkit-scrollbar{
   justify-content: left;
   flex-wrap: wrap;
   gap: 10px;
+  margin-top: 20px;
 
 }
 
@@ -442,3 +443,4 @@ option {
 option:before {
   white-space: break-spaces;
 }
+
