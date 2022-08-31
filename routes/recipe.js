@@ -199,7 +199,8 @@ router.post('/:id/do-post', async (req, res) => {
     username = req.body.username;
     userComment = req.body.comments
     date = req.body.date;
-    recipeCommentsArray.push( { username: username, userComment: userComment, date: date } );
+    userProfileImg = req.body.userProfileImg
+    recipeCommentsArray.push(username, userComment, date, userProfileImg );
     comment.comments.push(recipeCommentsArray);
 
       await comment.save()

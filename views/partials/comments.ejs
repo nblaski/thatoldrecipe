@@ -3,9 +3,9 @@
     <div class="jumbotron" style="padding: 20px; border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
      
 
-        <form id="comments" method="POST" onsubmit="return doPost(this, '<%=recipe.id%>');">
-            <h4 for="comments">Comments</h4>
-            <input id="user" class="form-control" value="<%= user.name %>" readonly>
+        <form id="comments" method="POST" onsubmit="return doPost(this, '<%=recipe.id%>', '<%= user.profileImgURL %>');">
+            <h4>Comments</h4>
+            <input id="user" class="form-control" style="margin-top: 20px;" value="<%= user.name %>" readonly>
             <br>
             <div>
                 <div class="grow-wrapComment">
@@ -18,21 +18,41 @@
     
             </div>
         </form>
-    
-    </div>
+
+            <% for (var i = recipe.comments.length - 1; i >= 0; i--) { %>
+                <% console.log(recipe) %>
+        
+                        <div class="second"> 
+                            <div>
+                                <div class="row" style="padding: 20px">
+                                    <span class="text1"><%= recipe.comments[i][1] %></span>
+                                </div>
+                                <div class="row" style="padding: 20px">
+                                    <div class="col">
+                                        <img src="<%= recipe.comments[i][3]  %>" width="50"><span class="text2"><%= recipe.comments[i][0] %></span>
+
+                                    </div>
+                                    <div class="col" style="text-align: right;">
+                                        <span class="text3"><%= recipe.comments[i][2]  %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                <% } %>
 
 </div>
 
 <script>
-    function doPost(form, recipeID) {
+    function doPost(form, recipeID, userProfileImg) {
         var now = new Date(Date.now());
         // var formatted = `0${now.getMonth()} / ${now.getDay()}, ${now.getFullYear()} - ${now.getHours()} ":" ${now.getMinutes()} : ${now.getSeconds()}`;
         let formatted = now.toUTCString();
         console.log(formatted)
+        console.log(userProfileImg)
         $.ajax({
             url: "/recipes/" + recipeID + "/do-post",
             method: "POST",
-            data: { comments: form.comments.value, username: form.user.value, date: formatted},
+            data: { comments: form.comments.value, username: form.user.value, date: formatted, userProfileImg: userProfileImg },
             // contentType: "application/json; charset=utf-8",
             // dataType: "json",
             success: function (data, textStatus, xhr) {
