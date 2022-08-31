@@ -29,52 +29,28 @@
 
 
 <div class="jumbotron" style="background: none !important; padding-top: 20px;">
-    <div class="jumbotron" style="border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
+    <div class="jumbotron" style="padding: 15px; border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
 		
-        <div class="row align-items-center" style="margin-bottom: 15px;">
-			<h2 class="display-4" style="text-align: center"><%= recipe.recipeName %></h2>
-			<h6 style="text-align:center">Author: <%= recipe.author %></h6>
-		</div>
-		
-		<div class="row align-items-center">
+
+		<div class="row" style="margin-top: 10px;">
 
             <div class="col" style="text-align: center;">
-
-				<img style="margin: 10px 0px 25px 0px; width: 100%; height: 100%; min-width: 225px; max-height: 900px; object-fit: cover; display: inline-block; align-items: center;" src="<%=recipe.imageName%>">
+				<div class="row" style="margin-bottom: 10px;">
+					<h2 style="text-align: center"><%= recipe.recipeName %></h2>
+					<h5 style="text-align:center; margin-bottom: 15px">Author: <%= recipe.author %></h5>
+					<img style="width: 100%; height: 100%; min-width: 225px; max-height: 900px; object-fit: cover; display: inline-block;" src="<%=recipe.imageName%>">
+				</div>
+				
 				
             </div>
 
 
             <div class="col">
 
-				<div style="margin: 20px">
-					<h6><b>Categories</b></h6>
-					<hr style="height:1px;border:none;color:#333;background-color:#333;" >
-					<ul>
-						<% for (var i = 0; i < recipe.category.length; i++) { %>
-						<li style="display: inline-block"><%= recipe.category[i]%>, </li>
-						<% } %>
-					</ul>
-			
-						<% if (recipe.allergens.length !== 0) { %>
-							<h6><b>Allergens</b></h6>
-							<hr style="height:1px;border:none;color:#333;background-color:#333;" >
-							<ul>
-								<% for (var i = 0; i < recipe.allergens.length; i++) { %>
-								<li style="display: inline-block"><%= recipe.allergens[i]%>, </li>
-								<% } %>
-							</ul>
-						<% } else { %> 
-							<div>
-								<h6><b>Allergens</b></h6>
-								<hr style="height:1px;border:none;color:#333;background-color:#333;" >
-								<h6>This Recipe has no known Allergens. Consume at your own risk!</h6>
-							</div>
-							<br>
-						<% } %>
+				<h3 style="margin-bottom: 15px; margin-top: 10px;">Recipe:</h3>
 						
 						<h6><b>Ingredients</b></h6>
-						<hr style="height:1px;border:none;color:#333;background-color:#333;" >
+						<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
 						<ul style="padding: 0px">
 							<% for (var i = 0; i < recipe.ingredients.length; i++) { %>
 								<% if (recipe.ingredients[i] !== "") {%> 
@@ -85,7 +61,7 @@
 							<% } %>
 						</ul>
 						<h6 class="showStepsHeader"><b>Steps</b></h6>
-						<hr style="height:1px;border:none;color:#333;background-color:#333;" >
+						<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
 						<div class="showSteps">
 							<ol>
 								<% for (var i = 0; i < recipe.stepName.length; i++) { %>
@@ -97,18 +73,48 @@
 								<% } %>
 							</ol>	
 						</div>
-				</div>
+
+						<hr style="color:#333 !important">
+
+						<div style="margin-top: 30px">
+							<h4 style="margin-bottom: 15px;">Other info:</h4>
+							<h6><b>Categories</b></h6>
+							<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
+							<ul style="padding: 0px 0px 0px 0px;">
+								<% for (var i = 0; i < recipe.category.length; i++) { %>
+								<li style="display: inline-block"><%= recipe.category[i]%>, </li>
+								<% } %>
+							</ul>
+					
+								<% if (recipe.allergens.length !== 0) { %>
+									<h6><b>Allergens</b></h6>
+									<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
+									<ul style="padding: 0px 0px 0px 0px;">
+										<% for (var i = 0; i < recipe.allergens.length; i++) { %>
+										<li style="display: inline-block"><%= recipe.allergens[i]%>, </li>
+										<% } %>
+									</ul>
+								<% } else { %> 
+									<div>
+										<h6><b>Allergens</b></h6>
+										<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
+										<h6>This Recipe has no known Allergens. Consume at your own risk!</h6>
+									</div>
+									<br>
+								<% } %>
+
+						</div>
 				
-            </div>
+         </div>
 
            
 
 
-        </div>
-    
     </div>
-
+    
 </div>
+
+
 
 
 	<%- include('../partials/footer') -%>
