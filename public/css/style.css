@@ -499,15 +499,16 @@ background-color: #343a40 !important;
   margin-bottom: 20px;
 }
 .text1{
-	font-size: 13px;
+	font-size: 16px;
     font-weight: 500;
     color: #56575b;
+    padding-bottom: 20px;
 }
 .text2{
-	font-size: 13px;
+	font-size: 16px;
     font-weight: 500;
-    margin-left: 6px;
     color: #56575b;
+    display: block;
 }
 .text3{
 	font-size: 13px;
