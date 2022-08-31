@@ -191,6 +191,35 @@ router.put('/:id', upload.single('cover'), async (req, res) => {
   }
 })
 
+
+router.post('/:id/do-post', async (req, res) => {
+  let recipeCommentsArray = [];
+  try {
+    comment = await Recipe.findById(req.params.id);
+    username = req.body.username;
+    userComment = req.body.comments
+    date = req.body.date;
+    recipeCommentsArray.push( { username: username, userComment: userComment, date: date } );
+    comment.comments.push(recipeCommentsArray);
+
+      await comment.save()
+        console.log('Comment saved to DB.');
+        req.flash(
+          'success_msg',
+          'Comment SAVED!'
+        );
+        res.redirect(`/recipes/${comment.id}`);
+  } catch {
+    if (comment!= null) {
+      renderEditPage(res, comment, true)
+    } else {
+      req.flash('error_msg', 'ERROR saving comment')
+      redirect('/')
+    }
+  }
+})
+
+
 // GET ERROR PAGE
 router.get('/error', ensureAuthenticated, (req, res) => {
   res.render('partials/error' + errorMessage, { user: req.user });

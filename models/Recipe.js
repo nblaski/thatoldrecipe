@@ -36,6 +36,9 @@ const recipeSchema = new Schema({
   },
   category: {
     type: Array
+  },
+  comments: {
+    type: Array
   }
 });
 

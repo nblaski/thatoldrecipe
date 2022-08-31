@@ -1,0 +1,52 @@
+<div class="jumbotron" style="background: none !important; padding: 20px 0px 0px 0px;">
+
+    <div class="jumbotron" style="padding: 20px; border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
+     
+
+        <form id="comments" method="POST" onsubmit="return doPost(this, '<%=recipe.id%>');">
+            <h4 for="comments">Comments</h4>
+            <input id="user" class="form-control" value="<%= user.name %>" readonly>
+            <br>
+            <div>
+                <div class="grow-wrapComment">
+                    <textarea id="comments" class="form-control stepGridArea" name="comments[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Leave a comment..."></textarea>
+                </div>
+                <div class="form-group" style="margin: 25px 0px 15px 0px">
+                    <!-- <button class="btn btn-success btn-block" type="submit">SUBMIT</button> -->
+                    <input type="submit" class="btn btn-success btn-block" value="POST COMMENT" />
+                </div>
+    
+            </div>
+        </form>
+    
+    </div>
+
+</div>
+
+<script>
+    function doPost(form, recipeID) {
+        var now = new Date(Date.now());
+        // var formatted = `0${now.getMonth()} / ${now.getDay()}, ${now.getFullYear()} - ${now.getHours()} ":" ${now.getMinutes()} : ${now.getSeconds()}`;
+        let formatted = now.toUTCString();
+        console.log(formatted)
+        $.ajax({
+            url: "/recipes/" + recipeID + "/do-post",
+            method: "POST",
+            data: { comments: form.comments.value, username: form.user.value, date: formatted},
+            // contentType: "application/json; charset=utf-8",
+            // dataType: "json",
+            success: function (data, textStatus, xhr) {
+           console.log(xhr.status)
+               if (xhr.status === 200 ) {
+                console.log("IM IN!!!!")
+                    window.location = "/recipes/" + recipeID
+                }
+                },
+                failure: function (response) {
+                    alert( "THERE WAS AN ERROR SAVING COMMENT!!! PLEASE TELL YOUR ADMINISTRATOR" + ERROR + response);
+                }
+        });
+        return false;
+    }
+
+</script>
