@@ -32,7 +32,7 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
     service: 'gmail',
     auth: {
       user: 'thatoldreceipe@gmail.com',
-      pass: 'zjfbuivjugzlsnwd'
+      pass: 'jrvvokfhggbluhha'
     }
   });
   

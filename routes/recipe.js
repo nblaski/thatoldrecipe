@@ -15,8 +15,6 @@ const { authUser, authRole, authRoleAdmin } = require('../permissions/basicAuth'
 const projectRouter = require('../permissions/project');
 const ROLE = { ADMIN: 'admin', BASIC: 'basic' }
 const User = require('../models/User');
-const nodemailer = require('nodemailer');
-
 
 // GET RECENTLY ADDED RECIPES
 router.get('/', ensureAuthenticated, async (req, res) => {
