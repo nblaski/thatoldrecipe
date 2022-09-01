@@ -22,12 +22,12 @@
             <% for (var i = recipe.comments.length - 1; i >= 0; i--) { %>        
                         <div class="second"> 
                             <div class="row" style="padding: 20px;">
-                                <div class="col" style="padding: 0px 20px 20px">
+                                <div class="col-10" style="padding: 0px 20px 20px">
                                     <span class="text1"><%= recipe.comments[i][1] %></span>
                                 </div>
-                                <div class="col" style="padding: 0px 20px 0px 20px">
-                                    <div class="col" style="text-align: right;">
-                                        <img src="<%= recipe.comments[i][3]  %>" width="70px"><span class="text2"><%= recipe.comments[i][0] %></span>
+                                <div class="col" style="padding: 0px 20px 0px 20px;">
+                                    <div class="col">
+                                        <img src="<%= recipe.comments[i][3]  %>" style="width: 70px; border-radius: 4em;"><span class="text2"><%= recipe.comments[i][0] %></span>
 
                                     </div>
                                 </div>

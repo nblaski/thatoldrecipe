@@ -26,38 +26,35 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
     }
   );
 
-  // POST COMMENT
-// router.post("/do-post",  async (req, res) => {
-//   console.log(req.body.comments)
-//   console.log()
 
-//   let comment;
-//   try {
-//     comment = await Recipe.findById(req.params.id);
-//     console.log(comment)
-//     comment.comments = req.body.comments;
-//     // await comment.save()
-//     // console.log('Comment has been saved to DB');
-//     // req.flash(
-//     //   'success_msg',
-//     //   'Comment Saved!'
-//     // );
-//      res.send("posted success!")
-//   } catch(err) {
-//     console.log("error comment "+ err)
-//     // if (comment != null) {
-//     //   renderEditPage(res, comment, true)
-//     // } else {
-//       req.flash('error_msg', 'ERROR saving comment')
-//       // redirect(`/recipes/${comment.id}`)
-//     // }
-//   }
+  const nodemailer = require('nodemailer');
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'thatoldreceipe@gmail.com',
+      pass: 'zjfbuivjugzlsnwd'
+    }
+  });
   
-//   // test.collections("recipes").insertOne(req.body, function (error, document) {
-//   //   res.send("posted success!")
-//   // })
-//   // res.send(req.body);
-// });
-
+  var mailOptions = {
+    from: 'thatoldreceipe@gmail.com',
+    to: 'nfb@nicolebruno.com',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+  };
+  
+  
+  router.post('/sendEmail', async (req, res) => {
+    console.log(mailOptions)
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+          console.log(error);
+      } else {
+          console.log('Email sent: ' + info.response);
+      }
+      });
+      res.redirect('/');
+  })
+ 
 
   module.exports = router;

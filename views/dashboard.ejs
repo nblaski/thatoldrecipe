@@ -2,6 +2,8 @@
 <%- include('./partials/navbar') -%>
 
 
+<button class="btn btn-success btn-block" value="SEND EMAIL" id="sendEmail" method="POST" onclick="return sendEmail('<%= user.email %>')"></button>
+
 <div class="jumbotron" style="background: none !important; padding-top: 20px;">
     <div class="container" style="border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
         <div class="row align-items-center">
@@ -62,8 +64,32 @@
     </p>
   </div>
 
+ <script>
+
+function sendEmail(userEmail) {
+        var now = new Date(Date.now());
+        let formatted = now.toUTCString();
+        $.ajax({
+            url: "http://localhost:3003/sendEmail",
+            method: "POST",
+            data: { userEmail: userEmail },
+            // contentType: "application/json; charset=utf-8",
+            // dataType: "json",
+            success: function (data, textStatus, xhr) {
+               if (xhr.status === 200 ) {
+                    window.location = "/"
+                }
+                },
+                failure: function (response) {
+                    alert( "THERE WAS AN ERROR !!! PLEASE TELL YOUR ADMINISTRATOR" + ERROR + response);
+                }
+        });
+        return false;
+    }
 
 
+
+ </script>
 
 
 
