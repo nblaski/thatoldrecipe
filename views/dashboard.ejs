@@ -70,7 +70,8 @@ function sendEmail(userEmail) {
         var now = new Date(Date.now());
         let formatted = now.toUTCString();
         $.ajax({
-            url: "http://localhost:3003/sendEmail",
+            url: "https://thisoldrecipe.herokuapp.com/dashboard",
+            // url: "http://localhost:3003/sendEmail",
             method: "POST",
             data: { userEmail: userEmail },
             // contentType: "application/json; charset=utf-8",
