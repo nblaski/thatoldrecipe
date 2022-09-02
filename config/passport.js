@@ -17,7 +17,7 @@ module.exports = function(passport) {
 
         // Confirm account is verified
         if (user.confirmed !== 'true') {
-          return done(null, false, { message: 'That email is not verified. Click Send Verification Email button to verify your account.' });
+          return done(null, false, { message: 'That email is not verified. Check your email and click verification link.' });
         }
 
         // Match password

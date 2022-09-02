@@ -40,7 +40,7 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
   
   var mailOptions = {
     from: process.env.SEND_EMAIL,
-    to: 'nfb@nicolebruno.com',
+    to: process.env.SEND_EMAIL,
     subject: 'Sending Email using Node.js',
     text: 'That was easy! new'
   };
@@ -82,26 +82,18 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
                               res.redirect('/users/login');
                             })
                             .catch(err => console.log(err));
-                      
                       }
-                    
                      })
-//Update your database here with whatever the verification flag you are using 
-
-
-
                 }
+              });
+              } catch (err) {
+                  console.log(err)
+                  return res.sendStatus(403)
+              }
+            } else {
+                return res.sendStatus(403)
 
-            });
-        } catch (err) {
-
-            console.log(err)
-            return res.sendStatus(403)
-        }
-    } else {
-        return res.sendStatus(403)
-
-    }
+            }
 
 })
 

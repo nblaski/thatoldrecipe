@@ -69,14 +69,13 @@ router.post('/register', async (req, res) => {
               .then( async (user) => {
 
                 // Encode the user id in a jwt token with an expiration date
-                var date = new Date();
-                var mail = {
+                const date = new Date();
+                const mail = {
                             "email": user.email,
                             "created": date.toString()
                             }
-                var sender = process.env.SEND_EMAIL;
-                var senderPassword = process.env.EMAIL_PASSWORD;
-                console.log("SENDER INFO" + sender + senderPassword)
+                const sender = process.env.SEND_EMAIL;
+                const senderPassword = process.env.EMAIL_PASSWORD;
 
                 const token_mail_verification = jwt.sign(mail, process.env.EMAIL_SECRET, { expiresIn: '1d' });
 
@@ -84,9 +83,7 @@ router.post('/register', async (req, res) => {
 
                 // Send the token to the user email address using nodemailer library
                 let transporter = nodemailer.createTransport({
-                  // name: sender,
                   service: 'gmail',
-                  debug: true,
                   auth: {
                       user: sender, // username for your mail server
                       pass: senderPassword, // password
@@ -110,7 +107,6 @@ router.post('/register', async (req, res) => {
                   console.log(info);
                   transporter.close();
               });
-
                 req.flash(
                   'success_msg',
                   'An email was sent for email verification. Please verify then login in.'
