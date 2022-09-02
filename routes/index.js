@@ -31,16 +31,16 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'thatoldreceipe@gmail.com',
-      pass: 'jrvv-okfh-ggbl-uhha'
+      user: process.env.SEND_EMAIL,
+      pass: process.env.EMAIL_PASSWORD
     }
   });
   
   var mailOptions = {
-    from: 'thatoldreceipe@gmail.com',
+    from: process.env.SEND_EMAIL,
     to: 'nfb@nicolebruno.com',
     subject: 'Sending Email using Node.js',
-    text: 'That was easy!'
+    text: 'That was easy! new'
   };
   
   

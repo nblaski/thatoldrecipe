@@ -2,7 +2,7 @@
 <%- include('./partials/navbar') -%>
 
 
-<button class="btn btn-success btn-block" value="SEND EMAIL" id="sendEmail" method="POST" onclick="return sendEmail('<%= user.email %>')"></button>
+<button class="btn btn-success btn-block" style="display: none" value="SEND EMAIL" id="sendEmail" method="POST" onclick="return sendEmail('<%= user.email %>')"></button>
 
 <div class="jumbotron" style="background: none !important; padding-top: 20px;">
     <div class="container" style="border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
@@ -70,8 +70,8 @@ function sendEmail(userEmail) {
         var now = new Date(Date.now());
         let formatted = now.toUTCString();
         $.ajax({
-            url: "https://thisoldrecipe.herokuapp.com/sendEmail",
-            // url: "http://localhost:3003/sendEmail",
+            // url: "https://thisoldrecipe.herokuapp.com/sendEmail",
+            url: "http://localhost:3003/sendEmail",
             method: "POST",
             data: { userEmail: userEmail },
             // contentType: "application/json; charset=utf-8",
