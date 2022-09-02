@@ -13,6 +13,15 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  confirmed: {
+    type: String,
+    defaultValue: false,
+    
+  },
+  isAdmin: {
+    type: String,
+    defaultValue: false,
+  },
   role: {
     type: String,
     required: true,
