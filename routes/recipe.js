@@ -190,7 +190,7 @@ router.put('/:id', upload.single('cover'), async (req, res) => {
 })
 
 
-router.post('/:id/do-post', async (req, res) => {
+router.put('/:id/doPost', async (req, res) => {
   let recipeCommentsArray = [];
   try {
     comment = await Recipe.findById(req.params.id);

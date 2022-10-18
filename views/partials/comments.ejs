@@ -2,8 +2,8 @@
 
     <div class="jumbotron" style="padding: 20px; border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
      
-
-        <form id="comments" method="POST" onsubmit="return doPost(this, '<%=recipe.id%>', '<%= user.profileImgURL %>');">
+        <form id="commentsForm" action="/recipes/<%=recipe.id%>/doPost?_method=PUT" method="POST" enctype="multipart/form-data">
+        <!-- <form id="comments" method="POST" onsubmit="return doPost(this, '<%=recipe.id%>', '<%= user.profileImgURL %>');"> -->
             <h4>Comments</h4>
             <input id="user" class="form-control" style="margin-top: 20px;" value="<%= user.name %>" readonly>
             <br>
@@ -28,7 +28,6 @@
                                 <div class="col" style="padding: 0px 20px 0px 20px;">
                                     <div class="col">
                                         <img src="<%= recipe.comments[i][3]  %>" style="width: 70px; border-radius: 4em;"><span class="text2"><%= recipe.comments[i][0] %></span>
-
                                     </div>
                                 </div>
                                 <div class="row" style="text-align: right; padding-top: 20px">
@@ -41,25 +40,29 @@
 </div>
 
 <script>
-    function doPost(form, recipeID, userProfileImg) {
-        var now = new Date(Date.now());
-        let formatted = now.toUTCString();
-        $.ajax({
-            url: "/recipes/" + recipeID + "/do-post",
-            method: "POST",
-            data: { comments: form.comments.value, username: form.user.value, date: formatted, userProfileImg: userProfileImg },
-            // contentType: "application/json; charset=utf-8",
-            // dataType: "json",
-            success: function (data, textStatus, xhr) {
-               if (xhr.status === 200 ) {
-                    window.location = "/recipes/" + recipeID
-                }
-                },
-                failure: function (response) {
-                    alert( "THERE WAS AN ERROR SAVING COMMENT!!! PLEASE TELL YOUR ADMINISTRATOR" + ERROR + response);
-                }
-        });
-        return false;
-    }
 
+
+
+
+
+    // function doPost(form, recipeID, userProfileImg) {
+    //     var now = new Date(Date.now());
+    //     let formatted = now.toUTCString();
+    //     $.ajax({
+    //         url: "/recipes/" + recipeID + "/do-post",
+    //         method: "POST",
+    //         data: { comments: form.comments.value, username: form.user.value, date: formatted, userProfileImg: userProfileImg },
+    //         // contentType: "application/json; charset=utf-8",
+    //         // dataType: "json",
+    //         success: function (data, textStatus, xhr) {
+    //            if (xhr.status === 200 ) {
+    //                 window.location = "/recipes/" + recipeID
+    //             }
+    //             },
+    //             failure: function (response) {
+    //                 alert( "THERE WAS AN ERROR SAVING COMMENT!!! PLEASE TELL YOUR ADMINISTRATOR" + ERROR + response);
+    //             }
+    //     });
+    //     return false;
+    // }
 </script>
