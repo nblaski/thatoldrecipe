@@ -1,3 +1,4 @@
 node_modules
 .env
-public/uploads/recipeCovers
+public/images/
+package-lock.json

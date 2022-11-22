@@ -2,9 +2,9 @@
   "name": "node_passport_login",
   "version": "2.0.0",
   "description": "Node.js authentication with Passport",
-  "main": "app.js",
+  "main": "appDev.js",
   "scripts": {
-    "start": "node appDev.js",
+    "start": "nodemon appDev.js",
     "dev": "nodemon app.js",
     "devImage": "nodemon appImage.js",
     "appDev": "nodemon appDev.js"

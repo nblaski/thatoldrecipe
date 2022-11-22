@@ -10,6 +10,13 @@ const Recipe = require('../models/Recipe');
 
 const jwt = require('jsonwebtoken');
 
+
+// const multer  = require('multer')
+const multer = require('../multerLocal.js');
+const upload = multer.single('myImage');
+const fs = require('fs');
+const sharp = require('sharp');
+
 // Welcome Page
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
 
@@ -29,73 +36,76 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
   );
 
 
-  const nodemailer = require('nodemailer');
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.SEND_EMAIL,
-      pass: process.env.EMAIL_PASSWORD
+
+
+// NODE MAILER ROUTE AND PARAMS
+const nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.SEND_EMAIL,
+    pass: process.env.EMAIL_PASSWORD
+  }
+});
+
+var mailOptions = {
+  from: process.env.SEND_EMAIL,
+  to: process.env.SEND_EMAIL,
+  subject: 'Sending Email using Node.js',
+  text: 'That was easy! new'
+};
+
+// POST NODEMAILER ROUTE
+router.post('/sendEmail', async (req, res) => {
+  console.log(mailOptions)
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
     }
-  });
-  
-  var mailOptions = {
-    from: process.env.SEND_EMAIL,
-    to: process.env.SEND_EMAIL,
-    subject: 'Sending Email using Node.js',
-    text: 'That was easy! new'
-  };
-  
-  
-  router.post('/sendEmail', async (req, res) => {
-    console.log(mailOptions)
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-          console.log(error);
-      } else {
-          console.log('Email sent: ' + info.response);
-      }
-      });
-      res.redirect('/');
-  })
- 
-  
- router.get('/verify', function(req, res) {
-    token = req.query.email;
-    if (token) {
-        try {
-            jwt.verify(token, process.env.EMAIL_SECRET, (e, decoded) => {
-                if (e) {
-                    console.log(e)
-                    return res.sendStatus(403)
-                } else {
-                    email = decoded.email;
-                    User.findOne({ email: email }).then(user => {
-                      if (user) {
-                        user.confirmed = true
-                        user
-                          .save()
-                          .then(user => {
-                              req.flash(
-                                'success_msg',
-                                'You verified your email and can now log in'
-                              );
-                              res.redirect('/users/login');
-                            })
-                            .catch(err => console.log(err));
-                      }
-                     })
-                }
-              });
-              } catch (err) {
-                  console.log(err)
-                  return res.sendStatus(403)
-              }
-            } else {
-                return res.sendStatus(403)
-
-            }
-
+    });
+    res.redirect('/');
 })
+ 
+// GET VERIFY EMAIL ROUTE
+router.get('/verify', function(req, res) {
+  token = req.query.email;
+  if (token) {
+      try {
+          jwt.verify(token, process.env.EMAIL_SECRET, (e, decoded) => {
+              if (e) {
+                  console.log(e)
+                  return res.sendStatus(403)
+              } else {
+                  email = decoded.email;
+                  User.findOne({ email: email }).then(user => {
+                    if (user) {
+                      user.confirmed = true
+                      user
+                        .save()
+                        .then(user => {
+                            req.flash(
+                              'success_msg',
+                              'You verified your email and can now log in'
+                            );
+                            res.redirect('/users/login');
+                          })
+                          .catch(err => console.log(err));
+                    }
+                    })
+              }
+            });
+          } catch (err) {
+              console.log(err)
+              return res.sendStatus(403)
+          }
+    } else {
+        return res.sendStatus(403)
+
+    }
+
+});
 
 
 

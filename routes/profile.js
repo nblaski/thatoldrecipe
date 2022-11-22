@@ -1,19 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User.js');
+const path = require('path');
+const fs = require('fs');
+const sharp = require('sharp');
 const multer = require('multer');
-// router.use('/profile', require('../multer.js'));
+const upload = require("../multerLocal.js");
+const multerError = require("./_multerErrors");
+router.use(multerError);
 
 
 const { setUser, ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const { authUser, authRole, authRoleAdmin } = require('../permissions/basicAuth');
 const ROLE = { ADMIN: 'admin', BASIC: 'basic' }
 
-const upload = require("../multer.js");
-const multerError = require("./_multerErrors");
-router.use(multerError);
 
-const { s3UploadProfileIcon, s3Delete } = require('../s3Service');
+
 
 // GET ROUTE SHOW USER PROFILE
 router.get('/:id', ensureAuthenticated, async (req, res) => {
@@ -30,31 +32,54 @@ router.get('/:id/update', ensureAuthenticated, async (req, res) => {
 });
 
 // POST ROUTE UPDATE USER PROFILE
-router.post("/:id/update", upload.array('file'), async (req, res) => {
-  const file = req.files[0];
-  let user;
-  try {
-    user = await User.findById(req.params.id)
-    const oldFile = user.profileImgURL.slice(46);
-    console.log(oldFile);
-    user.name = req.body.name;
-      if (file) {
-        try {
-          const result = await s3UploadProfileIcon(file, req.user.name);
-          user.profileImgURL = `https://thisoldrecipe-images.s3.amazonaws.com/${result.paramKey}`;
-        } catch(error) {
-          console.log("there was an error uploading image" + error);
-          req.flash(
-            'error_msg',
-            'Error uploading image'
-          );
-          res.redirect(`/profile/${user.id}`);
-        } finally {
-          const deleteImg = await s3Delete(oldFile);
-          console.log("oldFile deleted!")
-        } 
-    } 
-    await user.save()
+router.post("/:id/update", upload.single('icon'), async (req, res) => {
+  const user = await User.findById(req.params.id);
+  console.log("user: " + user)
+  const pathOld = './public'+ user.profileImgURL;
+  console.log("pathOld: " + pathOld)
+
+  try {    
+      if(req.fileValidationError) {
+        req.flash(
+          'error_msg',
+          'ERROR: Wrong file type'
+        );
+        res.redirect(`/profile/${user.id}`);
+      } else if(req.file) {
+        console.log("file in try catch: " + req.file)
+        const { filename: newProfileIcon } = req.file;
+        console.log("path is sharp: " + req.file.path)
+        
+        await sharp(req.file.path)
+        .resize({ height: 1200, fit: 'contain' })
+        .jpeg({ quality: 92 })
+        .toFile(
+            path.resolve(req.file.destination,'profileIcon', newProfileIcon)
+        )
+        fs.unlinkSync(req.file.path)
+        console.log('file uploaded!')
+
+
+        console.log("old image path  " + pathOld)
+        fs.unlink(pathOld, (err) => {
+            if (err) {
+              console.error(err);
+              req.flash(
+                'error_msg',
+                'FS Error Deleting Image'
+              );
+            }
+            console.log('old image deleted')
+        });
+      }
+      // user = await User.findById(req.params.id)
+      console.log(("userId: " + user.id))
+      const newFile = '/images/profileIcon/' + req.file.filename
+      user.profileImgURL = newFile
+      user.name = req.body.name;
+
+
+      await user.save()
       console.log('Profile updated to DB.');
       req.flash(
         'success_msg',
@@ -62,12 +87,13 @@ router.post("/:id/update", upload.array('file'), async (req, res) => {
       );
       res.redirect(`/profile/${user.id}`);
   } catch(err) {
-      console.log("there was an error" + err);
-      req.flash('error_msg', 'ERROR saving edits')
-      res.redirect(`/profile/${user.id}`);
+    console.log("there was an error" + err);
+    req.flash('error_msg', 'ERROR saving edits')
+    res.redirect(`/profile/${user.id}`);
   }
-
+      
 });
+
 
 //set multer upload errors
 router.use((error, req, res, next) => {

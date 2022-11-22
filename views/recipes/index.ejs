@@ -10,8 +10,7 @@
             <div class="splide__track" style="margin-bottom: 30px;">
                 <ul class="splide__list">
                     <% recipes.forEach(recipe => { %>
-                        <!-- <li class="splide__slide"><a href="http://localhost:3003/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 200px; object-fit: cover;"><h8 style="display:block; text-align:center; padding: 2px;"><%=recipe.recipeName%></h8></li></a> -->
-                        <li class="splide__slide"><a href="https://thisoldrecipe.herokuapp.com/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 200px; object-fit: cover;"><h8 style="display:block; text-align:center; padding: 2px;"><%=recipe.recipeName%></h8></li></a>
+                        <li class="splide__slide"><a href="/recipes/<%= recipe.id %>"><img class="thumbnail" src="<%= recipe.imageName %>" alt="First slide" style="width: 200px; height: 200px; object-fit: cover;"><h8 style="display:block; text-align:center; padding: 2px;"><%=recipe.recipeName%></h8></li></a>
                     <% }) %>  
                 </ul>
             </div>

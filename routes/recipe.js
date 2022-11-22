@@ -1,20 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const methodOverride = require('method-override');
+router.use(methodOverride('_method'));
 const fs = require('fs');
 const path = require('path');
 const Recipe  = require('../models/Recipe.js');
-router.use(methodOverride('_method'));
-const upload = require('../multer.js');
-const upload_resize = require('../multerResize.js')
+const User = require('../models/User');
 const multer = require('multer');
-const { s3Delete, s3UploadCover, s3UploadResize } = require('../s3Service');
+const upload = require("../multerLocal.js");
+const sharp = require('sharp');
 
 const { setUser, ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const { authUser, authRole, authRoleAdmin } = require('../permissions/basicAuth');
-const projectRouter = require('../permissions/project');
 const ROLE = { ADMIN: 'admin', BASIC: 'basic' }
-const User = require('../models/User');
 
 // GET RECENTLY ADDED RECIPES
 router.get('/', ensureAuthenticated, async (req, res) => {
@@ -28,10 +26,6 @@ router.get('/', ensureAuthenticated, async (req, res) => {
   res.render('recipes/index', { user: req.user, recipes: recipes })
 });
 
-// GET NEW RECIPE FORM PAGE
-router.get('/test', ensureAuthenticated, (req, res) => {
-  res.render('recipes/test', { user: req.user });
-});
 
 // GET newFORM RECIPE FORM PAGE
 router.get('/newForm', ensureAuthenticated, (req, res) => {
@@ -40,49 +34,57 @@ router.get('/newForm', ensureAuthenticated, (req, res) => {
 
 
 // POST ROUTE NEW RECIPE
-router.post('/newForm', upload.single('cover'), async (req, res) => { 
-  console.log(req.file.paramKey + "in new form route");
-  const file = req.file;
-  if(!file) {
-    return console.log('Please select an Image.');
-  }
-  let url;
-  try {
-    if (file) {
-      try {
-        const result = await s3UploadResize(file, req.user.name);
-        url = `https://thisoldrecipe-images.s3.amazonaws.com/${result.paramKey}`;
-      } catch(err) {
-        console.log("error setting cover image" + err);
-      } finally {
+router.post('/newForm', upload.single('cover'), async (req, res) => {
+  try {    
+      if(req.fileValidationError) {
+        req.flash(
+          'error_msg',
+          'ERROR: Wrong file type'
+        );
+        res.redirect(`/recipes/newForm`);
+      } else if(req.file == undefined ) {
+        req.flash(
+            'error_msg',
+            'ERROR: no file selected.'
+        );
+        res.redirect(`/recipes/newForm`);
+      } else if (req.file) {
+        const { filename: newCoverImage } = req.file;
+        await sharp(req.file.path)
+        .resize({ height: 1200, fit: 'contain' })
+        .jpeg({ quality: 92 })
+        .toFile(
+            path.resolve(req.file.destination,'coverImages', newCoverImage)
+        )
+        fs.unlinkSync(req.file.path)
+        console.log('file uploaded!')
+
+
+        const newFile = '/images/coverImages/' + req.file.filename
+
         const recipe = new Recipe ({
-          recipeName: req.body.recipeName,
-          author: req.body.author,
-          category: req.body.category,
-          allergens: req.body.allergens,
-          ingredients: req.body.ingredients,
-          amount: req.body.amount,
-          stepName: req.body.stepName,
-          stepNameTitle: req.body.stepNameTitle,
-          imageName: url
-        });
-          await recipe.save();
-          console.log('Image saved to DB.');
-          console.log(recipe.id)
-          req.flash(
-            'success_msg',
-            'Recipe Saved!'
-          );
-          res.redirect(`/recipes/${recipe.id}`);
+            recipeName: req.body.recipeName,
+            author: req.body.author,
+            category: req.body.category,
+            allergens: req.body.allergens,
+            ingredients: req.body.ingredients,
+            amount: req.body.amount,
+            stepName: req.body.stepName,
+            stepNameTitle: req.body.stepNameTitle,
+            imageName: newFile
+          });
+        await recipe.save()
+        console.log('New recipe saved.');
+        req.flash(
+          'success_msg',
+          'Recipe Saved!'
+        );
+        res.redirect(`/recipes/${recipe.id}`);
       }
-    }
   } catch(err) {
-    console.log("ERROR" + err)
-    req.flash(
-      'error_msg',
-      'ERROR saving recipe' + err
-    );
-    return res.redirect('/recipes/error' + err)
+    console.log("there was an error" + err);
+    req.flash('error_msg', 'ERROR saving new recipe')
+    res.redirect(`/`);
   }
 });
 
@@ -94,34 +96,42 @@ router.get('/:id', ensureAuthenticated, async (req, res) => {
       const allergenString = JSON.stringify(recipe.allergens)
       const categoryString = JSON.stringify(recipe.category)
       res.render('recipes/show', { user: req.user, recipe: recipe })
-    } catch(error) {
-      console.log(error);
-      res.render('recipes/error' + error);
+    } catch(err) {
+      console.log(err);
+      req.flash('error_msg', 'ERROR rendering show recipe by ID page')
+      res.redirect('/');
     }
 });
 
 // DELETE ROUTE RECIPE
 router.delete('/:id', async (req, res) => {
-  let recipe;
+  const recipe = await Recipe.findById(req.params.id);
+  const imagePath = './public'+ recipe.imageName;
   try {
-    recipe = await Recipe.findById(req.params.id);
-    const deleteImg = await s3Delete(recipe.imageName.slice(46));
+    fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error(err);
+          req.flash(
+            'error_msg',
+            'FS Error Deleting Image'
+          );
+        }
+        console.log('old image deleted')
+    });
+
     await Recipe.deleteOne({ _id: req.params.id });
     req.flash(
       'success_msg',
       'Recipe Deleted!'
     );
     res.redirect('/recipes');
-  } catch (error) {
-    if (recipe != null) {
-      res.render('partials/error', {
-        recipe: recipe,
-        errorMessage: 'Could not remove recipe'
-      })
-    } else if (error) {
-      console.log(error)
-      res.redirect('/error', { errorMessage: error })
-    }
+  } catch (err) {
+      console.log(err)
+      req.flash(
+        'error_msg',
+        'Error deleting recipe'
+      );
+      res.redirect('/recipes');
   }
 })
 
@@ -130,22 +140,70 @@ router.get('/:id/edit', ensureAuthenticated, async (req, res) => {
   try {
     const user = req.user
     const recipe = await Recipe.findById(req.params.id);
-    renderEditPage(res, user, recipe);
-  } catch(error) {
-    console.log(error);
+    res.render('recipes/edit', { user: req.user, recipe: recipe })
+  } catch(err) {
+    console.log(err);
     req.flash('error_msg', 'Error rendering Edit Page')
     res.redirect('/');
   }
-})
+}) 
 
 // POST ROUTE UPDATE RECIPE
 router.put('/:id', upload.single('cover'), async (req, res) => {
-  let recipe
+  recipe = await Recipe.findById(req.params.id);
+  const oldFile = './public'+recipe.imageName;
   const file = req.file;
-  let oldFile;
   try {
-    recipe = await Recipe.findById(req.params.id);
-    oldFile = recipe.imageName.slice(46);
+
+    if (req.file) {
+      try {
+        if(req.fileValidationError) {
+            req.flash(
+                'error_msg',
+                'ERROR: Wrong file type'
+            );
+            res.redirect(`/recipes/${recipe.id}/edit`);
+        } else if(req.file == undefined ) {
+            req.flash(
+                'error_msg',
+                'ERROR: no file selected.'
+            );
+            return res.redirect(`/recipes/${recipe.id}/edit`);
+        } else {
+            const { filename: myImage } = req.file;
+            await sharp(req.file.path)
+            .resize({ height: 1200, fit: 'contain' })
+            .jpeg({ quality: 92 })
+            .toFile(
+                path.resolve(req.file.destination,'coverImages',myImage)
+            )
+            fs.unlinkSync(req.file.path)
+            console.log('file uploaded!')
+
+            fs.unlink(oldFile, (err) => {
+                if (err) {
+                  console.error(err);
+                  req.flash(
+                    'error_msg',
+                    'FS Error Deleting Image'
+                  );
+                }
+                console.log('old image deleted')
+            });
+            const newFile = '/images/coverImages/' + req.file.filename
+            recipe.imageName = newFile
+          } 
+      } catch(err) {
+        req.flash(
+          'error_msg',
+          'ERROR uploading and deleting image'
+        );
+        return res.redirect(`/recipes/${recipe.id}/edit`);
+      }       
+    } else {
+      const existingFile = recipe.imageName
+      recipe.imageName = existingFile;
+    }      
     recipe.recipeName = req.body.recipeName
     recipe.author = req.body.author
     recipe.category = req.body.category
@@ -154,24 +212,6 @@ router.put('/:id', upload.single('cover'), async (req, res) => {
     recipe.stepName = req.body.stepName
     recipe.stepNameTitle = req.body.stepNameTitle
     recipe.amount = req.body.amount
-
-    if (file) {
-      try {
-        const result = await s3UploadCover(file, req.user.name);
-        recipe.imageName = `https://thisoldrecipe-images.s3.amazonaws.com/${result.paramKey}`;
-      } catch(error) {
-        console.log("there was an error uploading new image" + error);
-        req.flash(
-          'error_msg',
-          'Error uploading new image'
-        );
-        res.redirect(`/profile/${req.user.id}`);
-      } finally {
-        console.log(recipe.imageName)
-        console.log(oldFile);
-        const deleteImg = await s3Delete(oldFile);
-      } 
-  }       
     await recipe.save()
       console.log('Recipe updated to DB.');
       req.flash(
@@ -179,18 +219,24 @@ router.put('/:id', upload.single('cover'), async (req, res) => {
         'Recipe UPDATED!'
       );
       res.redirect(`/recipes/${recipe.id}`);
-  } catch {
+  } catch(err) {
+    console.log(err);
     if (recipe != null) {
-      renderEditPage(res, recipe, true)
-    } else {
+      console.log(err);
       req.flash('error_msg', 'ERROR saving edits')
-      redirect('/')
+      res.redirect(`/recipes/${recipe.id}`)
+    } else {
+      console.log(err);
+      req.flash('error_msg', 'ERROR saving edits')
+      res.redirect(`/recipes/${recipe.id}`)
     }
   }
 })
 
 
-router.put('/:id/doPost', async (req, res) => {
+
+
+router.post('/:id/do-post', async (req, res) => {
   let recipeCommentsArray = [];
   try {
     comment = await Recipe.findById(req.params.id);
@@ -200,7 +246,7 @@ router.put('/:id/doPost', async (req, res) => {
     userProfileImg = req.body.userProfileImg
     recipeCommentsArray.push(username, userComment, date, userProfileImg );
     comment.comments.push(recipeCommentsArray);
-
+console.log(recipeCommentsArray)
       await comment.save()
         console.log('Comment saved to DB.');
         req.flash(
@@ -208,46 +254,20 @@ router.put('/:id/doPost', async (req, res) => {
           'Comment SAVED!'
         );
         res.redirect(`/recipes/${comment.id}`);
-  } catch {
+  } catch(err) {
     if (comment!= null) {
-      renderEditPage(res, comment, true)
+      console.log(err);
+      req.flash('error_msg', 'ERROR saving comment not equal null ');
+      res.redirect(`/recipes/${comment.id}`);
     } else {
+      console.log(err);
       req.flash('error_msg', 'ERROR saving comment')
-      redirect('/')
+      res.redirect(`/recipes/${comment.id}`);
     }
   }
 })
 
 
-// GET ERROR PAGE
-router.get('/error', ensureAuthenticated, (req, res) => {
-  res.render('partials/error' + errorMessage, { user: req.user });
-});
-
-async function renderEditPage(res, user, recipe, hasError = false) {
-  renderFormPage(res, user, recipe, 'edit', hasError)
-}
-
-async function renderFormPage(res, user, recipe, form, hasError = false) {
-  try {
-    const params = {
-      user: user,
-      recipe: recipe
-    }
-    if (hasError) {
-      if (form === 'edit') {
-        params.errorMessage = 'Error Updating Book'
-      } else {
-        params.errorMessage = 'Error Creating Book'
-      }
-    }
-    res.render(`recipes/${form}`, params)
-  } catch (error) {
-    console.log(error);
-    req.flash('error_msg', 'Error rendering form')
-    res.redirect('/recipes')
-  }
-}
 
 //set multer upload errors
 router.use((error, req, res, next) => {
@@ -278,84 +298,6 @@ router.use((error, req, res, next) => {
       }
   }
 })
-
-
-
-
-// TESTING //////////////////////////////////////////////////////////////////////////////////
-
-
-// GET RESIZE FORM TEST PAGE
-router.get('/resize', ensureAuthenticated, (req, res) => {
-  res.render('recipes/resize', { user: req.user });
-});
-
-// router.post('/upload_resize', upload_resize.single('inputFile'), (req, res) => {
-//   console.log(req.file); // Print upload details
-//   res.send('Successfully uploaded!');
-// });
-
-
-
-
-
-router.post('/upload_resize', upload_resize.single('inputFile'), async (req, res) => {
-  console.log(req.file); // Print upload details
-
-  const file = req.files[0];
-  if(!file) {
-    return console.log('Please select an Image.');
-  }
-  let url;
-  try {
-    if (file) {
-      try {
-        const result = await s3UploadResize(file, req.user.name);
-        url = `https://thisoldrecipe-images.s3.amazonaws.com/${result.paramKey}`;
-      } catch(err) {
-        console.log("error setting cover image" + err);
-      } finally {
-        const recipe = new Recipe ({
-          recipeName: req.body.recipeName,
-          author: req.body.author,
-          allergens: req.body.allergens,
-          ingredients: req.body.ingredients,
-          amount: req.body.amount,
-          stepName: req.body.stepName,
-          stepNameTitle: req.body.stepNameTitle,
-          imageName: url
-        });
-          await recipe.save();
-          console.log('Image saved to DB.');
-          console.log(recipe.id)
-          req.flash(
-            'success_msg',
-            'Recipe Saved! and SUCCESSFULLY UPLOADED!!!'
-          );
-          res.redirect('/recipes/test');
-      }
-    }
-  } catch(err) {
-    console.log("ERROR" + err)
-    req.flash(
-      'error_msg',
-      'ERROR saving recipe' + err
-    );
-    return res.redirect('/recipes/error' + err)
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

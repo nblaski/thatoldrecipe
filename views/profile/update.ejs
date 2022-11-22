@@ -42,7 +42,7 @@
               <button id="changeUploadBtn" type="button" class="btn btn-danger" style="display: inline">Select to CHANGE image</button>
               <button id="removeUploadBtn" type="button" class="btn btn-danger" style="display: none;">Select to KEEP ORIGINAL image</button>
           </div>
-            <input type="file" class="form-control" id="file" accept="image/*" name="file" style="display: none;">
+            <input type="file" class="form-control" id="icon" accept="image/*" name="icon" style="display: none;">
             <span class="error"><p id="cover_error"></p></span>
             <span id="size"></span>
         </div>
@@ -65,11 +65,11 @@ removeUploadBtn.addEventListener("click", removeUpload , false);
 function addUpload () {
     document.getElementById("preview").style.display = 'none';
     document.getElementById("previewNew").style.display = 'inline-block';
-    document.getElementById('file').style.display = 'inline-block';
+    document.getElementById('icon').style.display = 'inline-block';
     document.getElementById('changeUploadBtn').style.display = 'none';
     document.getElementById('removeUploadBtn').style.display = 'inline-block';
     removeUploadBtn.addEventListener("click", removeUpload , false);
-    document.getElementById('file').onchange = previewImg;
+    document.getElementById('icon').onchange = previewImg;
 
 }
 
@@ -78,14 +78,14 @@ function removeUpload() {
     document.getElementById("preview").style.width = '200px';
     document.getElementById('previewNew').style.display = 'none';
     document.getElementById('previewNew').src = '';
-    document.getElementById('file').value = "";
+    document.getElementById('icon').value = "";
     document.getElementById('size').innerHTML = "";
     document.getElementById('cover_error').innerHTML = "";
-    document.getElementById('file').style.display = 'none';
+    document.getElementById('icon').style.display = 'none';
     document.getElementById('changeUploadBtn').style.display = 'inline-block';
     document.getElementById('removeUploadBtn').style.display = 'none';
     changeUploadBtn.addEventListener("click", addUpload , false);
-    document.getElementById('file').onchange = previewImg;
+    document.getElementById('icon').onchange = previewImg;
 
    
 }
@@ -100,7 +100,7 @@ function hideUpload() {
     }
 
 
-document.getElementById('file').onchange = previewImg;
+document.getElementById('icon').onchange = previewImg;
         // imgInput.addEventListener('change', function (e) {
 function previewImg (e) {
             if (e.target.files) {
@@ -109,7 +109,7 @@ function previewImg (e) {
                 reader.onload = function (e) {
 
                     console.log("fileValidation Activated");
-                    let fi = document.getElementById('file');
+                    let fi = document.getElementById('icon');
                     let imgPreview = document.getElementById('previewNew')
                     let size = document.getElementById('size')
                     if (fi.files.length > 0) {

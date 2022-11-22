@@ -134,6 +134,6 @@ app.use('/profile', require('./routes/profile.js'));
 
 
 // app listening on port
-app.listen(process.env.PORT || 3003 , () => {
-    console.log("connected on 3003")
+app.listen(process.env.PORT || 3006 , () => {
+    console.log("connected on 3006")
 })

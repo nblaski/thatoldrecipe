@@ -2,42 +2,25 @@ const path = require('path');
 const multer = require('multer');
 
 let storage = multer.diskStorage({
-    destination: './public/uploads/recipeCovers',
-    filename: (req, file, cb) => {
-          let ext = ''; // set default extension (if any)
-          if (file.originalname.split(".").length>1) // checking if there is an extension or not.
-              ext = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
-          cb(null, Date.now() + ext)
-            // cb(null, file.originalname)
+    destination: './public/images/',
+    filename: function(req, file, cb){
+      cb(null,file.fieldname + '-'+ req.user.name + "-" + Date.now() + path.extname(file.originalname));
     }
   });
   
-//   let upload = multer({
-//     storage : storage,
-//     fileFilter : (req, file, cb) => {
-//         checkFileType(file, cb);
-//     }
-//   });
-  
-  function checkFileType(file, cb) {
-    const fileTypes = /jpeg|jpg|png|gif/;
-    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
-  
-    if(extname) {
-        return cb(null, true);
-    } else {
-        cb('Error: Please images only.');
-    }
-  }
 
-//   module.exports = {storage}, {upload}, checkFileType
-
-  module.exports = multer({
+module.exports = multer({
     storage: storage,
-    limits: {
-      fileSize: 1024 * 1024 * 15, // 15mb max size,
-    },
+    // limits: {
+    //   fileSize: 1024 * 1024 * 15, // 15mb max size,
+    // },
     fileFilter : (req, file, cb) => {
-        checkFileType(file, cb);
+        const fileTypes = /jpeg|jpg|png|gif/;
+        const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+        if (!extname) {
+            req.fileValidationError = 'goes wrong on the mimetype';
+            return cb(null, false, new Error('goes wrong on the mimetype'));
+           }
+           cb(null, true);
     }
   });

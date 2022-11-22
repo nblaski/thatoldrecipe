@@ -67,7 +67,7 @@ router.post('/register', async (req, res) => {
             newUser
               .save()
               .then( async (user) => {
-
+                console.log("USER EMAIL " + user.email)
                 // Encode the user id in a jwt token with an expiration date
                 const date = new Date();
                 const mail = {
@@ -75,6 +75,7 @@ router.post('/register', async (req, res) => {
                             "created": date.toString()
                             }
                 const sender = process.env.SEND_EMAIL;
+
                 const senderPassword = process.env.EMAIL_PASSWORD;
 
                 const token_mail_verification = jwt.sign(mail, process.env.EMAIL_SECRET, { expiresIn: '1d' });
