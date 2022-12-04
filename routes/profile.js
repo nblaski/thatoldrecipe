@@ -6,6 +6,7 @@ const fs = require('fs');
 const sharp = require('sharp');
 const multer = require('multer');
 const upload = require("../multerLocal.js");
+const upload2 = upload.single('icon');
 const multerError = require("./_multerErrors");
 router.use(multerError);
 
@@ -26,13 +27,22 @@ router.get('/:id', ensureAuthenticated, async (req, res) => {
 
 // GET ROUTE UPDATE USER PROFILE
 router.get('/:id/update', ensureAuthenticated, async (req, res) => {
+  console.log("HELLO from update route");
   const user = req.user;
   const username = await User.findById(req.params.id);
   res.render('profile/update', { user: req.user, username: username });
 });
 
+  
+router.post('/:id/test', upload.single('icon'), (req, res) => {
+   res.send(req.file)
+}, (error, req, res, next) => {
+    res.status(400).send({ error: error.message })
+})
+
 // POST ROUTE UPDATE USER PROFILE
 router.post("/:id/update", upload.single('icon'), async (req, res) => {
+  console.log("HELLO from the update post route")
   const user = await User.findById(req.params.id);
   console.log("user: " + user)
   const pathOld = './public'+ user.profileImgURL;

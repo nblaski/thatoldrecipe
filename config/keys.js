@@ -5,6 +5,6 @@ dbPassword = 'mongodb+srv://YOUR_USERNAME_HERE:'+ encodeURIComponent('YOUR_PASSW
 module.exports = {
     mongoURI: dbPassword,
     session: {
-        cookieKey: process.env.COOKIE_KEY;
-    } ;
+        cookieKey: process.env.COOKIE_KEY
+    }
 };

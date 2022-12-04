@@ -35,7 +35,7 @@ const connectionParams={
 }
 mongoose.connect(process.env.DATABASE_URL,connectionParams)
   .then( () => {
-      console.log('Connected to the database ')
+      console.log('Connected to the database!')
   })
   .catch( (err) => {
       console.error(`Error connecting to the database. n${err}`);
@@ -51,7 +51,7 @@ app.set('views', __dirname + '/views')
 // EXPRESS BODY PARSER
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
+//app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use('/static', express.static(path.join(__dirname, 'public')))
@@ -134,6 +134,6 @@ app.use('/profile', require('./routes/profile.js'));
 
 
 // app listening on port
-app.listen(process.env.PORT || 3006 , () => {
-    console.log("connected on 3006")
+app.listen(process.env.PORT, () => {
+    console.log("connected")
 })
