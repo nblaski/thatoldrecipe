@@ -24,7 +24,7 @@ const sharp = require('sharp');
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
 
 router.get('/successCode', ensureAuthenticated, async (req, res) => {
-  res.render('code');
+  res.render('code', { user: req.user });
 });
 
 router.post('/users/successCode', ensureAuthenticated, async (req, res) => {
