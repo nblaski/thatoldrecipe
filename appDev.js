@@ -100,6 +100,7 @@ app.use(function(req, res, next) {
 // ROUTES
 // const recipeRouter = require('./routes/recipe.js')
 app.use('/', require('./routes/index.js'));
+// app.use('/code'), require('./routes/code.js');
 app.use('/users', require('./routes/users.js'));
 app.use('/recipes', require('./routes/recipe.js'));
 app.use('/profile', require('./routes/profile.js'));

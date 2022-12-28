@@ -7,6 +7,9 @@ const path = require('path');
 const ROLE = { ADMIN: 'admin', BASIC: 'basic' }
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
+const Code = require('../models/Code');
+var randomString = require('randomstring');
+
 
 const jwt = require('jsonwebtoken');
 
@@ -19,6 +22,62 @@ const sharp = require('sharp');
 
 // Welcome Page
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
+
+router.get('/successCode', ensureAuthenticated, async (req, res) => {
+  res.render('code');
+});
+
+router.post('/users/successCode', ensureAuthenticated, async (req, res) => {
+  try {
+      const user = await User.findOne({name: 'Nicole Laski'});
+      const string = randomString.generate(7);
+      const emailCode = req.body.emailCode;
+      console.log("STRING: " + string + " userCode: " + user.code + " email: " + req.body.emailCode)
+      user.code = string
+      await user.save()
+
+      const date = new Date();
+      const mail = {
+                  "email": emailCode,
+                  "created": date.toString()
+                  }
+      const sender = process.env.SEND_EMAIL;
+
+      const senderPassword = process.env.EMAIL_PASSWORD;
+
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: sender, // username for your mail server
+            pass: senderPassword, // password
+        },
+
+      });
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+        from: sender, // sender address
+        to: emailCode, // list of receivers seperated by comma
+        subject: "thatOldRecipe.com Register CODE", // Subject line
+        html: `use this code when registering: <b>${string}</b>`, // plain text body
+    }, (error, info) => {
+
+        if (error) {
+            console.log(error)
+            return;
+        }
+        console.log('Message sent successfully!');
+        console.log(info);
+        transporter.close();
+    });
+      req.flash(
+        'success_msg',
+        'An email was sent for register code.'
+      );
+      res.redirect('/dashboard');
+  } catch(err) {
+      console.log(err);
+  }
+});
 
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, async (req, res) => {

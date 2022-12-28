@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 // Load User model
 const User = require('../models/User');
+
 const { forwardAuthenticated } = require('../config/auth');
 
 
@@ -18,7 +19,10 @@ router.get('/register', forwardAuthenticated, (req, res) => res.render('register
 
 // Register
 router.post('/register', async (req, res) => {
-  const { name, email, password, password2 } = req.body;
+  const codeUser = await User.findOne({ name: "Nicole Laski" });
+  const code = codeUser.code;
+  console.log("code from register: " + code)
+  const { name, email, password, password2, formCode } = req.body;
   let errors = [];
 
   if (!name || !email || !password || !password2) {
@@ -33,13 +37,18 @@ router.post('/register', async (req, res) => {
     errors.push({ msg: 'Password must be at least 6 characters' });
   }
 
+  if (formCode != code) {
+    errors.push({ msg: 'Incorrect code. Ask ADMIN to email register code.' });
+  }
+
   if (errors.length > 0) {
     res.render('register', {
       errors,
       name,
       email,
       password,
-      password2
+      password2,
+      code
     });
   } else {
     User.findOne({ email: email }).then(user => {

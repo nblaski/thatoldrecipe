@@ -35,32 +35,45 @@ router.get('/newForm', ensureAuthenticated, (req, res) => {
 
 // POST ROUTE NEW RECIPE
 router.post('/newForm', upload.single('cover'), async (req, res) => {
-  try {    
-      if(req.fileValidationError) {
-        req.flash(
-          'error_msg',
-          'ERROR: Wrong file type'
-        );
-        res.redirect(`/recipes/newForm`);
-      } else if(req.file == undefined ) {
+  let recipeImage;
+  try {   
+      try {
+        if(req.fileValidationError) {
+          req.flash(
+            'error_msg',
+            'ERROR: Wrong file type'
+          );
+          res.redirect(`/recipes/newForm`);
+        } else if(req.file == undefined ) {
+          recipeImage = req.user.profileImgURL
+          // recipeImage = req.user.userProfileImg
+  
+          // req.flash(
+          //     'error_msg',
+          //     'ERROR: no file selected.'
+          // );
+          // res.redirect(`/recipes/newForm`);
+        } else if (req.file) {
+          const { filename: newCoverImage } = req.file;
+          await sharp(req.file.path)
+          .resize({ height: 1200, fit: 'contain' })
+          .jpeg({ quality: 92 })
+          .toFile(
+              path.resolve(req.file.destination,'coverImages', newCoverImage)
+          )
+          fs.unlinkSync(req.file.path)
+          console.log('file uploaded!')
+          recipeImage = '/images/coverImages/' + req.file.filename
+        }
+      } catch(err) {
+        console.log(err);
         req.flash(
             'error_msg',
-            'ERROR: no file selected.'
+            'ERROR: ERROR SETTING recipeImage'
         );
         res.redirect(`/recipes/newForm`);
-      } else if (req.file) {
-        const { filename: newCoverImage } = req.file;
-        await sharp(req.file.path)
-        .resize({ height: 1200, fit: 'contain' })
-        .jpeg({ quality: 92 })
-        .toFile(
-            path.resolve(req.file.destination,'coverImages', newCoverImage)
-        )
-        fs.unlinkSync(req.file.path)
-        console.log('file uploaded!')
+      }
 
-
-        const newFile = '/images/coverImages/' + req.file.filename
 
         const recipe = new Recipe ({
             recipeName: req.body.recipeName,
@@ -71,7 +84,7 @@ router.post('/newForm', upload.single('cover'), async (req, res) => {
             amount: req.body.amount,
             stepName: req.body.stepName,
             stepNameTitle: req.body.stepNameTitle,
-            imageName: newFile
+            imageName: recipeImage
           });
         await recipe.save()
         console.log('New recipe saved.');
@@ -80,7 +93,7 @@ router.post('/newForm', upload.single('cover'), async (req, res) => {
           'Recipe Saved!'
         );
         res.redirect(`/recipes/${recipe.id}`);
-      }
+      
   } catch(err) {
     console.log("there was an error" + err);
     req.flash('error_msg', 'ERROR saving new recipe')

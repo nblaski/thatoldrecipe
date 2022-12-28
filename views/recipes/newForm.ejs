@@ -238,7 +238,7 @@ document.getElementById("newForm").onsubmit = function () {
         console.log("b - " + b)
         var bb = document.getElementById("stepTitleTextarea_0").value;
         console.log("bb - " + bb)
-        var d = document.getElementById("cover").value;
+        // var d = document.getElementById("cover").value;
         var d1 = document.getElementById("cover").style;
 
 
@@ -328,13 +328,13 @@ document.getElementById("newForm").onsubmit = function () {
             submit = false;
         }
 
-        if(d== null || d == "") {
-            coverError = "Please select an image";
-            document.getElementById("cover_error").innerHTML = coverError;
-            document.getElementById("cover").style.borderWidth = "thin"
-            document.getElementById("cover").style.borderColor = "red"
-            submit = false;
-        }
+        // if(d== null || d == "") {
+        //     coverError = "Please select an image";
+        //     document.getElementById("cover_error").innerHTML = coverError;
+        //     document.getElementById("cover").style.borderWidth = "thin"
+        //     document.getElementById("cover").style.borderColor = "red"
+        //     submit = false;
+        // }
 
         return submit;
     }
@@ -368,7 +368,7 @@ document.getElementById("newForm").onsubmit = function () {
     document.getElementById("stepTitleTextarea_0").onkeyup = removeWarning;
     document.getElementById("ingredients_0").onkeyup = removeWarning;
     document.getElementById("amount_0").onkeyup = removeWarning;
-    document.getElementById("cover").onclick = removeCoverWarning;
+    // document.getElementById("cover").onclick = removeCoverWarning;
     
 
     var loadFile = function(event) {

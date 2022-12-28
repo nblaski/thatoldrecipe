@@ -3,119 +3,172 @@
 
 
 
-
-
-
-<!-- TREEHOUSE RECIPE BOX -->
-
 <%- include('../partials/messages') -%>
-<div class="jumbotron" style="background: none !important; padding: 10px 30px; margin-bottom: 0px;">
-	<div class="row">
-			<div style="text-align: left; margin: 5px; padding: 0px; display: inline-block">
-				<a class="btn btn-secondary" href="/recipes">Back</a>
-			
-			<div style="text-align: left; margin: 5px; padding: 0px;display: inline-block">
-				<% if (recipe.author === user.name || user.role == "admin") { %>
-					<a class="btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
-					<% } else { %>
-					<% } %>		
-			</div>
-			<div style="margin: 5px; padding: 0px;display: inline-block">
-				<%- include('../partials/deleteForm', { url: `/recipes/${recipe._id}` }) -%>
-			</div>
-		</div>
-	</div>
-</div>
 
 
-<div class="jumbotron" style="background: none !important; padding-top: 20px;">
-    <div class="jumbotron" style="padding: 15px; border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
+
+
+
+<div class="jumbotron" style="background: none !important; padding: 0px 30px 10px 0px; max-width: 1280px;">
+    <div style="background-image: url(/images/recipeIcons/indexCard11.png); background-size: cover; padding: 15px; border-style: none; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
 		
 
-		<div class="row" style="margin-top: 10px;">
-
-            <div class="col" style="text-align: center;">
-				<div class="row" style="margin-bottom: 10px;">
-					<h2 style="text-align: center"><%= recipe.recipeName %></h2>
-					<h5 style="text-align:center; margin-bottom: 15px">Author: <%= recipe.author %></h5>
-					<img style="width: 100%; height: 100%; min-width: 225px; max-height: 900px; object-fit: cover; display: inline-block;" src="<%=recipe.imageName%>">
+		<div class="jumbotron" style="background: none !important; padding: 30px 40px; margin-bottom: 0px;">
+			<div class="row">
+					<div style="text-align: left; margin-left: 15px; padding: 0px; display: inline-block">
+						<a class="btn btn-secondary" href="/recipes">Back</a>
+					
+					<div style="text-align: left; margin: 5px; padding: 0px;display: inline-block">
+						<% if (recipe.author === user.name || user.role == "admin") { %>
+							<a class="btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
+							<% } else { %>
+							<% } %>		
+					</div>
+					<div style="margin: 5px; padding: 0px;display: inline-block">
+						<%- include('../partials/deleteForm', { url: `/recipes/${recipe._id}` }) -%>
+					</div>
 				</div>
+			</div>
+		</div>
+
+
+
+		<div style="background-color: seagreen; color: white; padding: 5px 15px; margin-left: 40px;"><i><%= recipe.category[0]%></i>
+			</div>
+		<div class="container" style="background: none; padding: 10px 15px 100px 40px">
+
+
+
+
+
+
+
+
+
+			
+			<div class="row">
+							
+				<!-- <div class="col-2"></div> -->
+				<div class="col"style="margin-bottom: 20px;">
+					<h3 style="color: seagreen; margin-bottom:0px"><%= recipe.recipeName %></h3>
+					<h8 style="padding-bottom: 0px"><i>Author: <%= recipe.author %></i></h8>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<div class="row" style="margin-top: 10%;">
+						<div class="col-4"style="padding: 8px 0px 0px 15px;" ><img src="/images/recipeIcons/timer-01.png" style="width:25px"></div> 
+						<div class="col" style="padding: 10px;"><b>Time</b></div>
+						</div>  
+		
+					<div class="row"> 
+							<div class="col-4"style="padding: 8px 0px 0px 15px;"><img src="/images/recipeIcons/serving-01.png" style="width:25px"></div> 
+							<div class="col"style="padding: 10px;"><b>Servings</b></div>
+					</div>
+					<div class="row"style="margin-bottom: 10%;"> 
+						<div class="col-4"style="padding: 8px 0px 0px 15px;"><img src="/images/recipeIcons/serving-01.png" style="width:25px"></div> 
+						<div class="col"style="padding: 10px;"><b>Calories</b></div>
+				</div>
+				</div>
+				<div class="col"> 
+					<img src="<%= recipe.imageName %>" alt="recipe image" style="width: 100%; height: 100%; max-width: 300px; max-height: 190px; object-fit: cover; padding: 0px">
+				</div> 
+			</div>
+
+			
 				
-				
-            </div>
 
 
-            <div class="col">
 
-				<h3 style="margin-bottom: 15px; margin-top: 10px;">Recipe:</h3>
-						
-						<h6><b>Ingredients</b></h6>
-						<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
-						<ul style="padding: 0px">
-							<% for (var i = 0; i < recipe.ingredients.length; i++) { %>
-								<% if (recipe.ingredients[i] !== "") {%> 
-									<li id="ingredient_<%=i%>" style="list-style: none"><%= recipe.ingredients[i] %> - <%= recipe.amount[i] %></li>
-									<% } else { %> 
-										<%  %> 
-									<% } %> 
-							<% } %>
-						</ul>
-						<h6 class="showStepsHeader"><b>Steps</b></h6>
-						<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
-						<div class="showSteps">
-							<ol>
-								<% for (var i = 0; i < recipe.stepName.length; i++) { %>
-									<% if (recipe.stepNameTitle[i] !== "") { %> 
-										<li id="stepNameTitle_<%=i%>" class="liStep"><b><%= recipe.stepNameTitle[i] %></b></li>
-										<li id="stepName_<%=i%>"  style="padding: 0px 0px 0px 30px"><%= recipe.stepName[i] %></li><br>
-									<% } else { %>
-									<% } %>
-								<% } %>
-							</ol>	
+			<div class="row">
+				<!-- <div class="col-2"></div> -->
+				<div class="col">
+					<h5 style="color: seagreen; padding-top: 20px; padding-bottom: 10px;"><b>Ingredients</b></h5>
+				</div>
+			</div>
+
+				<% for (var i = 0; i < recipe.ingredients.length; i++) { %>
+					<% if (recipe.ingredients[i] !== "") {%> 
+						<div class="row">
+							<div class="col-4" style="padding: 2px 0px 2px 15px; border-top: 0px; border-bottom: 1pt solid seagreen;"><b><%= recipe.amount[i] %></b></div>
+							<div class="col" style="padding: 2px 0px 2px 15px; border-top: 0px; border-bottom: 1pt solid seagreen;"><b><%= recipe.ingredients[i] %></b></div>
 						</div>
+						<% } else { %> 
+							<%  %> 
+						<% } %> 
+				<% } %>
 
-						<hr style="color:#333 !important">
+				<div class="row" style="margin-top:20px;"></div>
 
-						<div style="margin-top: 30px">
-							<h4 style="margin-bottom: 15px;">Other info:</h4>
-							<h6><b>Categories</b></h6>
-							<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
+				<div class="row">
+					<!-- <div class="col-2"></div> -->
+					<div class="col">
+						<h5 style="color: seagreen; padding-top: 20px; padding-bottom: 10px;"><b>Directions</b></h5>
+					</div>
+				</div>
+
+				<% for (var i = 0; i < recipe.stepName.length; i++) { %>
+					<% if (recipe.stepNameTitle[i] !== "") { %> 
+						<div class="row">
+							<div class="col-1" style="color: seagreen; font-size: 2rem; padding: 0px 25px 0px 15px; border-top: 0px; border-bottom: 1pt solid seagreen;"><b><%=i+1%></b></div>
+							<div class="col-3" id="stepNameTitle_<%=i%>" style="padding: 5px 20px 5px 15px; border-top: 0px; border-bottom: 1pt solid seagreen; "><b><%= recipe.stepNameTitle[i] %></b></div>
+							<div class="col" id="stepName_<%=i%>" style="padding: 5px 0px 5px 5px; border-top: 0px; border-bottom: 1pt solid seagreen;"><%= recipe.stepName[i] %></div>
+						</div>
+						<% } else { %>
+					<% } %>
+				<% } %>
+
+
+
+				<div style="margin-top: 30px">
+					<!-- <h4 style="margin-bottom: 15px;">Other info:</h4> -->
+					<h5 style="color: seagreen; padding-top: 20px; padding-bottom: 10px;"><b>Categories</b></h5>
+					<!-- <hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" > -->
+					<ul style="padding: 0px 0px 0px 0px;">
+						<% for (var i = 0; i < recipe.category.length; i++) { %>
+						<li style="display: inline-block"><%= recipe.category[i]%>, </li>
+						<% } %>
+					</ul>
+			
+						<% if (recipe.allergens.length !== 0) { %>
+							<h5 style="color: seagreen; padding-top: 20px; padding-bottom: 10px;"><b>Allergens</b></h5>
+							<!-- <hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" > -->
 							<ul style="padding: 0px 0px 0px 0px;">
-								<% for (var i = 0; i < recipe.category.length; i++) { %>
-								<li style="display: inline-block"><%= recipe.category[i]%>, </li>
+								<% for (var i = 0; i < recipe.allergens.length; i++) { %>
+								<li style="display: inline-block"><%= recipe.allergens[i]%>, </li>
 								<% } %>
 							</ul>
-					
-								<% if (recipe.allergens.length !== 0) { %>
-									<h6><b>Allergens</b></h6>
-									<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
-									<ul style="padding: 0px 0px 0px 0px;">
-										<% for (var i = 0; i < recipe.allergens.length; i++) { %>
-										<li style="display: inline-block"><%= recipe.allergens[i]%>, </li>
-										<% } %>
-									</ul>
-								<% } else { %> 
-									<div>
-										<h6><b>Allergens</b></h6>
-										<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
-										<h6>This Recipe has no known Allergens. Consume at your own risk!</h6>
-									</div>
-									<br>
-								<% } %>
+						<% } else { %> 
+							<div>
+								<h6><b>Allergens</b></h6>
+								<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
+								<h6>This Recipe has no known Allergens. Consume at your own risk!</h6>
+							</div>
+							<br>
+						<% } %>
+	
+	
+				</div>
 
-						</div>
-				
-         </div>
 
-           
 
+
+
+
+
+
+
+		</div>
+		
+		</div>					
+
+		<%- include('../partials/comments') -%>
 
     </div>
     
 </div>
 
 
-<%- include('../partials/comments') -%>
 
 
 
