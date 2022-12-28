@@ -1,4 +1,6 @@
 node_modules
 .env
-public/images/
+public/images/profileIcon
+public/images/coverImages
+public/images/uploads
 package-lock.json
