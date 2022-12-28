@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+const { ensureAuthenticated, forwardAuthenticated, ensureAuthenticatedCode } = require('../config/auth');
 const { authUser, authRole, authRoleAdmin } = require('../permissions/basicAuth');
 const projectRouter = require('../permissions/project');
 const path = require('path');
@@ -23,7 +23,7 @@ const sharp = require('sharp');
 // Welcome Page
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
 
-router.get('/successCode', ensureAuthenticated, async (req, res) => {
+router.get('/successCode', ensureAuthenticatedCode, (req, res) => {
   res.render('code', { user: req.user });
 });
 

@@ -2,15 +2,19 @@
 <%- include('./partials/navbar') -%>
 
 
+<div class="jumbotron" style="margin: 20px 20px;">
+    <h1>CODE</h1>
 
-<h1>CODE</h1>
-
-<form action="/users/successCode" method="POST">
-    <div class="form-group">
-        <label for="recipeName">Recipe Name</label>
-        <input type="email" id="emailCode" class="form-control" placeholder="Email" name="emailCode">
+    <form action="/users/successCode" method="POST">
+        <div class="form-group">
+            <label for="recipeName">Recipe Name</label>
+            <input type="email" id="emailCode" class="form-control" placeholder="Email" name="emailCode">
+        </div>
+    <div>
+        <button class="btn btn-success btn-block" type="submit">SUBMIT</button>
     </div>
-<div>
-    <button class="btn btn-success btn-block" type="submit">SUBMIT</button>
+    </form>
 </div>
-</form>
+
+
+<%- include('./partials/footer') -%>

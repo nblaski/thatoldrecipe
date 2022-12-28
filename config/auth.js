@@ -15,5 +15,12 @@ module.exports = {
   setUser: function(req, res, next) {
     user = req.session.user;
     next();
-  }
+  },
+  ensureAuthenticatedCode: function(req, res, next) {
+    if (req.isAuthenticated() && req.session.user == "Nicole Laski") {
+      return next();
+    }
+    req.flash('error_msg', 'Need to be ADMIN to view that resource');
+    res.redirect('/dashboard');
+  },
 };
