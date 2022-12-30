@@ -2,9 +2,8 @@
 
 
 
-<div class="jumbotron" style="background: none !important; padding: 20px 0px 0px 25px;">
 
-    <div class="jumbotron" style="padding: 20px; border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px;">
+    <div class="jumbotron" style="margin-top: 20px; padding: 20px; border-style: solid; border-color: rgb(157, 157, 157); border-radius: .5em; border-width: 3px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
 
 
         <form id="comments" method="POST" onsubmit="return doPost(this, '<%=recipe.id%>', '<%= user.profileImgURL %>');">
@@ -42,7 +41,7 @@
                         </div>
                 <% } %>
 
-</div>
+    </div>
 
 <script>
     function doPost(form, recipeID, userProfileImg) {
