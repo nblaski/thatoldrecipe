@@ -58,7 +58,8 @@ router.post('/users/successCode', ensureAuthenticated, async (req, res) => {
         from: sender, // sender address
         to: emailCode, // list of receivers seperated by comma
         subject: "thatOldRecipe.com Register CODE", // Subject line
-        html: `use this code when registering: <b>${string}</b>`, // plain text body
+        html: `use this code when registering: <b>${string}</b>. 
+        Click here to register https://www.thatoldrecipe.com/users/register`, // plain text body
     }, (error, info) => {
 
         if (error) {
