@@ -17,7 +17,7 @@ module.exports = {
     next();
   },
   ensureAuthenticatedCode: function(req, res, next) {
-    if (req.isAuthenticated() && req.session.user == "Nicole Laski") {
+    if (req.isAuthenticated() && req.user.name == "Nicole Laski") {
       return next();
     }
     req.flash('error_msg', 'Need to be ADMIN to view that resource');
