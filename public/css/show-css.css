@@ -5,18 +5,18 @@
 }
 
 .showCard {
-    margin: 20px 20px 10px 20px; 
+    margin: 5px 20px 10px 20px; 
     max-width: 1280px; 
     background-color: white;
     padding: 20px; 
-    border-style: none;
+    /* border-style: solid; */
     border-radius: .5em; 
     border-width: 3px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .showBorder {
-    border-style: solid !important; 
+    /* border-style: none !important;  */
     border-color: rgb(157, 157, 157); 
 }
 
@@ -24,14 +24,17 @@
 .editButtons {
     text-align: left; 
     display: inline-block;
-    margin: 10px 10px 10px 3px
+    margin: 20px 10px 0px 3px
 }
 
 .showBarCategory {
-    background-color: seagreen; 
+    background-color: white; 
     color: white; 
     padding: 5px 15px; 
     margin-bottom: 10px;
+    text-align: center;
+    /* font-size: 14px; */
+    font-size: calc(14px + (20 - 14) * ((100vw - 375px) / (1280 - 375)));
 }
 
 .showIndexCard {
@@ -40,8 +43,9 @@
 }
 
 .showRecipeTitle {
-    color: seagreen; 
+    color: white; 
     margin-bottom:0px;
+    font-weight: bold;
 }
 
 .showIconsCol {
@@ -51,6 +55,7 @@
 .showIcons {
     width:100%; 
     max-width: 50px;
+    font-size: 40px;
 }
 
 .showTimerServe {
@@ -68,7 +73,7 @@
 }
 
 .showInstructions {
-    color: seagreen; 
+    color: white; 
     padding-top: 30px; 
     padding-bottom: 10px;
     font-weight: bold;
@@ -76,23 +81,33 @@
 
 .padLeftNone {
     padding-left: 3px !important;
+    padding-right: 0px !important;
 }
 
 .showIngredients {
     padding: 2px 0px 2px 15px; 
     border-top: 0px; 
-    border-bottom: 1pt solid seagreen;
+    border-bottom: 1pt solid white;
 }
 
 .showDirectionsNum {
-    color: seagreen; 
+    color: white; 
     font-size: 2rem; 
     font-weight: bold;
     padding: 0px 25px 0px 15px; 
     border-top: 0px; 
-    border-bottom: 1pt solid seagreen;
+    border-bottom: 1pt solid white;
 }
 
-/* [title~=flower] {
-    border: 5px solid yellow;
-  } */
+.showDirectionsP {
+    padding: 0px 0px 5px 5px !important; 
+    font-size: .9em;
+    border-top: 0px; border-bottom: 1pt solid white;
+}
+
+.backArrow {
+    margin-left: 20px;
+    font-size: 2.5em; 
+    background-color: none;
+    padding-bottom: 5px;
+}

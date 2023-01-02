@@ -492,7 +492,7 @@ background-color: #343a40 !important;
 	width: 100%;
 	background-color: white;
 	border-radius: 4px;
-	box-shadow: 10px 10px 5px #aaaaaa;
+	box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
   border-style:solid;
   border-color: #c6c6c8;
   margin-top: 20px;

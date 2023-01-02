@@ -6,44 +6,35 @@
 <%- include('../partials/messages') -%>
 
 
-
+<div>
+	<a id="backArrow" class="fa fa-arrow-circle-left backArrow" href="/recipes"></a>
+</div>
 
 
 	<div class="showCard showBackground">
-			<div class="row">
-					<div class="editButtons">
-						<a class="btn btn-secondary" href="/recipes">Back</a>
-					
-					<div class="editButtons">
-						<% if (recipe.author === user.name || user.role == "admin") { %>
-							<a class="btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
-							<% } else { %>
-							<% } %>		
-					</div>
-					<div class="editButtons">
-						<%- include('../partials/deleteForm', { url: `/recipes/${recipe._id}` }) -%>
-					</div>
-				</div>
-			</div>
-		<div class="showBarCategory"><i><%= recipe.category[0]%></i>
-		
+
+		<div id="showBar" class="showBarCategory"><i><%= recipe.category %> </i>
 		</div>
 		<div class="container showIndexCard">
 			<div class="row">
 				<div class="col padLeftNone"style="margin-bottom: 20px;">
-					<h3 class="showRecipeTitle"><%= recipe.recipeName %></h3>
+					<h3 id="title" class="showRecipeTitle"><%= recipe.recipeName %></h3>
 					<h8><i>Author: <%= recipe.author %></i></h8>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-6 padLeftNone">
 					<div class="row" style="margin-top: 20px;">
-						<div class="col-4 showIconsCol"><img src="/images/recipeIcons/timer-01.png" class="showIcons"></div> 
+						<!-- <div class="col-4 showIconsCol"><img src="/images/recipeIcons/timer-01.png" class="showIcons"></div>  -->
+						<div class="col-4 showIconsCol"><i id="farClock" class='far fa-clock showIcons'></i></div>
 						<div class="col showTimerServe">Time</div>
 						</div>  
 		
 					<div class="row" style="margin-top: 20px;"> 
-							<div class="col-4 showIconsCol"><img src="/images/recipeIcons/serving-01.png" class="showIcons"></div> 
+							<!-- <div class="col-4 showIconsCol"><img src="/images/recipeIcons/serving-01.png" class="showIcons"></div>  -->
+							<div class="col-4 showIconsCol"><i id="farServe" class='fas fa-hard-hat showIcons'></i></div>
+							<!-- <div class="col-4 showIconsCol"><i id="farClock" class='fa-solid fa-plate-utensils'></i><i class="fa-solid fa-plate-utensils"></i></div> -->
+
 							<div class="col showTimerServe">Servings</div>
 					</div>
 				</div>
@@ -53,7 +44,7 @@
 			</div>
 			<div class="row">
 				<div class="col padLeftNone">
-					<h5 class="showInstructions">Ingredients</h5>
+					<h5 id="ingredientsTitle" class="showInstructions">Ingredients</h5>
 				</div>
 			</div>
 
@@ -72,7 +63,7 @@
 
 				<div class="row">
 					<div class="col padLeftNone">
-						<h5 class="showInstructions">Directions</h5>
+						<h5 id="directionsTitle" class="showInstructions">Directions</h5>
 					</div>
 				</div>
 
@@ -80,29 +71,29 @@
 					<% if (recipe.stepNameTitle[i] !== "") { %> 
 						<div class="row">
 							<div class="col-1 padLeftNone showDirectionsNum"><%=i+1%></div>
-							<div class="col padLeftNone" id="stepName_<%=i%>" style="padding: 5px 0px 5px 5px; border-top: 0px; border-bottom: 1pt solid seagreen;"><%= recipe.stepName[i] %></div>
+							<div class="col padLeftNone showDirectionsP" id="stepName_<%=i%>"><%= recipe.stepName[i] %></div>
 						</div>
 						<% } else { %>
 					<% } %>
 				<% } %>
 				<div class="row">
-					<h5 class="padLeftNone showInstructions">Categories</h5>
+					<h5 id="titleCategory" class="padLeftNone showInstructions">Sub Categories</h5>
 					<ul class="padLeftNone">
 						<% for (var i = 0; i < recipe.category.length; i++) { %>
-						<li style="display: inline-block"><%= recipe.category[i]%>, </li>
+						<li style="display: inline-block"><%= recipe.category[i]%>&nbsp;&nbsp;</li>
 						<% } %>
 					</ul>
 			
 						<% if (recipe.allergens.length !== 0) { %>
-							<h5 class="padLeftNone showInstructions">Allergens</h5>
+							<h5 id="titleAllergens" class="padLeftNone showInstructions">Allergens</h5>
 							<ul class="padLeftNone">
 								<% for (var i = 0; i < recipe.allergens.length; i++) { %>
-								<li style="display: inline-block"><%= recipe.allergens[i]%>, </li>
+								<li style="display: inline-block"><%= recipe.allergens[i]%>&nbsp;&nbsp;</li>
 								<% } %>
 							</ul>
 						<% } else { %> 
 							<div>
-								<h6><b>Allergens</b></h6>
+								<h5 id="titleAllergens" class="padLeftNone showInstructions">Allergens</h5>
 								<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
 								<h6>This Recipe has no known Allergens. Consume at your own risk!</h6>
 							</div>
@@ -113,9 +104,77 @@
 				</div>
 		</div>
 		
+
+		<div class="row">
+			<div class="editButtons">
+
+			<div class="editButtons">
+				<% if (recipe.author === user.name || user.role == "admin") { %>
+					<a class="btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
+					<% } else { %>
+					<% } %>		
+			</div>
+			<div class="editButtons">
+				<%- include('../partials/deleteForm', { url: `/recipes/${recipe._id}` }) -%>
+			</div>
+		</div>
+	</div>
+
+
     </div>
 
 	<%- include('../partials/comments') -%>
+
+
+	<script>	
+        var showBar = document.getElementById('showBar').textContent.trim();
+		const category = ["Appetizer", "Baked-goods", "Bread", "Breakfast", "Cookies", "Dessert", "Dinner", "Lunch", "Snack", "Soup \& Salad"];
+		const color = ["SteelBlue", "Brown", "SaddleBrown", "DarkGreen", "DarkMagenta", "DarkSlateGray", "DarkBlue", "DarkRed", "Chocolate", "DarkOliveGreen"];
+
+
+		function showBarColor(showBar, category, color, colorComments) {
+			if (showBar.includes(category)) {
+				document.getElementById('showBar').setAttribute("style", `background-color: ${color};`);
+				document.getElementById('title').setAttribute("style", `color: ${color};`);
+				document.getElementById('farClock').setAttribute("style", `color: ${color};`);
+				document.getElementById('farServe').setAttribute("style", `color: ${color};`);
+				document.getElementById('backArrow').setAttribute("style", `color: ${color} !important;`);
+				document.getElementById('cardComments').setAttribute("style", `background-color: ${color} !important; color: white;`);
+
+				const showDirectionsNum = document.querySelectorAll('.showDirectionsNum');
+					for (var i=0; i < showDirectionsNum.length; i++) {
+    					showDirectionsNum[i].setAttribute("style", `border-bottom: 1pt solid ${color}; color: ${color};`);
+						};
+				const showIngredients = document.querySelectorAll('.showIngredients');
+					for (var i=0; i < showIngredients.length; i++) {
+    					showIngredients[i].setAttribute("style", `border-bottom: 1pt solid ${color};`);
+						};
+				const showDirectionsP = document.querySelectorAll('.showDirectionsP');
+					for (var i=0; i < showDirectionsP.length; i++) {
+    					showDirectionsP[i].setAttribute("style", `border-bottom: 1pt solid ${color};`);
+						};
+				const showInstructions = document.querySelectorAll('.showInstructions');
+					for (var i=0; i < showInstructions.length; i++) {
+    					showInstructions[i].setAttribute("style", `color: ${color};`);
+					}
+			}
+		}
+
+		function colorChange() {
+			for (i=0; i < category.length; i++) {
+				showBarColor(showBar, category[i], color[i]);
+			}
+		}
+
+		colorChange();
+
+
+
+
+		
+
+	</script>
+
 
 <%- include('../partials/footer') -%>
 

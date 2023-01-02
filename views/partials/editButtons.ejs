@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="editButtons">
+        <a class="btn btn-secondary" href="/recipes">Back</a>
+    
+    <div class="editButtons">
+        <% if (recipe.author === user.name || user.role == "admin") { %>
+            <a class="btn btn-warning" href="/recipes/<%= recipe.id %>/edit">Edit</a>
+            <% } else { %>
+            <% } %>		
+    </div>
+    <div class="editButtons">
+        <%- include('/deleteForm', { url: `/recipes/${recipe._id}` }) -%>
+    </div>
+</div>
+</div>
