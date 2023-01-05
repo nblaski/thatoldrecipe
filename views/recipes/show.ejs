@@ -8,10 +8,12 @@
 
 <div>
 	<a id="backArrow" class="fa fa-arrow-circle-left backArrow" href="/recipes"></a>
+	<a id="print" class="fa fa-print backArrow" style="display: inline-block"></a>
+
 </div>
 
 
-	<div class="showCard showBackground">
+	<div id="contentPrint" class="showCard showBackground">
 
 		<div id="showBar" class="showBarCategory"><i><%= recipe.category %> </i>
 		</div>
@@ -118,8 +120,7 @@
 		</div>
 	</div>
 
-
-    </div>
+</div>
 
 	<%- include('../partials/comments') -%>
 
@@ -137,6 +138,8 @@
 				document.getElementById('farClock').setAttribute("style", `color: ${color};`);
 				document.getElementById('farServe').setAttribute("style", `color: ${color};`);
 				document.getElementById('backArrow').setAttribute("style", `color: ${color} !important`);
+				document.getElementById('print').setAttribute("style", `color: ${color} !important`);
+
 				document.getElementById('cardComments').setAttribute("style", `background-color: ${color} !important; color: white;`);
 
 
@@ -175,6 +178,11 @@
 
 
 
+		const printBtn = document.getElementById('print');
+
+		printBtn.addEventListener('click', function () {
+			print();
+		} )
 
 		
 
