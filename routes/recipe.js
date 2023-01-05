@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const Recipe  = require('../models/Recipe.js');
 const User = require('../models/User');
+const Comments = require('../models/Comments');
 const multer = require('multer');
 const upload = require("../multerLocal.js");
 const sharp = require('sharp');
@@ -106,9 +107,10 @@ router.post('/newForm', upload.single('cover'), async (req, res) => {
 router.get('/:id', ensureAuthenticated, async (req, res) => {
   try {
       const recipe = await Recipe.findById(req.params.id);
+      const comment = await Comments.find({ recipeId: recipe.id}).sort('-date');
       const allergenString = JSON.stringify(recipe.allergens)
       const categoryString = JSON.stringify(recipe.category)
-      res.render('recipes/show', { user: req.user, recipe: recipe })
+      res.render('recipes/show', { user: req.user, recipe: recipe, comment: comment })
     } catch(err) {
       console.log(err);
       req.flash('error_msg', 'ERROR rendering show recipe by ID page')
@@ -247,39 +249,29 @@ router.put('/:id', upload.single('cover'), async (req, res) => {
 })
 
 
-
-
 router.post('/:id/do-post', async (req, res) => {
-  let recipeCommentsArray = [];
-  try {
-    comment = await Recipe.findById(req.params.id);
-    username = req.body.username;
-    userComment = req.body.comments
-    date = req.body.date;
-    userProfileImg = req.body.userProfileImg
-    recipeCommentsArray.push(username, userComment, date, userProfileImg );
-    comment.comments.push(recipeCommentsArray);
-console.log(recipeCommentsArray)
-      await comment.save()
-        console.log('Comment saved to DB.');
+      try {
+        recipe = await Recipe.findById(req.params.id);
+        const comment = new Comments ({
+          username: req.body.username,
+          comment: req.body.comments,
+          date: req.body.date,
+          userProfileImg: req.body.userProfileImg,
+          recipeId: recipe.id
+        });
+        await comment.save()
+        console.log('New comment saved.');
         req.flash(
           'success_msg',
-          'Comment SAVED!'
+          'Comment Saved!'
         );
-        res.redirect(`/recipes/${comment.id}`);
-  } catch(err) {
-    if (comment!= null) {
-      console.log(err);
-      req.flash('error_msg', 'ERROR saving comment not equal null ');
-      res.redirect(`/recipes/${comment.id}`);
-    } else {
-      console.log(err);
-      req.flash('error_msg', 'ERROR saving comment')
-      res.redirect(`/recipes/${comment.id}`);
+        res.redirect(`/recipes/${recipe.id}`);
+    } catch(err) {
+    console.log("there was an error" + err);
+    req.flash('error_msg', 'ERROR saving new recipe')
+    res.redirect(`/`);
     }
-  }
-})
-
+  });
 
 
 //set multer upload errors

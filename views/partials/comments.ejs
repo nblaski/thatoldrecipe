@@ -22,20 +22,20 @@
             </div>
         </form>
 
-            <% for (var i = recipe.comments.length - 1; i >= 0; i--) { %>
-                        <div class="second">
+        <% for (var i = 0; i < comment.length; i++) { %>
+                            <div class="second">
                             <div class="row" style="padding: 20px;">
                                 <div class="col-10" style="padding: 0px 20px 20px">
-                                    <span class="text1"><%= recipe.comments[i][1] %></span>
+                                    <span class="text1"><%= comment[i].comment %></span>
                                 </div>
                                 <div class="col" style="padding: 0px 20px 0px 20px;">
                                     <div class="col">
-                                        <img src="<%= recipe.comments[i][3]  %>" style="width: 70px; border-radius: 4em;"><span class="text2"><%= recipe.comments[i][0] %></span>
+                                        <img src="<%= comment[i].userProfileImg  %>" style="width: 70px; border-radius: 4em;"><span class="text2"><%= comment[i].username %></span>
 
                                     </div>
                                 </div>
                                 <div class="row" style="text-align: right; padding-top: 20px">
-                                    <span class="text3"><%= recipe.comments[i][2]  %></span>
+                                    <span class="text3"><%= comment[i].date  %></span>
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,6 @@
 
 function doPost(form, recipeID, userProfileImg) {
 
-
     if (form.comments.value == null || form.comments.value == "") {
             commentsError = "Please enter comment";
             document.getElementById("noComment_error").innerHTML = commentsError;
@@ -58,6 +57,8 @@ function doPost(form, recipeID, userProfileImg) {
     } else {
         var now = new Date(Date.now());
         let formatted = now.toUTCString();
+        console.log("userProfileImg: " + userProfileImg)
+
         $.ajax({
             url: "/recipes/" + recipeID + "/do-post",
             method: "POST",

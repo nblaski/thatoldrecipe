@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User.js');
+const Comments = require('../models/Comments.js');
 const path = require('path');
 const fs = require('fs');
 const sharp = require('sharp');
@@ -44,6 +45,7 @@ router.post('/:id/test', upload.single('icon'), (req, res) => {
 router.post("/:id/update", upload.single('icon'), async (req, res) => {
   console.log("HELLO from the update post route")
   const user = await User.findById(req.params.id);
+  const comment = await Comments;
   console.log("user: " + user)
   const pathOld = './public'+ user.profileImgURL;
   console.log("pathOld: " + pathOld)
@@ -84,10 +86,13 @@ router.post("/:id/update", upload.single('icon'), async (req, res) => {
       }
       // user = await User.findById(req.params.id)
       console.log(("userId: " + user.id))
-      const newFile = '/images/profileIcon/' + req.file.filename
-      user.profileImgURL = newFile
+      const newFile = '/images/profileIcon/' + req.file.filename;
+      user.profileImgURL = newFile;
       user.name = req.body.name;
-
+      
+     
+      await Comments.updateMany({"username": user.name}, {"$set":{"userProfileImg": newFile}});
+      console.log("newFile: " + newFile)
 
       await user.save()
       console.log('Profile updated to DB.');
@@ -95,6 +100,7 @@ router.post("/:id/update", upload.single('icon'), async (req, res) => {
         'success_msg',
         'Profile UPDATED!'
       );
+      
       res.redirect(`/profile/${user.id}`);
   } catch(err) {
     console.log("there was an error" + err);
