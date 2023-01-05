@@ -114,7 +114,7 @@
         <% if (recipe.stepName.length == 0 ) { %> 
             <li class="liStepNum">
                 <div class="grow-wrap">
-                    <textarea id="stepTitleTextarea_<%=i%>" class="form-control stepGridAreaTitle" name="stepNameTitle[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step title..."></textarea>
+                    <!-- <textarea id="stepTitleTextarea_<%=i%>" class="form-control stepGridAreaTitle" name="stepNameTitle[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step title..."></textarea> -->
                     <textarea id="stepTextarea_<%=i%>" class="form-control stepGridArea" name="stepName[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step instructions..."></textarea>
                     <span id="add" onclick="addLine(this, getElementById('stepName'))">+</span>  
                     <span id="minus" onclick="removeField(this, getElementById('stepName'))">-</span>
@@ -127,7 +127,7 @@
         <% const length = recipe.stepName.length %> 
         <li class="liStepNum">
             <div class="grow-wrap">
-                <textarea id="stepTitleTextarea_0" class="form-control stepGridAreaTitle" name="stepNameTitle[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step title..."><%= recipe.stepNameTitle[i] %></textarea>
+                <!-- <textarea id="stepTitleTextarea_0" class="form-control stepGridAreaTitle" name="stepNameTitle[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step title..."><%= recipe.stepNameTitle[i] %></textarea> -->
                 <textarea id="stepTextarea_0" class="form-control stepGridArea" name="stepName[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step instructions..."><%= recipe.stepName[i]%></textarea>
                 <% if (i === length - 1) { %> 
                     <span id="add" class="add" onclick="addLine(this, getElementById('stepName'))">+</span>  

@@ -39,17 +39,17 @@ function addLine(element, input){
     let ingredient;
     let amount;
     if(input.id === "stepName") {
-        fieldTitle = document.createElement("textarea");
-        idSequenceNum = $(`#${input.id} li`).length;
-        fieldTitle.setAttribute("class", "form-control stepGridAreaTitle");
-        fieldTitle.setAttribute("name", `${input.id}Title[]`);
-        fieldTitle.setAttribute("onInput", "this.parentNode.dataset.replicatedValue = this.value");
-        fieldTitle.setAttribute("placeholder", "Step title...");
-        if ( idSequenceNum == 1 ) {
-            fieldTitle.setAttribute("id", "stepTitleTextarea_1");
-        } else {
-            fieldTitle.setAttribute("id", `stepTitleTextarea_${idSequenceNum}`);
-        }
+    //     fieldTitle = document.createElement("textarea");
+    //     idSequenceNum = $(`#${input.id} li`).length;
+    //     fieldTitle.setAttribute("class", "form-control stepGridAreaTitle");
+    //     fieldTitle.setAttribute("name", `${input.id}Title[]`);
+    //     fieldTitle.setAttribute("onInput", "this.parentNode.dataset.replicatedValue = this.value");
+    //     fieldTitle.setAttribute("placeholder", "Step title...");
+    //     if ( idSequenceNum == 1 ) {
+    //         fieldTitle.setAttribute("id", "stepTitleTextarea_1");
+    //     } else {
+    //         fieldTitle.setAttribute("id", `stepTitleTextarea_${idSequenceNum}`);
+    //     }
         // Creating the input element
         field = document.createElement("textarea");
         field.setAttribute("class", "form-control stepGridArea");
@@ -113,7 +113,7 @@ function addLine(element, input){
         console.log(input.id);
         inputOL.insertBefore(li, inputOL.lastChild);
         div.appendChild(field);
-        div.appendChild(fieldTitle);
+        // div.appendChild(fieldTitle);
         div.appendChild(plus);
         div.appendChild(minus);
         li.appendChild(div);
@@ -141,15 +141,15 @@ function removeField(element, input){
     if (idSequenceNum === 2 ) {
         const ingredientElement = document.querySelector(`#divOlIngredients > ol > li:last-child > div > input`);
         const amountElement = document.querySelector("#divOlIngredients > ol > li:last-child > div > input:nth-child(2)");
-        const stepTitleNameElement = document.querySelector(`#divStepName > ol > li:last-child > div > textarea`);
+        // const stepTitleNameElement = document.querySelector(`#divStepName > ol > li:last-child > div > textarea`);
         const stepNameElement = document.querySelector(`#divStepName > ol > li:last-child > div > textarea:nth-child(2)`);
         ingredientElement.setAttribute("id", "ingredients_0");
         amountElement.setAttribute("id", "amount_0");
-        stepTitleNameElement.setAttribute("id", "stepTitleTextarea_0");
+        // stepTitleNameElement.setAttribute("id", "stepTitleTextarea_0");
         stepNameElement.setAttribute("id", "stepTextarea_0");
         ingredientElement.addEventListener('keyup', removeWarning);
         amountElement.addEventListener('keyup', removeWarning);
-        stepTitleNameElement.addEventListener('keyup', removeWarning);
+        // stepTitleNameElement.addEventListener('keyup', removeWarning);
         stepNameElement.addEventListener('keyup', removeWarning);
 
         element.closest("li").remove();

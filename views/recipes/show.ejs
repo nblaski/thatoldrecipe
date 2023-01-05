@@ -80,7 +80,7 @@
 					<h5 id="titleCategory" class="padLeftNone showInstructions">Sub Categories</h5>
 					<ul class="padLeftNone">
 						<% for (var i = 0; i < recipe.category.length; i++) { %>
-						<li style="display: inline-block"><%= recipe.category[i]%>&nbsp;&nbsp;</li>
+						<li style="display: inline-block;"><%= recipe.category[i]%>&nbsp;&nbsp;</li>
 						<% } %>
 					</ul>
 			
@@ -92,11 +92,9 @@
 								<% } %>
 							</ul>
 						<% } else { %> 
-							<div>
 								<h5 id="titleAllergens" class="padLeftNone showInstructions">Allergens</h5>
-								<hr style="margin-top: 0px; height:1px;border:none;color:#333;background-color:#333;" >
-								<h6>This Recipe has no known Allergens. Consume at your own risk!</h6>
-							</div>
+								<h6 class="padLeftNone">This Recipe has no known Allergens. Consume at your own risk!</h6>
+							
 							<br>
 						<% } %>
 	
@@ -138,8 +136,11 @@
 				document.getElementById('title').setAttribute("style", `color: ${color};`);
 				document.getElementById('farClock').setAttribute("style", `color: ${color};`);
 				document.getElementById('farServe').setAttribute("style", `color: ${color};`);
-				document.getElementById('backArrow').setAttribute("style", `color: ${color} !important;`);
+				document.getElementById('backArrow').setAttribute("style", `color: ${color} !important`);
 				document.getElementById('cardComments').setAttribute("style", `background-color: ${color} !important; color: white;`);
+
+
+
 
 				const showDirectionsNum = document.querySelectorAll('.showDirectionsNum');
 					for (var i=0; i < showDirectionsNum.length; i++) {
@@ -157,6 +158,10 @@
 					for (var i=0; i < showInstructions.length; i++) {
     					showInstructions[i].setAttribute("style", `color: ${color};`);
 					}
+
+
+					// document.getElementById('titleAllergens').setAttribute("style", `color: ${color};`);
+				document.getElementById('titleAllergens').setAttribute("style", `color: ${color};padding-top: 0px !important`);
 			}
 		}
 

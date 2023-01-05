@@ -24,7 +24,7 @@
 .editButtons {
     text-align: left; 
     display: inline-block;
-    margin: 20px 10px 0px 3px
+    margin: 30px 10px 0px 3px
 }
 
 .showBarCategory {
@@ -100,7 +100,7 @@
 }
 
 .showDirectionsP {
-    padding: 0px 0px 5px 5px !important; 
+    padding: 5px 0px 5px 5px !important; 
     font-size: .9em;
     border-top: 0px; border-bottom: 1pt solid white;
 }
@@ -110,4 +110,10 @@
     font-size: 2.5em; 
     background-color: none;
     padding-bottom: 5px;
+    
 }
+
+#backArrow:hover {
+    color: yellow !important;
+}
+

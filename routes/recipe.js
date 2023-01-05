@@ -223,7 +223,7 @@ router.put('/:id', upload.single('cover'), async (req, res) => {
     recipe.allergens = req.body.allergens
     recipe.ingredients = req.body.ingredients
     recipe.stepName = req.body.stepName
-    recipe.stepNameTitle = req.body.stepNameTitle
+    // recipe.stepNameTitle = req.body.stepNameTitle
     recipe.amount = req.body.amount
     await recipe.save()
       console.log('Recipe updated to DB.');

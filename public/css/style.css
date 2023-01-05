@@ -167,7 +167,7 @@ textarea::-webkit-scrollbar{
   .grow-wrap {
     /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
     display: grid;
-    grid-template-columns: 30% 50%;
+    grid-template-columns: 0% 90% 0%;
     grid-column: 4;
     grid-gap: 5px;
     grid-area: 1 / 2;
@@ -201,7 +201,6 @@ textarea::-webkit-scrollbar{
     text-align: center;
     /* margin: 0 0 1rem; */
     padding-top: 25%;
-
   }
 
   .grow-wrap span.add {
@@ -490,7 +489,7 @@ background-color: #343a40 !important;
 
 .second{
 	width: 100%;
-	background-color: white;
+	background-color:rgb(255, 255, 255, .8);
 	border-radius: 4px;
 	box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
   border-style:solid;
@@ -532,3 +531,14 @@ background-color: #343a40 !important;
 	color: white;
 }
 
+.dropShadow {
+  box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
+  background-color:rgb(255, 255, 255, .8) !important;
+}
+
+#user:focus {
+  outline: none;
+  border-style: none;
+  box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
+  background-color:rgb(255, 255, 255, .8) !important;
+}

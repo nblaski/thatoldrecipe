@@ -7,16 +7,17 @@
 
         <form id="comments" method="POST" onsubmit="return doPost(this, '<%=recipe.id%>', '<%= user.profileImgURL %>');">
             <h4>Comments</h4>
-            <input id="user" class="form-control" style="margin-top: 20px;" value="<%= user.name %>" readonly>
+            <input id="user" class="form-control dropShadow" style="margin-top: 20px; background-color:rgb(255, 255, 255, .5) !important;" value="<%= user.name %>" readonly>
             <br>
             <div>
                 <div class="grow-wrapComment">
-                    <textarea id="comments" class="form-control stepGridArea" name="comments[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Leave a comment..."></textarea>
+                    <textarea id="comments" class="form-control stepGridArea dropShadow" name="comments[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Leave a comment..."></textarea>
                 </div>
                 <div class="form-group" style="margin: 25px 0px 15px 0px">
                     <!-- <button class="btn btn-success btn-block" type="submit">SUBMIT</button> -->
-                    <input type="submit" class="btn btn-success btn-block" value="POST COMMENT" />
+                    <input type="submit" class="btn btn-success btn-block" style="box-shadow: 10px 10px 5px rgba(0,0,0,0.6);" value="POST COMMENT" />
                 </div>
+                <span class="error"><p style="display: none" id="noComment_error"></p></span>
 
             </div>
         </form>
@@ -43,25 +44,50 @@
     </div>
 
 <script>
-    function doPost(form, recipeID, userProfileImg) {
-        var now = new Date(Date.now());
-        let formatted = now.toUTCString();
-        $.ajax({
-            url: "/recipes/" + recipeID + "/do-post",
-            method: "POST",
-            data: { comments: form.comments.value, username: form.user.value, date: formatted, userProfileImg: userProfileImg },
-            // contentType: "application/json; charset=utf-8",
-            // dataType: "json",
-            success: function (data, textStatus, xhr) {
-               if (xhr.status === 200 ) {
-                    window.location = "/recipes/" + recipeID
-                }
-                },
-                failure: function (response) {
-                    alert( "THERE WAS AN ERROR SAVING COMMENT!!! PLEASE TELL YOUR ADMINISTRATOR" + ERROR + response);
-                }
-        });
-        return false;
-    }
+
+
+document.getElementById("comments").onsubmit = function () {
+    const commentBoxText = document.getElementById('comments').value;
+
+    if (commentBoxText == null || commentBoxText == "") {
+            console.log(" true");
+            noCommentError = "Please enter recipe name";
+            document.getElementById("noComment_error").innerHTML = recipeNameError;
+            document.getElementById("recipeName").style.borderWidth = "thin"
+            document.getElementById("recipeName").style.borderColor = "red"
+            submit = false;
+        } else {
+
+            function doPost(form, recipeID, userProfileImg) {
+            var now = new Date(Date.now());
+            let formatted = now.toUTCString();
+            $.ajax({
+                url: "/recipes/" + recipeID + "/do-post",
+                method: "POST",
+                data: { comments: form.comments.value, username: form.user.value, date: formatted, userProfileImg: userProfileImg },
+                // contentType: "application/json; charset=utf-8",
+                // dataType: "json",
+                success: function (data, textStatus, xhr) {
+                if (xhr.status === 200 ) {
+                        window.location = "/recipes/" + recipeID
+                    }
+                    },
+                    failure: function (response) {
+                        alert( "THERE WAS AN ERROR SAVING COMMENT!!! PLEASE TELL YOUR ADMINISTRATOR" + ERROR + response);
+                    }
+            });
+            return false;
+            }
+        }
+
+
+
+
+
+}
+
+
+
+
 
 </script>

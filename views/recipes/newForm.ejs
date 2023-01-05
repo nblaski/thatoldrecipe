@@ -32,6 +32,7 @@
             <div id="categoryDiv" class="form-group">
                 <!-- <select id="category" name="category" class="selectpicker" multiple data-width="100%"> -->
                 <select id="category" name="category" class="selectpicker" data-width="100%">
+                    <option id="c0" value=""></option>
                     <option id="c1" value="Appetizer">Appetizer</option>
                     <option id="c2" value="Baked-goods">Baked-goods</option>
                     <option id="c3" value="Bread">Bread</option>
@@ -100,17 +101,17 @@
             </div>
             
             <br>
-                <h6>STEPS</h6>
+                <h6>Directions</h6>
                 <hr>
             
             <div id="divStepName">
-                <span class="error"><p style="display: none" id="stepTitleTextarea_0_error"></p></span>
+                <!-- <span class="error"><p style="display: none" id="stepTitleTextarea_0_error"></p></span> -->
                 <span class="error"><p style="display: none" id="stepTextarea_0_error"></p></span>
                 <ol id="stepName">
                     <li class="liStepNum">
                         <div class="grow-wrap">
-                            <textarea id="stepTitleTextarea_0" class="form-control stepGridAreaTitle" name="stepNameTitle[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step title..."></textarea>
-                            <textarea id="stepTextarea_0" class="form-control stepGridArea" name="stepName[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step instructions..."></textarea>
+                            <!-- <textarea id="stepTitleTextarea_0" class="form-control stepGridAreaTitle" name="stepNameTitle[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Step title..."></textarea> -->
+                            <textarea id="stepTextarea_0" class="form-control stepGridArea" name="stepName[]" onInput="this.parentNode.dataset.replicatedValue = this.value" placeholder="Directions..."></textarea>
                             <span id="add" onclick="addLine(this, getElementById('stepName'))">+</span>  
                             <span id="minus" onclick="removeField(this, getElementById('stepName'))">-</span>
                         </div>
@@ -238,8 +239,8 @@ document.getElementById("newForm").onsubmit = function () {
         console.log("aa - " + aa)
         var b = document.getElementById("stepTextarea_0").value;
         console.log("b - " + b)
-        var bb = document.getElementById("stepTitleTextarea_0").value;
-        console.log("bb - " + bb)
+        // var bb = document.getElementById("stepTitleTextarea_0").value;
+        // console.log("bb - " + bb)
         // var d = document.getElementById("cover").value;
         var d1 = document.getElementById("cover").style;
 
@@ -320,15 +321,15 @@ document.getElementById("newForm").onsubmit = function () {
             document.getElementById("stepTextarea_0").style.borderColor = "red"
             submit = false;
         }
-        if (bb == null || bb == "") {
-            let stepTitleTextareaError = "Please enter step title";
-            let stepTitleTextareaElement = document.getElementById("stepTitleTextarea_0_error");
-            stepTitleTextareaElement.innerHTML = stepTitleTextareaError;
-            stepTitleTextareaElement.setAttribute("style", "display: inline-block");
-            document.getElementById("stepTitleTextarea_0").style.borderWidth = "thin"
-            document.getElementById("stepTitleTextarea_0").style.borderColor = "red"
-            submit = false;
-        }
+        // if (bb == null || bb == "") {
+        //     let stepTitleTextareaError = "Please enter step title";
+        //     let stepTitleTextareaElement = document.getElementById("stepTitleTextarea_0_error");
+        //     stepTitleTextareaElement.innerHTML = stepTitleTextareaError;
+        //     stepTitleTextareaElement.setAttribute("style", "display: inline-block");
+        //     document.getElementById("stepTitleTextarea_0").style.borderWidth = "thin"
+        //     document.getElementById("stepTitleTextarea_0").style.borderColor = "red"
+        //     submit = false;
+        // }
 
         // if(d== null || d == "") {
         //     coverError = "Please select an image";
@@ -367,7 +368,7 @@ document.getElementById("newForm").onsubmit = function () {
     document.getElementById("author").onkeyup = removeWarning;
     document.getElementById("category").onchange = removeWarning;
     document.getElementById("stepTextarea_0").onkeyup = removeWarning;
-    document.getElementById("stepTitleTextarea_0").onkeyup = removeWarning;
+    // document.getElementById("stepTitleTextarea_0").onkeyup = removeWarning;
     document.getElementById("ingredients_0").onkeyup = removeWarning;
     document.getElementById("amount_0").onkeyup = removeWarning;
     // document.getElementById("cover").onclick = removeCoverWarning;

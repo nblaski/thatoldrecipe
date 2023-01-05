@@ -197,8 +197,8 @@ function hideUpload() {
         console.log("aa - " + aa)
         var b = document.getElementById("stepTextarea_0").value;
         console.log("b - " + b)
-        var bb = document.getElementById("stepTitleTextarea_0").value;
-        console.log("bb - " + bb)
+        // var bb = document.getElementById("stepTitleTextarea_0").value;
+        // console.log("bb - " + bb)
         var d = document.forms["formFields"]["cover"].value;
         var d1 = document.getElementById("cover").style.display;
 
@@ -279,15 +279,15 @@ function hideUpload() {
             document.getElementById("stepTextarea_0").style.borderColor = "red"
             submit = false;
         }
-        if (bb == null || bb == "") {
-            let stepTitleTextareaError = "Please enter step title";
-            let stepTitleTextareaElement = document.getElementById("stepTitleTextarea_0_error");
-            stepTitleTextareaElement.innerHTML = stepTitleTextareaError;
-            stepTitleTextareaElement.setAttribute("style", "display: inline-block");
-            document.getElementById("stepTitleTextarea_0").style.borderWidth = "thin"
-            document.getElementById("stepTitleTextarea_0").style.borderColor = "red"
-            submit = false;
-        }
+        // if (bb == null || bb == "") {
+        //     let stepTitleTextareaError = "Please enter step title";
+        //     let stepTitleTextareaElement = document.getElementById("stepTitleTextarea_0_error");
+        //     stepTitleTextareaElement.innerHTML = stepTitleTextareaError;
+        //     stepTitleTextareaElement.setAttribute("style", "display: inline-block");
+        //     document.getElementById("stepTitleTextarea_0").style.borderWidth = "thin"
+        //     document.getElementById("stepTitleTextarea_0").style.borderColor = "red"
+        //     submit = false;
+        // }
 
         if(d1 == 'inline-block' && d == "") {
             coverError = "Please select an image";
@@ -326,7 +326,7 @@ function hideUpload() {
     document.getElementById("author").onkeyup = removeWarning;
     document.getElementById("category").onchange = removeWarning;
     document.getElementById("stepTextarea_0").onkeyup = removeWarning;
-    document.getElementById("stepTitleTextarea_0").onkeyup = removeWarning;
+    // document.getElementById("stepTitleTextarea_0").onkeyup = removeWarning;
     document.getElementById("ingredients_0").onkeyup = removeWarning;
     document.getElementById("amount_0").onkeyup = removeWarning;
     document.getElementById("removeUploadBtn").onclick = removeCoverWarning;
