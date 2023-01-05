@@ -117,3 +117,14 @@
     color: yellow !important;
 }
 
+.commentError {
+    color: white;
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: 1pt solid red;
+    background-color: red;
+    border-radius: .5em;
+}
+
