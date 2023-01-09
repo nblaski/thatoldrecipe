@@ -84,8 +84,10 @@ router.post('/newForm', upload.single('cover'), async (req, res) => {
             ingredients: req.body.ingredients,
             amount: req.body.amount,
             stepName: req.body.stepName,
-            stepNameTitle: req.body.stepNameTitle,
-            imageName: recipeImage
+            imageName: recipeImage,
+            time: req.body.time,
+            servings: req.body.servings,
+            subCategory: req.body.subCategory
           });
         await recipe.save()
         console.log('New recipe saved.');
@@ -109,7 +111,7 @@ router.get('/:id', ensureAuthenticated, async (req, res) => {
       const recipe = await Recipe.findById(req.params.id);
       const comment = await Comments.find({ recipeId: recipe.id}).sort('-date');
       const allergenString = JSON.stringify(recipe.allergens)
-      const categoryString = JSON.stringify(recipe.category)
+      const categoryString = JSON.stringify(recipe.subCategory)
       res.render('recipes/show', { user: req.user, recipe: recipe, comment: comment })
     } catch(err) {
       console.log(err);

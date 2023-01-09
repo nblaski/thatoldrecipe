@@ -29,7 +29,7 @@
 					<div class="row" style="margin-top: 20px;">
 						<!-- <div class="col-4 showIconsCol"><img src="/images/recipeIcons/timer-01.png" class="showIcons"></div>  -->
 						<div class="col-4 showIconsCol"><i id="farClock" class='far fa-clock showIcons'></i></div>
-						<div class="col showTimerServe">Time</div>
+						<div class="col showTimerServe"><%= recipe.time %></div>
 						</div>  
 		
 					<div class="row" style="margin-top: 20px;"> 
@@ -37,7 +37,7 @@
 							<div class="col-4 showIconsCol"><i id="farServe" class='fas fa-hard-hat showIcons'></i></div>
 							<!-- <div class="col-4 showIconsCol"><i id="farClock" class='fa-solid fa-plate-utensils'></i><i class="fa-solid fa-plate-utensils"></i></div> -->
 
-							<div class="col showTimerServe">Servings</div>
+							<div class="col showTimerServe"><%= recipe.servings %></div>
 					</div>
 				</div>
 				<div class="col"> 
@@ -70,7 +70,7 @@
 				</div>
 
 				<% for (var i = 0; i < recipe.stepName.length; i++) { %>
-					<% if (recipe.stepNameTitle[i] !== "") { %> 
+					<% if (recipe.stepName[i] !== "") { %> 
 						<div class="row">
 							<div class="col-1 padLeftNone showDirectionsNum"><%=i+1%></div>
 							<div class="col padLeftNone showDirectionsP" id="stepName_<%=i%>"><%= recipe.stepName[i] %></div>
@@ -81,8 +81,8 @@
 				<div class="row">
 					<h5 id="titleCategory" class="padLeftNone showInstructions">Sub Categories</h5>
 					<ul class="padLeftNone">
-						<% for (var i = 0; i < recipe.category.length; i++) { %>
-						<li style="display: inline-block;"><%= recipe.category[i]%>&nbsp;&nbsp;</li>
+						<% for (var i = 0; i < recipe.subCategory.length; i++) { %>
+						<li style="display: inline-block;"><%= recipe.subCategory[i]%>&nbsp;&nbsp;</li>
 						<% } %>
 					</ul>
 			

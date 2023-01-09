@@ -23,10 +23,6 @@ const recipeSchema = new Schema({
     type: Array
     // required: true
   },
-  stepNameTitle: {
-    type: Array
-    // required: true
-  },
   amount: {
     type: Array
     // required: true
@@ -37,7 +33,13 @@ const recipeSchema = new Schema({
   category: {
     type: Array
   },
-  comments: {
+  servings: {
+    type: String
+  },
+  time: {
+    type: String
+  },
+  subCategory: {
     type: Array
   }
 });
